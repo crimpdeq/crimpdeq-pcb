@@ -49,7 +49,14 @@ pcb_guide_engage_h = 1.0;
 battery_guide_engage_h = 1.0;
 
 screw_clear_d = 2.8; // clearance for M2.5 screws
+screw_head_d = 5.2; // typical M2.5 button/pan head clearance
+screw_head_recess = 1.8; // recess depth so heads do not protrude
 screw_corner_inset = wall_t + 4;
+
+brand_text = "Crimpdeq";
+brand_font = "Inter:style=Bold";
+brand_size = 9.5;
+brand_depth = 0.8;
 
 /*** Derived placement ***/
 inner_x_min = -lc_L / 2 - clear_x;
@@ -71,6 +78,7 @@ outer_z_max = inner_z_max;
 
 lid_z_min = outer_z_max;
 lid_z_max = lid_z_min + lid_t;
+brand_y = 0; // centered between U cutouts
 
 loadcell_top_z = lc_T / 2;
 hold_down_target_z = loadcell_top_z + loadcell_hold_down_clear;
@@ -104,6 +112,15 @@ module corner_holes(d, z0, z1) {
     translate([screw_x2, screw_y2, hole_z]) cylinder(d = d, h = hole_h, center = true);
 }
 
+module corner_head_recesses(d, depth) {
+    recess_h = depth + 0.2;
+    recess_z = lid_z_max - depth / 2 + 0.1;
+    translate([screw_x1, screw_y1, recess_z]) cylinder(d = d, h = recess_h, center = true);
+    translate([screw_x1, screw_y2, recess_z]) cylinder(d = d, h = recess_h, center = true);
+    translate([screw_x2, screw_y1, recess_z]) cylinder(d = d, h = recess_h, center = true);
+    translate([screw_x2, screw_y2, recess_z]) cylinder(d = d, h = recess_h, center = true);
+}
+
 module eye_u_cutout(eye_x, open_left = true) {
     linear_extrude(height = u_cutout_y_span, center = true)
         union() {
@@ -124,6 +141,13 @@ module loadcell_hold_downs() {
     hold_down_x = lc_L / 2 - loadcell_hold_down_edge_offset;
     hold_down_z = hold_down_target_z + hold_down_h / 2;
 
+    // Center pair
+    translate([ hold_down_x, 0, hold_down_z])
+        cube([loadcell_hold_down_w, loadcell_hold_down_d, hold_down_h], center = true);
+    translate([-hold_down_x, 0, hold_down_z])
+        cube([loadcell_hold_down_w, loadcell_hold_down_d, hold_down_h], center = true);
+
+    // Offset pairs
     translate([ hold_down_x,  loadcell_hold_down_y_offset, hold_down_z])
         cube([loadcell_hold_down_w, loadcell_hold_down_d, hold_down_h], center = true);
     translate([ hold_down_x, -loadcell_hold_down_y_offset, hold_down_z])
@@ -146,6 +170,14 @@ module component_side_rails(comp_w, comp_l, comp_y, comp_top_z, engage_h) {
     }
 }
 
+module brand_engrave_lid() {
+    // Carved on outer top face (same plane as load cell), horizontal and centered.
+    translate([0, brand_y, lid_z_max - brand_depth - 0.1])
+        linear_extrude(height = brand_depth + 0.2, center = false)
+            rotate([0, 0, 90])
+                text(brand_text, size = brand_size, font = brand_font, halign = "center", valign = "center");
+}
+
 module lid_part() {
     difference() {
         union() {
@@ -161,8 +193,11 @@ module lid_part() {
             component_side_rails(bat_W, bat_L, battery_y_offset, battery_top_z, battery_guide_engage_h);
         }
         corner_holes(screw_clear_d, lid_z_min, lid_z_max);
+        corner_head_recesses(screw_head_d, min(screw_head_recess, lid_t - 0.6));
         eye_u_cutout(eye_x1, open_left = true);
         eye_u_cutout(eye_x2, open_left = false);
+        // Brand engraving on outer top face.
+        brand_engrave_lid();
     }
 }
 

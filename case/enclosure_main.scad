@@ -7,6 +7,7 @@
 //
 
 use <assembly.scad>
+use <enclosure_lid.scad>
 
 $fn = 96;
 
@@ -75,7 +76,15 @@ switch_clear = 0.4;
 switch_hole_w = 15; // KCD11 panel opening width (X), horizontal orientation
 switch_hole_h = 10; // KCD11 panel opening height (Z), horizontal orientation
 
+brand_text = "Crimpdeq";
+brand_font = "Inter:style=Bold";
+brand_size = 9.5;
+brand_depth = 0.8;
+
 show_assembly = true;
+show_lid_preview = true;
+lid_preview_z_offset = 30; // mm (3 cm above main part)
+lid_preview_alpha = 0.8; // higher alpha = more opaque
 
 /*** Derived placement ***/
 inner_x_min = -lc_L / 2 - clear_x;
@@ -84,6 +93,7 @@ inner_x_max = lc_L / 2 + clear_x;
 inner_y_min = -pcb_L / 2 - rear_clear;
 usb_front_y = pcb_L / 2; // connector flush with PCB edge (no overhang)
 inner_y_max = usb_front_y + front_clear;
+brand_y = 0; // centered between U cutouts
 
 inner_z_min = -lc_T / 2;
 // Top of stacked electronics (battery + PCB) used to size enclosure height.
@@ -176,6 +186,16 @@ module eye_u_cutout(eye_x, open_left = true) {
         }
 }
 
+module brand_engrave_main() {
+    // Carved on outer bottom face (same plane as load cell), horizontal and centered.
+    translate([0, brand_y, outer_z_min - 0.1])
+        linear_extrude(height = brand_depth + 0.2, center = false)
+            // Mirrored so it reads correctly when viewed from outside.
+            mirror([1, 0, 0])
+                rotate([0, 0, 90])
+                    text(brand_text, size = brand_size, font = brand_font, halign = "center", valign = "center");
+}
+
 module main_part() {
     difference() {
         union() {
@@ -232,10 +252,23 @@ module main_part() {
 
         translate([0, inner_y_max + wall_t / 2, usb_center_z])
             cube([usb_w + 2 * usb_clear_x, wall_t + 0.3, usb_h + 2 * usb_clear_z], center = true);
+
+        // Brand engraving on outer bottom face.
+        brand_engrave_main();
     }
 }
 
 main_part();
 if (show_assembly) {
     %full_assembly();
+}
+if (show_lid_preview) {
+    translate([0, 0, lid_preview_z_offset]) {
+        // In preview, show lid with configurable opacity. For renders/exports, keep it as %.
+        if ($preview) {
+            color([0.8, 0.8, 0.8, lid_preview_alpha]) lid_part();
+        } else {
+            %lid_part();
+        }
+    }
 }
