@@ -28,6 +28,7 @@ battery_to_pcb_gap = 0;
 /*** Enclosure parameters ***/
 wall_t = 3;
 lid_t = 3;
+corner_r = 6;
 
 clear_x = 0.8;
 rear_clear = 0.8;
@@ -99,8 +100,24 @@ screw_x2 = outer_x_max - screw_corner_inset;
 screw_y1 = outer_y_min + screw_corner_inset;
 screw_y2 = outer_y_max - screw_corner_inset;
 
-module block(min_v, max_v) {
-    translate(min_v) cube(max_v - min_v, center = false);
+module rounded_rect_2d(x_min, x_max, y_min, y_max, r) {
+    w = x_max - x_min;
+    h = y_max - y_min;
+    rr = max(0, min(r, min(w, h) / 2 - 0.01));
+    if (rr > 0) {
+        translate([x_min + rr, y_min + rr])
+            offset(r = rr)
+                square([w - 2 * rr, h - 2 * rr], center = false);
+    } else {
+        translate([x_min, y_min])
+            square([w, h], center = false);
+    }
+}
+
+module rounded_block_xy(min_v, max_v, r) {
+    translate([0, 0, min_v[2]])
+        linear_extrude(height = max_v[2] - min_v[2], center = false)
+            rounded_rect_2d(min_v[0], max_v[0], min_v[1], max_v[1], r);
 }
 
 module corner_holes(d, z0, z1) {
@@ -181,9 +198,10 @@ module brand_engrave_lid() {
 module lid_part() {
     difference() {
         union() {
-            block(
+            rounded_block_xy(
                 [outer_x_min, outer_y_min, lid_z_min],
-                [outer_x_max, outer_y_max, lid_z_max]
+                [outer_x_max, outer_y_max, lid_z_max],
+                corner_r
             );
             if (hold_down_h > 0) {
                 loadcell_hold_downs();

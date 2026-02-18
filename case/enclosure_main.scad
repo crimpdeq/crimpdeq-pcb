@@ -47,6 +47,7 @@ battery_to_pcb_gap = 0;
 /*** Enclosure parameters ***/
 wall_t = 3;
 floor_t = 3;
+corner_r = 6;
 
 clear_x = 0.8;
 rear_clear = 0.8;
@@ -83,7 +84,7 @@ brand_depth = 0.8;
 
 show_assembly = true;
 show_lid_preview = true;
-lid_preview_z_offset = 30; // mm (3 cm above main part)
+lid_preview_z_offset = 15; // mm (3 cm above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
 
 /*** Derived placement ***/
@@ -106,6 +107,7 @@ outer_y_min = inner_y_min - wall_t;
 outer_y_max = inner_y_max + wall_t;
 outer_z_min = inner_z_min - floor_t;
 outer_z_max = inner_z_max;
+inner_corner_r = max(0, corner_r - wall_t);
 
 eye_x1 = -lc_L / 2 + eye_center_offset;
 eye_x2 = lc_L / 2 - eye_center_offset;
@@ -133,8 +135,24 @@ switch_x = 0;
 switch_y = inner_y_max - switch_d / 2 - switch_clear;
 switch_z = inner_z_min + switch_h / 2;
 
-module block(min_v, max_v) {
-    translate(min_v) cube(max_v - min_v, center = false);
+module rounded_rect_2d(x_min, x_max, y_min, y_max, r) {
+    w = x_max - x_min;
+    h = y_max - y_min;
+    rr = max(0, min(r, min(w, h) / 2 - 0.01));
+    if (rr > 0) {
+        translate([x_min + rr, y_min + rr])
+            offset(r = rr)
+                square([w - 2 * rr, h - 2 * rr], center = false);
+    } else {
+        translate([x_min, y_min])
+            square([w, h], center = false);
+    }
+}
+
+module rounded_block_xy(min_v, max_v, r) {
+    translate([0, 0, min_v[2]])
+        linear_extrude(height = max_v[2] - min_v[2], center = false)
+            rounded_rect_2d(min_v[0], max_v[0], min_v[1], max_v[1], r);
 }
 
 module notch_pin(x, y) {
@@ -200,13 +218,15 @@ module main_part() {
     difference() {
         union() {
             difference() {
-                block(
+                rounded_block_xy(
                     [outer_x_min, outer_y_min, outer_z_min],
-                    [outer_x_max, outer_y_max, outer_z_max]
+                    [outer_x_max, outer_y_max, outer_z_max],
+                    corner_r
                 );
-                block(
+                rounded_block_xy(
                     [inner_x_min, inner_y_min, inner_z_min],
-                    [inner_x_max, inner_y_max, outer_z_max + 0.1]
+                    [inner_x_max, inner_y_max, outer_z_max + 0.1],
+                    inner_corner_r
                 );
             }
 
