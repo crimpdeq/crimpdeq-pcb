@@ -10,6 +10,7 @@ use <pcb.scad>
 $fn = 96;
 
 // Local placement dimensions (kept here to avoid coupling to source files).
+lc_L = 80;
 lc_T = 5;
 
 bat_T = 7;
@@ -21,11 +22,26 @@ loadcell_to_battery_gap = 0;
 battery_to_pcb_gap = 0;
 battery_align_side = -1; // 1: align to +Y PCB edge, -1: align to -Y edge
 battery_y_offset = battery_align_side * (pcb_L - bat_L) / 2;
+front_clear = 2.0;
+switch_clear = 0.4;
+
+// Switch block (W x D x H).
+sw_W = 15;
+sw_D = 13;
+sw_H = 10;
+sw_x = 0;
+sw_y = pcb_L/2 + front_clear - sw_D/2 - switch_clear;
+sw_z = -lc_T/2 + sw_H/2; // sit on enclosure floor plane
 
 module loadcell_model() {
     color("silver")
         linear_extrude(height = lc_T, center = true)
             loadcell_2d();
+}
+
+module switch_model() {
+    color("red")
+        cube([sw_W, sw_D, sw_H], center = true);
 }
 
 module full_assembly() {
@@ -38,6 +54,10 @@ module full_assembly() {
     // PCB laying flat on top of the battery.
     translate([0, 0, lc_T/2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T/2])
         pcb_model(show_usb = true);
+
+    // Side switch inside enclosure.
+    translate([sw_x, sw_y, sw_z])
+        switch_model();
 }
 
 full_assembly();

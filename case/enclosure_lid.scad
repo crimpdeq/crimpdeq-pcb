@@ -2,6 +2,7 @@
 // Lid enclosure part
 // - corner screw holes aligned with enclosure_main.scad
 // - U cutouts aligned with main part for load-cell hole access
+// - load-cell vertical hold-down features
 //
 
 $fn = 96;
@@ -11,7 +12,10 @@ lc_L = 80;
 lc_W = 40;
 lc_T = 5;
 bat_T = 7;
+bat_W = 34;
+bat_L = 50;
 pcb_L = 64;
+pcb_W = 24;
 pcb_T = 5;
 eye_d = 17;
 eye_edge_start = 6;
@@ -27,11 +31,22 @@ lid_t = 3;
 
 clear_x = 0.8;
 rear_clear = 0.8;
-front_clear = 0.8;
+front_clear = 2.0;
 top_clear = 2;
 
 eye_access_clear = 1.0;
 u_cutout_clear = 2.0;
+
+loadcell_hold_down_clear = 0.2;
+loadcell_hold_down_w = 9;
+loadcell_hold_down_d = 8;
+loadcell_hold_down_edge_offset = 6;
+loadcell_hold_down_y_offset = 8;
+
+guide_rail_clear = 0.35;
+guide_rail_t = 1.8;
+pcb_guide_engage_h = 1.0;
+battery_guide_engage_h = 1.0;
 
 screw_clear_d = 2.8; // clearance for M2.5 screws
 screw_corner_inset = wall_t + 4;
@@ -46,6 +61,7 @@ inner_y_max = usb_front_y + front_clear;
 
 pcb_top_z = lc_T / 2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T;
 inner_z_max = pcb_top_z + top_clear;
+battery_top_z = lc_T / 2 + loadcell_to_battery_gap + bat_T;
 
 outer_x_min = inner_x_min - wall_t;
 outer_x_max = inner_x_max + wall_t;
@@ -56,12 +72,19 @@ outer_z_max = inner_z_max;
 lid_z_min = outer_z_max;
 lid_z_max = lid_z_min + lid_t;
 
+loadcell_top_z = lc_T / 2;
+hold_down_target_z = loadcell_top_z + loadcell_hold_down_clear;
+hold_down_h = lid_z_min - hold_down_target_z;
+
 eye_x1 = -lc_L / 2 + eye_center_offset;
 eye_x2 = lc_L / 2 - eye_center_offset;
 eye_access_d = eye_d + eye_access_clear;
 u_cutout_z_d = eye_access_d + 2 * u_cutout_clear;
 u_cutout_z_r = u_cutout_z_d / 2;
 u_cutout_y_span = lc_W;
+
+battery_align_side = -1;
+battery_y_offset = battery_align_side * (pcb_L - bat_L) / 2;
 
 screw_x1 = outer_x_min + screw_corner_inset;
 screw_x2 = outer_x_max - screw_corner_inset;
@@ -97,12 +120,46 @@ module eye_u_cutout(eye_x, open_left = true) {
         }
 }
 
+module loadcell_hold_downs() {
+    hold_down_x = lc_L / 2 - loadcell_hold_down_edge_offset;
+    hold_down_z = hold_down_target_z + hold_down_h / 2;
+
+    translate([ hold_down_x,  loadcell_hold_down_y_offset, hold_down_z])
+        cube([loadcell_hold_down_w, loadcell_hold_down_d, hold_down_h], center = true);
+    translate([ hold_down_x, -loadcell_hold_down_y_offset, hold_down_z])
+        cube([loadcell_hold_down_w, loadcell_hold_down_d, hold_down_h], center = true);
+    translate([-hold_down_x,  loadcell_hold_down_y_offset, hold_down_z])
+        cube([loadcell_hold_down_w, loadcell_hold_down_d, hold_down_h], center = true);
+    translate([-hold_down_x, -loadcell_hold_down_y_offset, hold_down_z])
+        cube([loadcell_hold_down_w, loadcell_hold_down_d, hold_down_h], center = true);
+}
+
+module component_side_rails(comp_w, comp_l, comp_y, comp_top_z, engage_h) {
+    rail_h = lid_z_min - (comp_top_z - engage_h);
+    if (rail_h > 0) {
+        rail_z = lid_z_min - rail_h / 2;
+        rail_x = comp_w / 2 + guide_rail_clear + guide_rail_t / 2;
+        translate([ rail_x, comp_y, rail_z])
+            cube([guide_rail_t, comp_l, rail_h], center = true);
+        translate([-rail_x, comp_y, rail_z])
+            cube([guide_rail_t, comp_l, rail_h], center = true);
+    }
+}
+
 module lid_part() {
     difference() {
-        block(
-            [outer_x_min, outer_y_min, lid_z_min],
-            [outer_x_max, outer_y_max, lid_z_max]
-        );
+        union() {
+            block(
+                [outer_x_min, outer_y_min, lid_z_min],
+                [outer_x_max, outer_y_max, lid_z_max]
+            );
+            if (hold_down_h > 0) {
+                loadcell_hold_downs();
+            }
+            // Lateral confinement for PCB and battery.
+            component_side_rails(pcb_W, pcb_L, 0, pcb_top_z, pcb_guide_engage_h);
+            component_side_rails(bat_W, bat_L, battery_y_offset, battery_top_z, battery_guide_engage_h);
+        }
         corner_holes(screw_clear_d, lid_z_min, lid_z_max);
         eye_u_cutout(eye_x1, open_left = true);
         eye_u_cutout(eye_x2, open_left = false);
