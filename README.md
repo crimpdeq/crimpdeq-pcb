@@ -4,7 +4,7 @@ Hardware files and KiCad PCB design for Crimpdeq. See the [Crimpdeq book](https:
 
 ## PCB
 
-The PCB design is located under `hardware/crimpdeq/` and was created using KiCad. It is a two-layer board based on the [Rust ESP Board](https://github.com/esp-rs/esp-rust-board). This design removes unused sensors from the original board and adds the necessary components for this project.
+The PCB design is located under `pcb/crimpdeq/` and was created using KiCad. It is a two-layer board based on the [Rust ESP Board](https://github.com/esp-rs/esp-rust-board). This design removes unused sensors from the original board and adds the necessary components for this project.
 
 ![PCB](assets/pcb_v1.png)
 
