@@ -84,7 +84,7 @@ brand_depth = 0.8;
 
 show_assembly = true;
 show_lid_preview = true;
-lid_preview_z_offset = 15; // mm (3 cm above main part)
+lid_preview_z_offset = 15; // mm (1.5 cm above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
 
 /*** Derived placement ***/
@@ -120,8 +120,8 @@ notch_x1 = -lc_L / 2 + notch_xA;
 notch_x2 = -lc_L / 2 + notch_xB;
 notch_y1 = -lc_W / 2;
 notch_y2 = lc_W / 2;
-notch_pin_d = notch_d - notch_pin_clear;
-notch_pin_h = outer_z_max - inner_z_min + notch_pin_embed - notch_pin_top_clear;
+notch_pin_d = max(0.2, notch_d - notch_pin_clear);
+notch_pin_h = max(0.2, outer_z_max - inner_z_min + notch_pin_embed - notch_pin_top_clear);
 
 pcb_center_z = lc_T / 2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T / 2;
 usb_center_z = pcb_center_z + (pcb_T / 2 + usb_h / 2 - usb_inset);
@@ -130,6 +130,8 @@ screw_x1 = outer_x_min + screw_corner_inset;
 screw_x2 = outer_x_max - screw_corner_inset;
 screw_y1 = outer_y_min + screw_corner_inset;
 screw_y2 = outer_y_max - screw_corner_inset;
+max_thread_depth = max(0, (outer_z_max - outer_z_min) - screw_thread_tip_clear);
+thread_depth = min(screw_thread_depth, max_thread_depth);
 
 switch_x = 0;
 switch_y = inner_y_max - switch_d / 2 - switch_clear;
@@ -160,6 +162,12 @@ module notch_pin(x, y) {
         cylinder(d = notch_pin_d, h = notch_pin_h, center = true);
 }
 
+module notch_pins() {
+    for (x = [notch_x1, notch_x2])
+        for (y = [notch_y1, notch_y2])
+            notch_pin(x, y);
+}
+
 module loadcell_side_guides() {
     guide_y = lc_W / 2 + loadcell_guide_clear + loadcell_guide_t / 2;
     guide_z = inner_z_min + loadcell_guide_h / 2;
@@ -170,22 +178,35 @@ module loadcell_side_guides() {
         cube([lc_L, loadcell_guide_t, loadcell_guide_h], center = true);
 }
 
+module each_corner(z_pos) {
+    for (x = [screw_x1, screw_x2])
+        for (y = [screw_y1, screw_y2])
+            translate([x, y, z_pos])
+                children();
+}
+
 module corner_thread_holes(d, z_top, depth) {
-    hole_h = depth + 0.2;
-    hole_z = z_top - depth / 2 + 0.1;
-    translate([screw_x1, screw_y1, hole_z]) cylinder(d = d, h = hole_h, center = true);
-    translate([screw_x1, screw_y2, hole_z]) cylinder(d = d, h = hole_h, center = true);
-    translate([screw_x2, screw_y1, hole_z]) cylinder(d = d, h = hole_h, center = true);
-    translate([screw_x2, screw_y2, hole_z]) cylinder(d = d, h = hole_h, center = true);
+    if (depth > 0) {
+        hole_h = depth + 0.2;
+        hole_z = z_top - depth / 2 + 0.1;
+        each_corner(hole_z)
+            cylinder(d = d, h = hole_h, center = true);
+    }
 }
 
 module corner_screw_posts(d, z0, z1) {
     post_h = z1 - z0;
-    post_z = (z0 + z1) / 2;
-    translate([screw_x1, screw_y1, post_z]) cylinder(d = d, h = post_h, center = true);
-    translate([screw_x1, screw_y2, post_z]) cylinder(d = d, h = post_h, center = true);
-    translate([screw_x2, screw_y1, post_z]) cylinder(d = d, h = post_h, center = true);
-    translate([screw_x2, screw_y2, post_z]) cylinder(d = d, h = post_h, center = true);
+    if (post_h > 0) {
+        post_z = (z0 + z1) / 2;
+        each_corner(post_z)
+            cylinder(d = d, h = post_h, center = true);
+    }
+}
+
+module eye_access_holes() {
+    for (eye_x = [eye_x1, eye_x2])
+        translate([eye_x, 0, outer_z_min - 0.1])
+            cylinder(d = eye_access_d, h = floor_t + 0.3, center = false);
 }
 
 module eye_u_cutout(eye_x, open_left = true) {
@@ -230,10 +251,7 @@ module main_part() {
                 );
             }
 
-            notch_pin(notch_x1, notch_y1);
-            notch_pin(notch_x1, notch_y2);
-            notch_pin(notch_x2, notch_y1);
-            notch_pin(notch_x2, notch_y2);
+            notch_pins();
             // Load cell anti-movement guides.
             loadcell_side_guides();
 
@@ -241,19 +259,9 @@ module main_part() {
             corner_screw_posts(screw_post_d, outer_z_min, outer_z_max);
         }
 
-        corner_thread_holes(
-            screw_thread_d,
-            outer_z_max,
-            min(
-                screw_thread_depth,
-                (outer_z_max - outer_z_min) - screw_thread_tip_clear
-            )
-        );
+        corner_thread_holes(screw_thread_d, outer_z_max, thread_depth);
 
-        translate([eye_x1, 0, outer_z_min - 0.1])
-            cylinder(d = eye_access_d, h = floor_t + 0.3, center = false);
-        translate([eye_x2, 0, outer_z_min - 0.1])
-            cylinder(d = eye_access_d, h = floor_t + 0.3, center = false);
+        eye_access_holes();
 
         // U-shape side access for load-cell eye holes.
         eye_u_cutout(eye_x1, open_left = true);
