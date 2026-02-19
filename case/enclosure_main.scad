@@ -34,10 +34,15 @@ usb_w = 9;
 usb_h = 3.2;
 usb_inset = 3.2;
 
-// Switch (KCD11)
-switch_w = 15;
-switch_d = 13;
-switch_h = 10;
+// Switch (KCD11 10X15mm)
+// switch_w = 15;
+// switch_d = 13;
+// switch_h = 10;
+// Switch (KCD1 15X20mm)
+switch_w = 12;
+switch_d = 15;
+switch_h = 17;
+switch_rot_y = 90;
 
 /*** Stack gaps from assembly.scad ***/
 // Load cell -> battery -> PCB vertical spacing
@@ -74,8 +79,11 @@ screw_thread_tip_clear = 1.0;
 screw_corner_inset = wall_t + 4;
 
 switch_clear = 0.4;
-switch_hole_w = 15; // KCD11 panel opening width (X), horizontal orientation
-switch_hole_h = 10; // KCD11 panel opening height (Z), horizontal orientation
+switch_hole_w = (abs(switch_rot_y) % 180 == 90) ? switch_h : switch_w;
+switch_hole_h = (abs(switch_rot_y) % 180 == 90) ? switch_w : switch_h;
+switch_usb_gap = 0.6;
+// switch_hole_w = 15; // temporary panel opening width (X) for 15x20 face
+// switch_hole_h = 20; // temporary panel opening height (Z) for 15x20 face
 
 brand_text = "Crimpdeq";
 brand_font = "Inter:style=Bold";
@@ -85,7 +93,7 @@ brand_depth = 0.8;
 // Parameters
 show_assembly = true;
 show_lid_preview = true;
-lid_preview_z_offset = 0; // mm (1.5 cm above main part)
+lid_preview_z_offset = 15; // mm (1.5 cm above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
 
 /*** Derived placement ***/
@@ -136,7 +144,12 @@ thread_depth = min(screw_thread_depth, max_thread_depth);
 
 switch_x = 0;
 switch_y = inner_y_max - switch_d / 2 - switch_clear;
-switch_z = inner_z_min + switch_h / 2;
+switch_h_eff = (abs(switch_rot_y) % 180 == 90) ? switch_w : switch_h;
+switch_z = inner_z_min + switch_h_eff / 2;
+switch_hole_z_min = outer_z_min + switch_hole_h / 2;
+switch_hole_z_pref = max(switch_z, switch_hole_z_min);
+switch_hole_z_max = usb_center_z - (usb_h + 2 * usb_clear_z) / 2 - switch_usb_gap - switch_hole_h / 2;
+switch_hole_z = max(switch_hole_z_min, min(switch_hole_z_pref, switch_hole_z_max));
 
 module rounded_rect_2d(x_min, x_max, y_min, y_max, r) {
     w = x_max - x_min;
@@ -268,15 +281,16 @@ module main_part() {
         eye_u_cutout(eye_x1, open_left = true);
         eye_u_cutout(eye_x2, open_left = false);
 
-        // Internal cavity for side switch (KCD11, 15x10 face, 13 depth).
+        // Internal cavity for side switch (KCD1, 15x20 face, rotated).
         translate([switch_x, switch_y, switch_z])
-            cube(
-                [switch_w + 2 * switch_clear, switch_d + 2 * switch_clear, switch_h + 2 * switch_clear],
-                center = true
-            );
+            rotate([0, switch_rot_y, 0])
+                cube(
+                    [switch_w + 2 * switch_clear, switch_d + 2 * switch_clear, switch_h + 2 * switch_clear],
+                    center = true
+                );
 
-        // Side opening for switch face (15x10 mm) on +Y wall (USB side).
-        translate([switch_x, inner_y_max + wall_t / 2, switch_z])
+        // Side opening for switch face on +Y wall (USB side).
+        translate([switch_x, inner_y_max + wall_t / 2, switch_hole_z])
             cube([switch_hole_w, wall_t + 0.3, switch_hole_h], center = true);
 
         translate([0, inner_y_max + wall_t / 2, usb_center_z])

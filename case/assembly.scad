@@ -26,12 +26,20 @@ front_clear = 2.0;
 switch_clear = 0.4;
 
 // Switch block (W x D x H).
-sw_W = 15;
-sw_D = 13;
-sw_H = 10;
+// Switch (KCD11 10X15mm)
+// sw_W = 15;
+// sw_D = 13;
+// sw_H = 10;
+// Switch (KCD1 15X20mm)
+sw_W = 12;
+sw_D = 15;
+sw_H = 17;
+sw_rot_y = 90;
+sw_h_eff = (abs(sw_rot_y) % 180 == 90) ? sw_W : sw_H;
+
 sw_x = 0;
 sw_y = pcb_L/2 + front_clear - sw_D/2 - switch_clear;
-sw_z = -lc_T/2 + sw_H/2; // sit on enclosure floor plane
+sw_z = -lc_T/2 + sw_h_eff/2; // sit on enclosure floor plane
 
 module loadcell_model() {
     color("silver")
@@ -41,7 +49,8 @@ module loadcell_model() {
 
 module switch_model() {
     color("red")
-        cube([sw_W, sw_D, sw_H], center = true);
+        rotate([0, sw_rot_y, 0])
+            cube([sw_W, sw_D, sw_H], center = true);
 }
 
 module full_assembly() {
