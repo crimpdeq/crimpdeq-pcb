@@ -46,13 +46,18 @@ loadcell_hold_down_y_offset = 8;
 
 guide_rail_clear = 0.35;
 guide_rail_t = 1.8;
-pcb_guide_engage_h = 1.0;
-battery_guide_engage_h = 1.0;
+pcb_guide_engage_h = 4;
+battery_guide_engage_h = 2.6;
 
 screw_clear_d = 2.8; // clearance for M2.5 screws
 screw_head_d = 5.2; // typical M2.5 button/pan head clearance
 screw_head_recess = 1.8; // recess depth so heads do not protrude
 screw_corner_inset = wall_t + 4;
+
+// LED Hole
+led_from_left = 5;
+led_from_usb_side = 15;
+led_view_d = 1.6;
 
 brand_text = "Crimpdeq";
 brand_font = "Inter:style=Bold";
@@ -100,6 +105,8 @@ screw_x2 = outer_x_max - screw_corner_inset;
 screw_y1 = outer_y_min + screw_corner_inset;
 screw_y2 = outer_y_max - screw_corner_inset;
 head_recess_depth = max(0, min(screw_head_recess, lid_t - 0.6));
+led_x = pcb_W / 2 - led_from_left;
+led_y = pcb_L / 2 - led_from_usb_side;
 
 module rounded_rect_2d(x_min, x_max, y_min, y_max, r) {
     w = x_max - x_min;
@@ -144,6 +151,11 @@ module corner_head_recesses(d, depth) {
         each_corner(recess_z)
             cylinder(d = d, h = recess_h, center = true);
     }
+}
+
+module led_view_hole() {
+    translate([led_x, led_y, lid_z_min - 0.1])
+        cylinder(d = led_view_d, h = lid_t + 0.3, center = false);
 }
 
 module eye_u_cutout(eye_x, open_left = true) {
@@ -209,6 +221,7 @@ module lid_part() {
         }
         corner_holes(screw_clear_d, lid_z_min, lid_z_max);
         corner_head_recesses(screw_head_d, head_recess_depth);
+        led_view_hole();
         eye_u_cutout(eye_x1, open_left = true);
         eye_u_cutout(eye_x2, open_left = false);
         // Brand engraving on outer top face.

@@ -82,9 +82,10 @@ brand_font = "Inter:style=Bold";
 brand_size = 9.5;
 brand_depth = 0.8;
 
+// Parameters
 show_assembly = true;
 show_lid_preview = true;
-lid_preview_z_offset = 15; // mm (1.5 cm above main part)
+lid_preview_z_offset = 0; // mm (1.5 cm above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
 
 /*** Derived placement ***/
