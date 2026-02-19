@@ -15,7 +15,7 @@ $fn = 96;
 // Load cell
 lc_L = 80;
 lc_W = 40;
-lc_T = 5;
+lc_T = 4;
 
 eye_d = 17;
 eye_edge_start = 6;
@@ -64,10 +64,10 @@ notch_pin_clear = 0.2;
 notch_pin_embed = 0.4;
 notch_pin_top_clear = 1.0;
 u_cutout_clear = 2.0;
-
-loadcell_guide_clear = 0.3;
-loadcell_guide_t = 1.8;
-loadcell_guide_h = lc_T + 1.5;
+loadcell_notch_guide_len = 7.5;
+loadcell_notch_guide_w = 1.0;
+loadcell_notch_guide_h = 4;
+loadcell_notch_guide_clear = 0.2;
 
 usb_clear_x = 1.2;
 usb_clear_z = 1.2;
@@ -92,7 +92,7 @@ brand_depth = 0.8;
 
 // Parameters
 show_assembly = true;
-show_lid_preview = true;
+show_lid_preview = false;
 lid_preview_z_offset = 15; // mm (1.5 cm above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
 
@@ -130,7 +130,7 @@ notch_x2 = -lc_L / 2 + notch_xB;
 notch_y1 = -lc_W / 2;
 notch_y2 = lc_W / 2;
 notch_pin_d = max(0.2, notch_d - notch_pin_clear);
-notch_pin_h = max(0.2, outer_z_max - inner_z_min + notch_pin_embed - notch_pin_top_clear);
+notch_pin_h = 6;
 
 pcb_center_z = lc_T / 2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T / 2;
 usb_center_z = pcb_center_z + (pcb_T / 2 + usb_h / 2 - usb_inset);
@@ -177,19 +177,20 @@ module notch_pin(x, y) {
 }
 
 module notch_pins() {
-    for (x = [notch_x1, notch_x2])
-        for (y = [notch_y1, notch_y2])
-            notch_pin(x, y);
+    for (y = [notch_y1, notch_y2])
+        notch_pin(notch_x2, y);
 }
 
-module loadcell_side_guides() {
-    guide_y = lc_W / 2 + loadcell_guide_clear + loadcell_guide_t / 2;
-    guide_z = inner_z_min + loadcell_guide_h / 2;
+module loadcell_notch_guides() {
+    guide_z = inner_z_min + loadcell_notch_guide_h / 2;
+    guide_x = notch_x2 - loadcell_notch_guide_len / 2;
+    guide_bottom_y = notch_y1 - loadcell_notch_guide_clear - loadcell_notch_guide_w / 2;
+    guide_top_y = notch_y2 + loadcell_notch_guide_clear + loadcell_notch_guide_w / 2;
 
-    translate([0,  guide_y, guide_z])
-        cube([lc_L, loadcell_guide_t, loadcell_guide_h], center = true);
-    translate([0, -guide_y, guide_z])
-        cube([lc_L, loadcell_guide_t, loadcell_guide_h], center = true);
+    translate([guide_x, guide_bottom_y, guide_z])
+        cube([loadcell_notch_guide_len, loadcell_notch_guide_w, loadcell_notch_guide_h], center = true);
+    translate([guide_x, guide_top_y, guide_z])
+        cube([loadcell_notch_guide_len, loadcell_notch_guide_w, loadcell_notch_guide_h], center = true);
 }
 
 module each_corner(z_pos) {
@@ -266,8 +267,7 @@ module main_part() {
             }
 
             notch_pins();
-            // Load cell anti-movement guides.
-            loadcell_side_guides();
+            loadcell_notch_guides();
 
             // Internal cylindrical bosses for screw engagement.
             corner_screw_posts(screw_post_d, outer_z_min, outer_z_max);

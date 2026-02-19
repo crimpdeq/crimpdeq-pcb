@@ -10,7 +10,7 @@ $fn = 96;
 /*** Assembly dimensions (mm) ***/
 lc_L = 80;
 lc_W = 40;
-lc_T = 5;
+lc_T = 4;
 bat_T = 7;
 bat_W = 34;
 bat_L = 50;

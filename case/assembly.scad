@@ -11,7 +11,7 @@ $fn = 96;
 
 // Local placement dimensions (kept here to avoid coupling to source files).
 lc_L = 80;
-lc_T = 5;
+lc_T = 4;
 
 bat_T = 7;
 pcb_T = 5;
