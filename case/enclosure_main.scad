@@ -29,6 +29,8 @@ loadcell_notch_guide_clear = 0.2;
 
 usb_clear_x = 1.2;
 usb_clear_z = 1.2;
+usb_hole_extra_w = 1.5;
+usb_hole_h = 8.0;
 
 screw_post_d = 6.5;
 screw_thread_d = 2.15; // pilot for M2.5 thread-forming screws in plastic
@@ -48,7 +50,7 @@ brand_depth = 0.8;
 // Parameters
 show_assembly = true;
 show_lid_preview = true;
-lid_preview_z_offset = 15; // mm (1.5 cm above main part)
+lid_preview_z_offset = 0; // mm (1.5 cm above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
 
 /*** Derived placement ***/
@@ -89,6 +91,7 @@ notch_pin_h = 6;
 
 pcb_center_z = lc_T / 2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T / 2;
 usb_center_z = pcb_center_z + (pcb_T / 2 + usb_h / 2 - usb_inset);
+usb_hole_w = usb_w + 2 * usb_clear_x + usb_hole_extra_w;
 
 screw_x1 = outer_x_min + screw_corner_inset;
 screw_x2 = outer_x_max - screw_corner_inset;
@@ -103,13 +106,13 @@ switch_h_eff = (abs(switch_rot_y) % 180 == 90) ? switch_w : switch_h;
 switch_z = inner_z_min + switch_h_eff / 2;
 switch_hole_z_min = outer_z_min + switch_hole_h / 2;
 switch_hole_z_pref = max(switch_z, switch_hole_z_min);
-switch_hole_z_max = usb_center_z - (usb_h + 2 * usb_clear_z) / 2 - switch_usb_gap - switch_hole_h / 2;
+switch_hole_z_max = usb_center_z - usb_hole_h / 2 - switch_usb_gap - switch_hole_h / 2;
 switch_hole_z = max(switch_hole_z_min, min(switch_hole_z_pref, switch_hole_z_max));
 switch_y_min = switch_y - switch_d / 2;
 loadcell_y_max = lc_W / 2;
 switch_top_z = switch_z + switch_h_eff / 2;
 pcb_bottom_z = lc_T / 2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap;
-switch_hole_usb_gap = usb_center_z - (usb_h + 2 * usb_clear_z) / 2 - (switch_hole_z + switch_hole_h / 2);
+switch_hole_usb_gap = usb_center_z - usb_hole_h / 2 - (switch_hole_z + switch_hole_h / 2);
 
 assert(switch_y_min >= loadcell_y_max,
     str("Switch overlaps load cell by ", loadcell_y_max - switch_y_min, " mm (Y)."));
@@ -263,7 +266,7 @@ module main_part() {
             cube([switch_hole_w, wall_t + 0.3, switch_hole_h], center = true);
 
         translate([0, inner_y_max + wall_t / 2, usb_center_z])
-            cube([usb_w + 2 * usb_clear_x, wall_t + 0.3, usb_h + 2 * usb_clear_z], center = true);
+            cube([usb_hole_w, wall_t + 0.3, usb_hole_h], center = true);
 
         // Brand engraving on outer bottom face.
         brand_engrave_main();
