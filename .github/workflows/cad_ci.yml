@@ -4,18 +4,13 @@ on:
     push:
         branches:
             - main
-        paths-ignore:
-            - "**/README.md"
-            - "**/*.md"
-            - "**/*.kicad*"
-            - .github/workflows/release.yml
-            - "pcb/**"
+        paths:
+            - "case/**"
+            - ".github/workflows/cad_ci.yml"
     pull_request:
-        paths-ignore:
-            - "**/README.md"
-            - "**/*.kicad*"
-            - .github/workflows/release.yml
-            - "pcb/**"
+        paths:
+            - "case/**"
+            - ".github/workflows/cad_ci.yml"
     workflow_dispatch:
 
 jobs:

@@ -1,0 +1,110 @@
+name: PCB CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "pcb/**"
+      - ".github/workflows/pcb_ci.yml"
+  pull_request:
+    paths:
+      - "pcb/**"
+      - ".github/workflows/pcb_ci.yml"
+  workflow_dispatch:
+
+jobs:
+  pcb:
+    name: Check PCB
+    runs-on: ubuntu-latest
+    env:
+      PCB_FILE: pcb/crimpdeq/crimpdeq.kicad_pcb
+      SCH_FILE: pcb/crimpdeq/crimpdeq.kicad_sch
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Prepare output folders
+        run: mkdir -p artifacts reports
+
+      - name: Export schematic and layout PDFs
+
+        uses: actions-for-kicad/kicad-actions@v1-k9.0
+        with:
+          schematic_file_name: ${{ env.SCH_FILE }}
+          schematic_output_pdf: true
+          schematic_output_pdf_file_name: artifacts/schematic.pdf
+
+          pcb_file_name: ${{ env.PCB_FILE }}
+          pcb_output_pdf: true
+          pcb_output_pdf_file_name: artifacts/layout.pdf
+          pcb_output_layers: F.Cu,B.Cu,F.Silkscreen,B.Silkscreen,Edge.Cuts
+
+      - name: Run PCB DRC
+        id: drc
+        uses: actions-for-kicad/kicad-actions@v1-k9.0
+        continue-on-error: true
+        with:
+          pcb_file_name: ${{ env.PCB_FILE }}
+          run_drc: true
+          drc_output_file_name: reports/drc.rpt
+
+      - name: Upload schematic PDF
+        if: always()
+        id: upload_schematic
+        uses: actions/upload-artifact@v6
+        with:
+          name: pcb-schematic-pdf
+          path: artifacts/schematic.pdf
+          if-no-files-found: warn
+
+      - name: Upload layout PDF
+        if: always()
+        id: upload_layout
+        uses: actions/upload-artifact@v6
+        with:
+          name: pcb-layout-pdf
+          path: artifacts/layout.pdf
+          if-no-files-found: warn
+
+      - name: Upload DRC report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: pcb-drc-report
+          path: reports/drc.rpt
+          if-no-files-found: warn
+
+      - name: Write action summary
+        if: always()
+        env:
+          DRC_OUTCOME: ${{ steps.drc.outcome }}
+          SCHEMATIC_ARTIFACT_URL: ${{ steps.upload_schematic.outputs.artifact-url }}
+          LAYOUT_ARTIFACT_URL: ${{ steps.upload_layout.outputs.artifact-url }}
+        run: |
+          run_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          schematic_url="${SCHEMATIC_ARTIFACT_URL:-$run_url}"
+          layout_url="${LAYOUT_ARTIFACT_URL:-$run_url}"
+
+          {
+            echo "## PCB CI"
+            echo
+            echo "- DRC result: ${DRC_OUTCOME:-unknown}"
+            echo "- [Schematic PDF]($schematic_url)"
+            echo "- [Layout PDF]($layout_url)"
+            echo
+            if [ -f reports/drc.rpt ]; then
+              echo "<details><summary>DRC report preview</summary>"
+              echo
+              echo '```text'
+              sed -n '1,40p' reports/drc.rpt
+              echo '```'
+              echo
+              echo "</details>"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail workflow if DRC failed
+        if: steps.drc.outcome == 'failure'
+        run: exit 1
