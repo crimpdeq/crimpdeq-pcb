@@ -57,3 +57,7 @@ switch_d = 13;
 switch_h = 10;
 switch_rot_y = 0;
 switch_clear = 0.4;
+
+// Screw centers from outer walls (shared by main and lid).
+// 5.25 mm makes main screw posts merge into side walls for higher strength.
+screw_corner_inset = 5.25;
