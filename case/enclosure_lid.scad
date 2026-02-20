@@ -18,9 +18,10 @@ eye_access_clear = 1.0;
 u_cutout_clear = 2.0;
 
 loadcell_hold_down_clear = 0.2;
-loadcell_hold_down_w = 9;
+loadcell_hold_down_w = 24;
 loadcell_hold_down_d = 8;
-loadcell_hold_down_edge_offset = 6;
+// Center shifted inward so widened hold-downs follow the U-cutout profile.
+loadcell_hold_down_edge_offset = 10;
 loadcell_hold_down_y_offset = 8;
 
 guide_rail_clear = 0.35;
@@ -64,6 +65,7 @@ brand_y = 0; // centered between U cutouts
 loadcell_top_z = lc_T / 2;
 hold_down_target_z = loadcell_top_z + loadcell_hold_down_clear;
 hold_down_h = lid_z_min - hold_down_target_z;
+hold_down_x = lc_L / 2 - loadcell_hold_down_edge_offset;
 
 eye_x1 = -lc_L / 2 + eye_center_offset;
 eye_x2 = lc_L / 2 - eye_center_offset;
@@ -149,7 +151,6 @@ module eye_u_cutout(eye_x, open_left = true) {
 }
 
 module loadcell_hold_downs() {
-    hold_down_x = lc_L / 2 - loadcell_hold_down_edge_offset;
     hold_down_z = hold_down_target_z + hold_down_h / 2;
 
     for (x_sign = [-1, 1])

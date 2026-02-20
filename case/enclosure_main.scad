@@ -31,6 +31,7 @@ usb_clear_x = 1.2;
 usb_clear_z = 1.2;
 usb_hole_extra_w = 1.5;
 usb_hole_h = 8.0;
+usb_hole_corner_r = 1.0;
 
 screw_post_d = 6.5;
 screw_thread_d = 2.15; // pilot for M2.5 thread-forming screws in plastic
@@ -264,8 +265,17 @@ module main_part() {
         translate([switch_x, inner_y_max + wall_t / 2, switch_hole_z])
             cube([switch_hole_w, wall_t + 0.3, switch_hole_h], center = true);
 
+        // Rounded USB opening to reduce sharp edges at the wall cutout.
         translate([0, inner_y_max + wall_t / 2, usb_center_z])
-            cube([usb_hole_w, wall_t + 0.3, usb_hole_h], center = true);
+            rotate([90, 0, 0])
+                linear_extrude(height = wall_t + 0.3, center = true)
+                    rounded_rect_2d(
+                        -usb_hole_w / 2,
+                         usb_hole_w / 2,
+                        -usb_hole_h / 2,
+                         usb_hole_h / 2,
+                        usb_hole_corner_r
+                    );
 
         // Brand engraving on outer bottom face.
         brand_engrave_main();
