@@ -3,12 +3,9 @@
 // Units: mm
 //
 
-$fn = 64;
+include <dimensions.scad>
 
-/*** BATTERY PARAMETERS ***/
-bat_L = 50;   // length (long axis, Y) = 5.0 cm
-bat_W = 34;   // width  (X) = 3.4 cm
-bat_T = 7;    // thickness/height (Z) = 0.7 cm
+$fn = 64;
 
 // Optional: small corner rounding for nicer preview (set to 0 for plain cube)
 bat_corner_r = 2;

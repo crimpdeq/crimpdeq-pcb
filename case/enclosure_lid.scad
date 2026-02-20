@@ -33,7 +33,7 @@ screw_head_d = 5.2; // typical M2.5 button/pan head clearance
 screw_head_recess = 1.8; // recess depth so heads do not protrude
 screw_corner_inset = wall_t + 4;
 
-led_view_d = 1.6;
+led_view_d = 2.6;
 
 brand_text = "Crimpdeq";
 brand_font = "Inter:style=Bold";

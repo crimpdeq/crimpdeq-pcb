@@ -3,22 +3,11 @@
 // Units: mm
 //
 
+include <dimensions.scad>
+
 $fn = 64;
 
-/*** PCB PARAMETERS ***/
-pcb_L = 64;   // 6.4 cm (long axis)
-pcb_W = 24;   // 2.4 cm
-pcb_T = 5;    // 0.5 cm thickness
-
-// USB-C connector (simplified envelope)
-usb_w = 9;    // width of connector housing
-usb_h = 3.2;  // height of connector housing
-usb_d = 7;    // depth of connector housing (how far it sticks out)
-usb_inset = 3.2; // how much connector is embedded into PCB from top face
-
-// LED placement
-led_from_left = 5;
-led_from_usb_side = 15;
+// LED envelope (visual only, not shared board dimensions)
 led_w = 1.6;
 led_l = 0.8;
 led_h = 0.8;

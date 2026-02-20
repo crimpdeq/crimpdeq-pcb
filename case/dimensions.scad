@@ -23,7 +23,7 @@ notch_xB = 60;
 // Battery
 bat_L = 50;
 bat_W = 34;
-bat_T = 7;
+bat_T = 10;
 
 // PCB
 pcb_L = 64;
