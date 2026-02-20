@@ -5,35 +5,14 @@
 // - load-cell vertical hold-down features
 //
 
+include <dimensions.scad>
+
 $fn = 96;
-
-/*** Assembly dimensions (mm) ***/
-lc_L = 80;
-lc_W = 40;
-lc_T = 4;
-bat_T = 7;
-bat_W = 34;
-bat_L = 50;
-pcb_L = 64;
-pcb_W = 24;
-pcb_T = 5;
-eye_d = 17;
-eye_edge_start = 6;
-eye_center_offset = eye_edge_start + eye_d / 2;
-
-/*** Stack gaps from assembly.scad ***/
-loadcell_to_battery_gap = 0;
-battery_to_pcb_gap = 0;
 
 /*** Enclosure parameters ***/
 wall_t = 3;
 lid_t = 3;
 corner_r = 6;
-
-clear_x = 0.8;
-rear_clear = 0.8;
-front_clear = 2.0;
-top_clear = 2;
 
 eye_access_clear = 1.0;
 u_cutout_clear = 2.0;
@@ -54,9 +33,6 @@ screw_head_d = 5.2; // typical M2.5 button/pan head clearance
 screw_head_recess = 1.8; // recess depth so heads do not protrude
 screw_corner_inset = wall_t + 4;
 
-// LED Hole
-led_from_left = 5;
-led_from_usb_side = 15;
 led_view_d = 1.6;
 
 brand_text = "Crimpdeq";
@@ -97,7 +73,6 @@ u_cutout_z_d = eye_access_d + 2 * u_cutout_clear;
 u_cutout_z_r = u_cutout_z_d / 2;
 u_cutout_y_span = lc_W;
 
-battery_align_side = -1;
 battery_y_offset = battery_align_side * (pcb_L - bat_L) / 2;
 
 screw_x1 = outer_x_min + screw_corner_inset;

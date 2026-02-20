@@ -6,58 +6,16 @@
 // - corner threaded pilot holes for M2.5x10 screws
 //
 
+include <dimensions.scad>
 use <assembly.scad>
 use <enclosure_lid.scad>
 
 $fn = 96;
 
-/*** Assembly dimensions (mm) ***/
-// Load cell
-lc_L = 80;
-lc_W = 40;
-lc_T = 4;
-
-eye_d = 17;
-eye_edge_start = 6;
-eye_center_offset = eye_edge_start + eye_d / 2;
-
-notch_d = 6;
-notch_xA = 20;
-notch_xB = 60;
-
-// Battery + PCB stack
-bat_T = 7;
-pcb_L = 64;
-pcb_T = 5;
-
-usb_w = 9;
-usb_h = 3.2;
-usb_inset = 3.2;
-
-// Switch (KCD11 10X15mm)
-// switch_w = 15;
-// switch_d = 13;
-// switch_h = 10;
-// Switch (KCD1 15X20mm)
-switch_w = 12;
-switch_d = 15;
-switch_h = 17;
-switch_rot_y = 90;
-
-/*** Stack gaps from assembly.scad ***/
-// Load cell -> battery -> PCB vertical spacing
-loadcell_to_battery_gap = 0;
-battery_to_pcb_gap = 0;
-
 /*** Enclosure parameters ***/
 wall_t = 3;
 floor_t = 3;
 corner_r = 6;
-
-clear_x = 0.8;
-rear_clear = 0.8;
-front_clear = 2.0;
-top_clear = 2;
 
 eye_access_clear = 1.0;
 notch_pin_clear = 0.2;
@@ -78,12 +36,9 @@ screw_thread_depth = 7.0; // for M2.5x10 with ~3 mm lid thickness
 screw_thread_tip_clear = 1.0;
 screw_corner_inset = wall_t + 4;
 
-switch_clear = 0.4;
 switch_hole_w = (abs(switch_rot_y) % 180 == 90) ? switch_h : switch_w;
 switch_hole_h = (abs(switch_rot_y) % 180 == 90) ? switch_w : switch_h;
 switch_usb_gap = 0.6;
-// switch_hole_w = 15; // temporary panel opening width (X) for 15x20 face
-// switch_hole_h = 20; // temporary panel opening height (Z) for 15x20 face
 
 brand_text = "Crimpdeq";
 brand_font = "Inter:style=Bold";
@@ -92,8 +47,8 @@ brand_depth = 0.8;
 
 // Parameters
 show_assembly = true;
-show_lid_preview = false;
-lid_preview_z_offset = 15; // mm (1.5 cm above main part)
+show_lid_preview = true;
+lid_preview_z_offset = 0; // mm (1.5 cm above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
 
 /*** Derived placement ***/
@@ -150,6 +105,20 @@ switch_hole_z_min = outer_z_min + switch_hole_h / 2;
 switch_hole_z_pref = max(switch_z, switch_hole_z_min);
 switch_hole_z_max = usb_center_z - (usb_h + 2 * usb_clear_z) / 2 - switch_usb_gap - switch_hole_h / 2;
 switch_hole_z = max(switch_hole_z_min, min(switch_hole_z_pref, switch_hole_z_max));
+switch_y_min = switch_y - switch_d / 2;
+loadcell_y_max = lc_W / 2;
+switch_top_z = switch_z + switch_h_eff / 2;
+pcb_bottom_z = lc_T / 2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap;
+switch_hole_usb_gap = usb_center_z - (usb_h + 2 * usb_clear_z) / 2 - (switch_hole_z + switch_hole_h / 2);
+
+assert(switch_y_min >= loadcell_y_max,
+    str("Switch overlaps load cell by ", loadcell_y_max - switch_y_min, " mm (Y)."));
+assert(switch_top_z <= pcb_bottom_z,
+    str("Switch overlaps PCB by ", switch_top_z - pcb_bottom_z, " mm (Z)."));
+assert(switch_hole_z_min <= switch_hole_z_max,
+    "Switch opening cannot fit below USB opening without overlap.");
+assert(switch_hole_usb_gap >= switch_usb_gap - 0.001,
+    str("Switch/USB opening gap too small: ", switch_hole_usb_gap, " mm."));
 
 module rounded_rect_2d(x_min, x_max, y_min, y_max, r) {
     w = x_max - x_min;
@@ -281,7 +250,7 @@ module main_part() {
         eye_u_cutout(eye_x1, open_left = true);
         eye_u_cutout(eye_x2, open_left = false);
 
-        // Internal cavity for side switch (KCD1, 15x20 face, rotated).
+        // Internal cavity for side switch (KCD11, 10x15 face).
         translate([switch_x, switch_y, switch_z])
             rotate([0, switch_rot_y, 0])
                 cube(

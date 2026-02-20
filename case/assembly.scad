@@ -6,40 +6,25 @@
 use <load_cell.scad>
 use <battery.scad>
 use <pcb.scad>
+include <dimensions.scad>
 
 $fn = 96;
 
-// Local placement dimensions (kept here to avoid coupling to source files).
-lc_L = 80;
-lc_T = 4;
-
-bat_T = 7;
-pcb_T = 5;
-bat_L = 50;
-pcb_L = 64;
-
-loadcell_to_battery_gap = 0;
-battery_to_pcb_gap = 0;
-battery_align_side = -1; // 1: align to +Y PCB edge, -1: align to -Y edge
 battery_y_offset = battery_align_side * (pcb_L - bat_L) / 2;
-front_clear = 2.0;
-switch_clear = 0.4;
+switch_h_eff = (abs(switch_rot_y) % 180 == 90) ? switch_w : switch_h;
+switch_x = 0;
+switch_y = pcb_L / 2 + front_clear - switch_d / 2 - switch_clear;
+switch_z = -lc_T / 2 + switch_h_eff / 2; // sit on enclosure floor plane
 
-// Switch block (W x D x H).
-// Switch (KCD11 10X15mm)
-// sw_W = 15;
-// sw_D = 13;
-// sw_H = 10;
-// Switch (KCD1 15X20mm)
-sw_W = 12;
-sw_D = 15;
-sw_H = 17;
-sw_rot_y = 90;
-sw_h_eff = (abs(sw_rot_y) % 180 == 90) ? sw_W : sw_H;
+loadcell_y_max = lc_W / 2;
+switch_y_min = switch_y - switch_d / 2;
+switch_top_z = switch_z + switch_h_eff / 2;
+pcb_bottom_z = lc_T / 2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap;
 
-sw_x = 0;
-sw_y = pcb_L/2 + front_clear - sw_D/2 - switch_clear;
-sw_z = -lc_T/2 + sw_h_eff/2; // sit on enclosure floor plane
+assert(switch_y_min >= loadcell_y_max,
+    str("Switch overlaps load cell by ", loadcell_y_max - switch_y_min, " mm (Y)."));
+assert(switch_top_z <= pcb_bottom_z,
+    str("Switch overlaps PCB by ", switch_top_z - pcb_bottom_z, " mm (Z)."));
 
 module loadcell_model() {
     color("silver")
@@ -49,8 +34,8 @@ module loadcell_model() {
 
 module switch_model() {
     color("red")
-        rotate([0, sw_rot_y, 0])
-            cube([sw_W, sw_D, sw_H], center = true);
+        rotate([0, switch_rot_y, 0])
+            cube([switch_w, switch_d, switch_h], center = true);
 }
 
 module full_assembly() {
@@ -65,7 +50,7 @@ module full_assembly() {
         pcb_model(show_usb = true);
 
     // Side switch inside enclosure.
-    translate([sw_x, sw_y, sw_z])
+    translate([switch_x, switch_y, switch_z])
         switch_model();
 }
 
