@@ -196,8 +196,8 @@ module lid_part() {
         corner_holes(screw_clear_d, lid_z_min, lid_z_max);
         corner_head_recesses(screw_head_d, head_recess_depth);
         led_view_hole();
-        eye_u_cutout(eye_x1, open_left = true);
-        eye_u_cutout(eye_x2, open_left = false);
+        translate([0, 0, lid_z_min]) eye_u_cutout(eye_x1, open_left = true);
+        translate([0, 0, lid_z_min]) eye_u_cutout(eye_x2, open_left = false);
         // Brand engraving on outer top face.
         brand_engrave_lid();
     }
