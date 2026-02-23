@@ -10,7 +10,10 @@ include <dimensions.scad>
 
 $fn = 96;
 
-battery_y_offset = battery_align_side * (pcb_L - bat_L) / 2;
+battery_y_offset = -pcb_L / 2 - rear_clear + battery_rear_gap + bat_L / 2;
+pcb_y_offset = front_clear - pcb_front_gap;
+loadcell_center_z = loadcell_lift;
+loadcell_top_z = loadcell_center_z + lc_T / 2;
 switch_h_eff = (abs(switch_rot_y) % 180 == 90) ? switch_w : switch_h;
 switch_x = 0;
 switch_y = pcb_L / 2 + front_clear - switch_d / 2 - switch_clear;
@@ -19,7 +22,7 @@ switch_z = -lc_T / 2 + switch_h_eff / 2; // sit on enclosure floor plane
 loadcell_y_max = lc_W / 2;
 switch_y_min = switch_y - switch_d / 2;
 switch_top_z = switch_z + switch_h_eff / 2;
-pcb_bottom_z = lc_T / 2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap;
+pcb_bottom_z = loadcell_top_z + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap;
 
 assert(switch_y_min >= loadcell_y_max,
     str("Switch overlaps load cell by ", loadcell_y_max - switch_y_min, " mm (Y)."));
@@ -39,14 +42,15 @@ module switch_model() {
 }
 
 module full_assembly() {
-    loadcell_model();
+    translate([0, 0, loadcell_center_z])
+        loadcell_model();
 
     // Battery laying flat on top of the load cell.
-    translate([0, battery_y_offset, lc_T/2 + loadcell_to_battery_gap + bat_T/2])
+    translate([0, battery_y_offset, loadcell_top_z + loadcell_to_battery_gap + bat_T/2])
         battery_model(rounded = true);
 
     // PCB laying flat on top of the battery.
-    translate([0, 0, lc_T/2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T/2])
+    translate([0, pcb_y_offset, loadcell_top_z + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T/2])
         pcb_model(show_usb = true);
 
     // Side switch inside enclosure.

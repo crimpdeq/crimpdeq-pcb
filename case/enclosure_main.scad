@@ -7,6 +7,7 @@
 //
 
 include <dimensions.scad>
+use <load_cell.scad>
 use <assembly.scad>
 use <enclosure_lid.scad>
 
@@ -26,6 +27,22 @@ loadcell_notch_guide_len = 7.5;
 loadcell_notch_guide_w = 1.0;
 loadcell_notch_guide_h = 4;
 loadcell_notch_guide_clear = 0.2;
+loadcell_support_corner_size = 8;
+loadcell_support_corner_inset = 2;
+battery_support_corner_size = 8;
+battery_support_corner_inset = 2;
+battery_support_front_column_clear = 2;
+battery_support_bottom_gap = 0.5;
+battery_guide_clear = 0.5;
+battery_guide_t = 1.8;
+battery_guide_h = 2.6;
+pcb_guide_clear = 0.5;
+pcb_guide_t = 1.8;
+pcb_guide_h = 2.6;
+pcb_guide_seg_len = 10;
+pcb_rear_stop_bottom_gap = 0.6;
+pcb_rear_gap = front_clear + rear_clear - pcb_front_gap;
+pcb_rear_stop_w = 4;
 
 usb_clear_x = 1.2;
 usb_clear_z = 1.2;
@@ -50,7 +67,7 @@ brand_depth = 0.8;
 // Parameters
 show_assembly = true;
 show_lid_preview = true;
-lid_preview_z_offset = 15; // mm (above main part)
+lid_preview_z_offset = 20; // mm (above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
 
 /*** Derived placement ***/
@@ -63,8 +80,11 @@ inner_y_max = usb_front_y + front_clear;
 brand_y = 0; // centered between U cutouts
 
 inner_z_min = -lc_T / 2;
+loadcell_bottom_z = inner_z_min + loadcell_lift;
+loadcell_center_z = loadcell_bottom_z + lc_T / 2;
+loadcell_top_z = loadcell_bottom_z + lc_T;
 // Top of stacked electronics (battery + PCB) used to size enclosure height.
-pcb_top_z = lc_T / 2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T;
+pcb_top_z = loadcell_top_z + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T;
 inner_z_max = pcb_top_z + top_clear;
 
 outer_x_min = inner_x_min - wall_t;
@@ -81,15 +101,18 @@ eye_access_d = eye_d + eye_access_clear;
 u_cutout_z_d = eye_access_d + 2 * u_cutout_clear;
 u_cutout_z_r = u_cutout_z_d / 2;
 u_cutout_y_span = lc_W;
+battery_y_offset = inner_y_min + battery_rear_gap + bat_L / 2;
+battery_bottom_z = loadcell_top_z + loadcell_to_battery_gap;
+pcb_y_offset = front_clear - pcb_front_gap;
 
 notch_x1 = -lc_L / 2 + notch_xA;
 notch_x2 = -lc_L / 2 + notch_xB;
 notch_y1 = -lc_W / 2;
 notch_y2 = lc_W / 2;
 notch_pin_d = max(0.2, notch_d - notch_pin_clear);
-notch_pin_h = 6;
+notch_pin_h = 6 + loadcell_lift;
 
-pcb_center_z = lc_T / 2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T / 2;
+pcb_center_z = loadcell_top_z + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T / 2;
 usb_center_z = pcb_center_z + (pcb_T / 2 + usb_h / 2 - usb_inset);
 usb_hole_w = usb_w + 2 * usb_clear_x + usb_hole_extra_w;
 
@@ -111,7 +134,7 @@ switch_hole_z = max(switch_hole_z_min, min(switch_hole_z_pref, switch_hole_z_max
 switch_y_min = switch_y - switch_d / 2;
 loadcell_y_max = lc_W / 2;
 switch_top_z = switch_z + switch_h_eff / 2;
-pcb_bottom_z = lc_T / 2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap;
+pcb_bottom_z = loadcell_top_z + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap;
 switch_hole_usb_gap = usb_center_z - usb_hole_h / 2 - (switch_hole_z + switch_hole_h / 2);
 
 assert(switch_y_min >= loadcell_y_max,
@@ -148,21 +171,143 @@ module notch_pin(x, y) {
         cylinder(d = notch_pin_d, h = notch_pin_h, center = true);
 }
 
+module loadcell_support() {
+    if (loadcell_lift > 0) {
+        support_xy = loadcell_support_corner_size;
+        support_z = inner_z_min + loadcell_lift / 2;
+        support_x = lc_L / 2 - loadcell_support_corner_inset - support_xy / 2;
+        support_y = lc_W / 2 - loadcell_support_corner_inset - support_xy / 2;
+
+        for (x_sign = [-1, 1])
+            for (y_sign = [-1, 1])
+                translate([x_sign * support_x, y_sign * support_y, support_z])
+                    cube([support_xy, support_xy, loadcell_lift], center = true);
+    }
+}
+
+module battery_support_bed() {
+    if (loadcell_to_battery_gap > 0) {
+        support_xy = battery_support_corner_size;
+        pad_bottom_gap = max(0, min(battery_support_bottom_gap, loadcell_to_battery_gap - 0.2));
+        pad_h = max(0.2, loadcell_to_battery_gap - pad_bottom_gap);
+        pad_z = loadcell_top_z + pad_bottom_gap + pad_h / 2;
+        guide_h = min(battery_guide_h, bat_T);
+        guide_z = battery_bottom_z + guide_h / 2;
+        support_x = bat_W / 2 - battery_support_corner_inset - support_xy / 2;
+        support_y = bat_L / 2 - battery_support_corner_inset - support_xy / 2;
+        front_column_min_y = loadcell_y_max + battery_support_front_column_clear + support_xy / 2;
+
+        for (x_sign = [-1, 1])
+            for (y_sign = [-1, 1])
+                let(
+                    pad_y = battery_y_offset + y_sign * support_y,
+                    col_y = (y_sign > 0) ? max(pad_y, front_column_min_y) : pad_y,
+                    col_h = (loadcell_top_z + loadcell_to_battery_gap) - inner_z_min,
+                    col_z = inner_z_min + col_h / 2,
+                    shelf_len = abs(col_y - pad_y) + support_xy,
+                    shelf_y = (col_y + pad_y) / 2,
+                    x_leg_x = x_sign * (bat_W / 2 + battery_guide_clear + battery_guide_t / 2),
+                    y_leg_y = battery_y_offset + y_sign * (bat_L / 2 + battery_guide_clear + battery_guide_t / 2),
+                    x_bridge_x0 = x_sign * (support_x + support_xy / 2),
+                    x_bridge_x1 = x_sign * (bat_W / 2 + battery_guide_clear),
+                    x_bridge_len = abs(x_bridge_x1 - x_bridge_x0),
+                    x_bridge_x = (x_bridge_x0 + x_bridge_x1) / 2,
+                    y_bridge_y0 = pad_y + y_sign * support_xy / 2,
+                    y_bridge_y1 = battery_y_offset + y_sign * (bat_L / 2 + battery_guide_clear),
+                    y_bridge_len = abs(y_bridge_y1 - y_bridge_y0),
+                    y_bridge_y = (y_bridge_y0 + y_bridge_y1) / 2
+                ) {
+                    // Floor-anchored column.
+                    translate([x_sign * support_x, col_y, col_z])
+                        cube([support_xy, support_xy, col_h], center = true);
+
+                    // Battery corner support pad in the 2 mm gap.
+                    translate([x_sign * support_x, pad_y, pad_z])
+                        cube([support_xy, support_xy, pad_h], center = true);
+
+                    // Short shelf panel from the column to the battery corner (needed at the front).
+                    if (abs(col_y - pad_y) > 0.01)
+                        translate([x_sign * support_x, shelf_y, pad_z])
+                            cube([support_xy, shelf_len, pad_h], center = true);
+
+                    // Front corner guides in the main enclosure replace lid battery rails.
+                    if (y_sign > 0) {
+                        translate([x_leg_x, pad_y, guide_z])
+                            cube([battery_guide_t, support_xy, guide_h], center = true);
+                        translate([x_sign * support_x, y_leg_y, guide_z])
+                            cube([support_xy, battery_guide_t, guide_h], center = true);
+
+                        if (x_bridge_len > 0.01)
+                            translate([x_bridge_x, pad_y, pad_z])
+                                cube([x_bridge_len, support_xy, pad_h], center = true);
+                        if (y_bridge_len > 0.01)
+                            translate([x_sign * support_x, y_bridge_y, pad_z])
+                                cube([support_xy, y_bridge_len, pad_h], center = true);
+                    }
+                }
+    }
+}
+
+module pcb_horizontal_guides() {
+    guide_h = min(pcb_guide_h, pcb_T);
+    guide_z = pcb_bottom_z + guide_h / 2;
+    guide_top_z = guide_z + guide_h / 2;
+    guide_x = pcb_W / 2 + pcb_guide_clear + pcb_guide_t / 2;
+    seg_len = min(pcb_L, pcb_guide_seg_len);
+    seg_y = pcb_L / 2 - seg_len / 2;
+    bat_col_x = bat_W / 2 - battery_support_corner_inset - battery_support_corner_size / 2;
+    bat_col_y = bat_L / 2 - battery_support_corner_inset - battery_support_corner_size / 2;
+    front_column_min_y = loadcell_y_max + battery_support_front_column_clear + battery_support_corner_size / 2;
+    front_anchor_y = max(battery_y_offset + bat_col_y, front_column_min_y);
+    rear_anchor_y = battery_y_offset - (bat_L / 2 + battery_guide_clear + battery_guide_t / 2);
+    riser_z0 = battery_bottom_z;
+    riser_h = max(0, guide_top_z - riser_z0);
+    riser_z = riser_z0 + riser_h / 2;
+
+    for (x_sign = [-1, 1])
+        for (y_sign = [1])
+            let(
+                y_pos = front_anchor_y,
+                anchor_y = (y_sign > 0) ? front_anchor_y : rear_anchor_y,
+                anchor_y_span = (y_sign > 0) ? battery_support_corner_size : battery_guide_t
+            ) {
+                // Grow PCB constraints from the existing battery support structure.
+                if (riser_h > 0)
+                    translate([x_sign * bat_col_x, anchor_y, riser_z])
+                        cube([battery_support_corner_size, anchor_y_span, riser_h], center = true);
+            }
+}
+
+module pcb_rear_stops() {
+    stop_bottom_gap = max(0, min(pcb_rear_stop_bottom_gap, pcb_T - 0.2));
+    stop_h = min(pcb_guide_h, max(0.2, pcb_T - stop_bottom_gap));
+    stop_z = pcb_bottom_z + stop_bottom_gap + stop_h / 2;
+    stop_depth = max(0, pcb_rear_gap);
+    stop_x = pcb_W / 2 - pcb_rear_stop_w / 2;
+
+    if (stop_depth > 0.01) {
+        for (x_sign = [-1, 1])
+            translate([x_sign * stop_x, inner_y_min + stop_depth / 2, stop_z])
+                cube([pcb_rear_stop_w, stop_depth, stop_h], center = true);
+    }
+}
+
 module notch_pins() {
     for (y = [notch_y1, notch_y2])
         notch_pin(notch_x2, y);
 }
 
 module loadcell_notch_guides() {
-    guide_z = inner_z_min + loadcell_notch_guide_h / 2;
+    guide_h = loadcell_notch_guide_h + loadcell_lift;
+    guide_z = inner_z_min + guide_h / 2;
     guide_x = notch_x2 - loadcell_notch_guide_len / 2;
     guide_bottom_y = notch_y1 - loadcell_notch_guide_clear - loadcell_notch_guide_w / 2;
     guide_top_y = notch_y2 + loadcell_notch_guide_clear + loadcell_notch_guide_w / 2;
 
     translate([guide_x, guide_bottom_y, guide_z])
-        cube([loadcell_notch_guide_len, loadcell_notch_guide_w, loadcell_notch_guide_h], center = true);
+        cube([loadcell_notch_guide_len, loadcell_notch_guide_w, guide_h], center = true);
     translate([guide_x, guide_top_y, guide_z])
-        cube([loadcell_notch_guide_len, loadcell_notch_guide_w, loadcell_notch_guide_h], center = true);
+        cube([loadcell_notch_guide_len, loadcell_notch_guide_w, guide_h], center = true);
 }
 
 module each_corner(z_pos) {
@@ -193,7 +338,7 @@ module corner_screw_posts(d, z0, z1) {
 module eye_access_holes() {
     for (eye_x = [eye_x1, eye_x2])
         translate([eye_x, 0, outer_z_min - 0.1])
-            cylinder(d = eye_access_d, h = floor_t + 0.3, center = false);
+            cylinder(d = eye_access_d, h = floor_t + loadcell_lift + 0.3, center = false);
 }
 
 module eye_u_cutout(eye_x, open_left = true) {
@@ -213,7 +358,7 @@ module eye_u_cutout(eye_x, open_left = true) {
 }
 
 module brand_engrave_main() {
-    // Carved on outer bottom face (same plane as load cell), horizontal and centered.
+    // Carved on outer bottom face, horizontal and centered.
     translate([0, brand_y, outer_z_min - 0.1])
         linear_extrude(height = brand_depth + 0.2, center = false)
             // Mirrored so it reads correctly when viewed from outside.
@@ -238,6 +383,10 @@ module main_part() {
                 );
             }
 
+            loadcell_support();
+            battery_support_bed();
+            pcb_horizontal_guides();
+            pcb_rear_stops();
             notch_pins();
             loadcell_notch_guides();
 
@@ -250,8 +399,8 @@ module main_part() {
         eye_access_holes();
 
         // U-shape side access for load-cell eye holes.
-        eye_u_cutout(eye_x1, open_left = true);
-        eye_u_cutout(eye_x2, open_left = false);
+        translate([0, 0, loadcell_center_z]) eye_u_cutout(eye_x1, open_left = true);
+        translate([0, 0, loadcell_center_z]) eye_u_cutout(eye_x2, open_left = false);
 
         // Internal cavity for side switch (KCD11, 10x15 face).
         translate([switch_x, switch_y, switch_z])

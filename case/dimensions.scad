@@ -11,6 +11,7 @@
 lc_L = 80;
 lc_W = 40;
 lc_T = 4;
+loadcell_lift = 4; // support structure height under load cell (from enclosure floor)
 
 eye_d = 17;
 eye_edge_start = 6;
@@ -41,15 +42,16 @@ led_from_left = 5;
 led_from_usb_side = 15;
 
 // Stack spacing
-loadcell_to_battery_gap = 0;
+loadcell_to_battery_gap = 2;
 battery_to_pcb_gap = 0;
-battery_align_side = -1; // 1: align to +Y PCB edge, -1: align to -Y edge
+battery_rear_gap = 0.2; // target battery rear-edge gap to enclosure inner rear wall
 
 // Inner cavity clearances
 clear_x = 0.8;
 rear_clear = 0.8;
 front_clear = 2.0;
 top_clear = 2;
+pcb_front_gap = 0.2; // target PCB front-edge gap to USB-side inner wall
 
 // Side switch (KCD11 10x15 mm)
 switch_w = 15;

@@ -24,11 +24,6 @@ loadcell_hold_down_d = 8;
 loadcell_hold_down_edge_offset = 10;
 loadcell_hold_down_y_offset = 8;
 
-guide_rail_clear = 0.35;
-guide_rail_t = 1.8;
-pcb_guide_engage_h = 4;
-battery_guide_engage_h = 2.6;
-
 screw_clear_d = 2.8; // clearance for M2.5 screws
 screw_head_d = 5.2; // typical M2.5 button/pan head clearance
 screw_head_recess = 1.8; // recess depth so heads do not protrude
@@ -48,9 +43,10 @@ inner_y_min = -pcb_L / 2 - rear_clear;
 usb_front_y = pcb_L / 2; // connector flush with PCB edge (no overhang)
 inner_y_max = usb_front_y + front_clear;
 
-pcb_top_z = lc_T / 2 + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T;
+loadcell_center_z = loadcell_lift;
+loadcell_top_z = loadcell_center_z + lc_T / 2;
+pcb_top_z = loadcell_top_z + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T;
 inner_z_max = pcb_top_z + top_clear;
-battery_top_z = lc_T / 2 + loadcell_to_battery_gap + bat_T;
 
 outer_x_min = inner_x_min - wall_t;
 outer_x_max = inner_x_max + wall_t;
@@ -62,7 +58,6 @@ lid_z_min = outer_z_max;
 lid_z_max = lid_z_min + lid_t;
 brand_y = 0; // centered between U cutouts
 
-loadcell_top_z = lc_T / 2;
 hold_down_target_z = loadcell_top_z + loadcell_hold_down_clear;
 hold_down_h = lid_z_min - hold_down_target_z;
 hold_down_x = lc_L / 2 - loadcell_hold_down_edge_offset;
@@ -74,7 +69,7 @@ u_cutout_z_d = eye_access_d + 2 * u_cutout_clear;
 u_cutout_z_r = u_cutout_z_d / 2;
 u_cutout_y_span = lc_W;
 
-battery_y_offset = battery_align_side * (pcb_L - bat_L) / 2;
+pcb_y_offset = front_clear - pcb_front_gap;
 
 screw_x1 = outer_x_min + screw_corner_inset;
 screw_x2 = outer_x_max - screw_corner_inset;
@@ -82,7 +77,7 @@ screw_y1 = outer_y_min + screw_corner_inset;
 screw_y2 = outer_y_max - screw_corner_inset;
 head_recess_depth = max(0, min(screw_head_recess, lid_t - 0.6));
 led_x = pcb_W / 2 - led_from_left;
-led_y = pcb_L / 2 - led_from_usb_side;
+led_y = pcb_y_offset + pcb_L / 2 - led_from_usb_side;
 
 module rounded_rect_2d(x_min, x_max, y_min, y_max, r) {
     w = x_max - x_min;
@@ -159,18 +154,6 @@ module loadcell_hold_downs() {
                 cube([loadcell_hold_down_w, loadcell_hold_down_d, hold_down_h], center = true);
 }
 
-module component_side_rails(comp_w, comp_l, comp_y, comp_top_z, engage_h) {
-    rail_h = lid_z_min - (comp_top_z - engage_h);
-    if (rail_h > 0) {
-        rail_z = lid_z_min - rail_h / 2;
-        rail_x = comp_w / 2 + guide_rail_clear + guide_rail_t / 2;
-        translate([ rail_x, comp_y, rail_z])
-            cube([guide_rail_t, comp_l, rail_h], center = true);
-        translate([-rail_x, comp_y, rail_z])
-            cube([guide_rail_t, comp_l, rail_h], center = true);
-    }
-}
-
 module brand_engrave_lid() {
     // Carved on outer top face (same plane as load cell), horizontal and centered.
     translate([0, brand_y, lid_z_max - brand_depth - 0.1])
@@ -190,9 +173,6 @@ module lid_part() {
             if (hold_down_h > 0) {
                 loadcell_hold_downs();
             }
-            // Lateral confinement for PCB and battery.
-            component_side_rails(pcb_W, pcb_L, 0, pcb_top_z, pcb_guide_engage_h);
-            component_side_rails(bat_W, bat_L, battery_y_offset, battery_top_z, battery_guide_engage_h);
         }
         corner_holes(screw_clear_d, lid_z_min, lid_z_max);
         corner_head_recesses(screw_head_d, head_recess_depth);
