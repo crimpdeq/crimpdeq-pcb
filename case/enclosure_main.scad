@@ -36,7 +36,7 @@ battery_support_bottom_gap = 0.5;
 battery_guide_clear = 0.5;
 battery_guide_t = 1.8;
 battery_guide_h = 2.6;
-pcb_guide_clear = 0.5;
+pcb_guide_clear = 0.2;
 pcb_guide_h = 2.6;
 pcb_rear_stop_bottom_gap = 0.6;
 pcb_rear_gap = front_clear + rear_clear - pcb_front_gap;
@@ -64,7 +64,7 @@ brand_depth = 0.8;
 
 // Parameters
 show_assembly = true;
-show_lid_preview = true;
+show_lid_preview = false;
 lid_preview_z_offset = 10; // mm (above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
 
