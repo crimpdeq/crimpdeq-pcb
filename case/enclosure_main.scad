@@ -63,7 +63,7 @@ brand_size = 9.5;
 brand_depth = 0.8;
 
 // Parameters
-show_assembly = true;
+show_assembly = false;
 show_lid_preview = false;
 lid_preview_z_offset = 10; // mm (above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
@@ -233,7 +233,11 @@ module battery_support_bed() {
                     y_bridge_y0 = pad_y + y_sign * support_xy / 2,
                     y_bridge_y1 = battery_y_offset + y_sign * (bat_L / 2 + battery_guide_clear),
                     y_bridge_len = abs(y_bridge_y1 - y_bridge_y0),
-                    y_bridge_y = (y_bridge_y0 + y_bridge_y1) / 2
+                    y_bridge_y = (y_bridge_y0 + y_bridge_y1) / 2,
+                    x_leg_col_h = max(0, guide_bottom_z - inner_z_min),
+                    x_leg_col_z = inner_z_min + x_leg_col_h / 2,
+                    y_leg_col_h = max(0, guide_bottom_z - inner_z_min),
+                    y_leg_col_z = inner_z_min + y_leg_col_h / 2
                 ) {
                     // Floor-anchored column.
                     translate([x_sign * support_x, col_y, col_z])
@@ -260,6 +264,20 @@ module battery_support_bed() {
                             cube([battery_guide_t, support_xy, guide_h], center = true);
                         translate([x_sign * support_x, y_leg_y, guide_z])
                             cube([support_xy, battery_guide_t, guide_h], center = true);
+
+                        // Fully support the horizontal guide tabs to improve printability.
+                        if (x_leg_col_h > 0.01)
+                            translate([x_leg_x, pad_y, x_leg_col_z])
+                                cube([battery_guide_t, support_xy, x_leg_col_h], center = true);
+                        if (y_leg_col_h > 0.01)
+                            translate([x_sign * support_x, y_leg_y, y_leg_col_z])
+                                cube([support_xy, battery_guide_t, y_leg_col_h], center = true);
+                        if (x_bridge_len > 0.01 && x_leg_col_h > 0.01)
+                            translate([x_bridge_x, pad_y, x_leg_col_z])
+                                cube([x_bridge_len, support_xy, x_leg_col_h], center = true);
+                        if (y_bridge_len > 0.01 && y_leg_col_h > 0.01)
+                            translate([x_sign * support_x, y_bridge_y, y_leg_col_z])
+                                cube([support_xy, y_bridge_len, y_leg_col_h], center = true);
 
                         if (x_bridge_len > 0.01)
                             hull() {
