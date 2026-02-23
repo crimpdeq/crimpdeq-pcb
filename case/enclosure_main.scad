@@ -37,9 +37,7 @@ battery_guide_clear = 0.5;
 battery_guide_t = 1.8;
 battery_guide_h = 2.6;
 pcb_guide_clear = 0.5;
-pcb_guide_t = 1.8;
 pcb_guide_h = 2.6;
-pcb_guide_seg_len = 10;
 pcb_rear_stop_bottom_gap = 0.6;
 pcb_rear_gap = front_clear + rear_clear - pcb_front_gap;
 pcb_rear_stop_w = 4;
@@ -136,6 +134,11 @@ loadcell_y_max = lc_W / 2;
 switch_top_z = switch_z + switch_h_eff / 2;
 pcb_bottom_z = loadcell_top_z + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap;
 switch_hole_usb_gap = usb_center_z - usb_hole_h / 2 - (switch_hole_z + switch_hole_h / 2);
+battery_rear_gap_actual = (battery_y_offset - bat_L / 2) - inner_y_min;
+battery_front_gap_actual = inner_y_max - (battery_y_offset + bat_L / 2);
+pcb_rear_gap_actual = (pcb_y_offset - pcb_L / 2) - inner_y_min;
+pcb_front_gap_actual = inner_y_max - (pcb_y_offset + pcb_L / 2);
+pcb_guide_riser_w = (bat_W / 2 - battery_support_corner_inset) - (pcb_W / 2 + pcb_guide_clear);
 
 assert(switch_y_min >= loadcell_y_max,
     str("Switch overlaps load cell by ", loadcell_y_max - switch_y_min, " mm (Y)."));
@@ -145,6 +148,18 @@ assert(switch_hole_z_min <= switch_hole_z_max,
     "Switch opening cannot fit below USB opening without overlap.");
 assert(switch_hole_usb_gap >= switch_usb_gap - 0.001,
     str("Switch/USB opening gap too small: ", switch_hole_usb_gap, " mm."));
+assert(battery_rear_gap_actual >= -0.001 && battery_front_gap_actual >= -0.001,
+    str("Battery exceeds cavity bounds. rear_gap=", battery_rear_gap_actual, " front_gap=", battery_front_gap_actual));
+assert(pcb_front_gap >= 0 && pcb_front_gap <= front_clear + rear_clear,
+    str("pcb_front_gap out of range: ", pcb_front_gap, " mm."));
+assert(pcb_rear_gap_actual >= -0.001 && pcb_front_gap_actual >= -0.001,
+    str("PCB exceeds cavity bounds. rear_gap=", pcb_rear_gap_actual, " front_gap=", pcb_front_gap_actual));
+assert(abs(pcb_front_gap_actual - pcb_front_gap) <= 0.01,
+    str("PCB front gap mismatch: target=", pcb_front_gap, " actual=", pcb_front_gap_actual));
+assert(pcb_rear_stop_bottom_gap >= 0 && pcb_rear_stop_bottom_gap <= pcb_T - 0.2,
+    str("pcb_rear_stop_bottom_gap out of range: ", pcb_rear_stop_bottom_gap, " mm."));
+assert(pcb_guide_riser_w > 0.01,
+    str("PCB side-guide riser collapsed. Increase battery width support or reduce pcb_guide_clear. riser_w=", pcb_guide_riser_w));
 
 module rounded_rect_2d(x_min, x_max, y_min, y_max, r) {
     w = x_max - x_min;
@@ -190,8 +205,11 @@ module battery_support_bed() {
         support_xy = battery_support_corner_size;
         pad_bottom_gap = max(0, min(battery_support_bottom_gap, loadcell_to_battery_gap - 0.2));
         pad_h = max(0.2, loadcell_to_battery_gap - pad_bottom_gap);
+        brace_t = max(0.2, min(0.8, pad_h));
+        pad_bottom_z = loadcell_top_z + pad_bottom_gap;
         pad_z = loadcell_top_z + pad_bottom_gap + pad_h / 2;
         guide_h = min(battery_guide_h, bat_T);
+        guide_bottom_z = battery_bottom_z;
         guide_z = battery_bottom_z + guide_h / 2;
         support_x = bat_W / 2 - battery_support_corner_inset - support_xy / 2;
         support_y = bat_L / 2 - battery_support_corner_inset - support_xy / 2;
@@ -225,10 +243,14 @@ module battery_support_bed() {
                     translate([x_sign * support_x, pad_y, pad_z])
                         cube([support_xy, support_xy, pad_h], center = true);
 
-                    // Short shelf panel from the column to the battery corner (needed at the front).
+                    // Sloped brace from front column to pad to avoid a flat bridge.
                     if (abs(col_y - pad_y) > 0.01)
-                        translate([x_sign * support_x, shelf_y, pad_z])
-                            cube([support_xy, shelf_len, pad_h], center = true);
+                        hull() {
+                            translate([x_sign * support_x, col_y, guide_bottom_z - brace_t / 2])
+                                cube([support_xy, support_xy, brace_t], center = true);
+                            translate([x_sign * support_x, pad_y, pad_bottom_z + brace_t / 2])
+                                cube([support_xy, support_xy, brace_t], center = true);
+                        }
 
                     // Front corner guides in the main enclosure replace lid battery rails.
                     if (y_sign > 0) {
@@ -238,11 +260,19 @@ module battery_support_bed() {
                             cube([support_xy, battery_guide_t, guide_h], center = true);
 
                         if (x_bridge_len > 0.01)
-                            translate([x_bridge_x, pad_y, pad_z])
-                                cube([x_bridge_len, support_xy, pad_h], center = true);
+                            hull() {
+                                translate([x_leg_x, pad_y, guide_bottom_z - brace_t / 2])
+                                    cube([battery_guide_t, support_xy, brace_t], center = true);
+                                translate([x_sign * support_x, pad_y, pad_bottom_z + brace_t / 2])
+                                    cube([support_xy, support_xy, brace_t], center = true);
+                            }
                         if (y_bridge_len > 0.01)
-                            translate([x_sign * support_x, y_bridge_y, pad_z])
-                                cube([support_xy, y_bridge_len, pad_h], center = true);
+                            hull() {
+                                translate([x_sign * support_x, y_leg_y, guide_bottom_z - brace_t / 2])
+                                    cube([support_xy, battery_guide_t, brace_t], center = true);
+                                translate([x_sign * support_x, pad_y, pad_bottom_z + brace_t / 2])
+                                    cube([support_xy, support_xy, brace_t], center = true);
+                            }
                     }
                 }
     }
@@ -250,32 +280,24 @@ module battery_support_bed() {
 
 module pcb_horizontal_guides() {
     guide_h = min(pcb_guide_h, pcb_T);
-    guide_z = pcb_bottom_z + guide_h / 2;
-    guide_top_z = guide_z + guide_h / 2;
-    guide_x = pcb_W / 2 + pcb_guide_clear + pcb_guide_t / 2;
-    seg_len = min(pcb_L, pcb_guide_seg_len);
-    seg_y = pcb_L / 2 - seg_len / 2;
+    guide_top_z = pcb_bottom_z + guide_h;
     bat_col_x = bat_W / 2 - battery_support_corner_inset - battery_support_corner_size / 2;
     bat_col_y = bat_L / 2 - battery_support_corner_inset - battery_support_corner_size / 2;
     front_column_min_y = loadcell_y_max + battery_support_front_column_clear + battery_support_corner_size / 2;
     front_anchor_y = max(battery_y_offset + bat_col_y, front_column_min_y);
-    rear_anchor_y = battery_y_offset - (bat_L / 2 + battery_guide_clear + battery_guide_t / 2);
     riser_z0 = battery_bottom_z;
     riser_h = max(0, guide_top_z - riser_z0);
     riser_z = riser_z0 + riser_h / 2;
+    col_outer_x = bat_col_x + battery_support_corner_size / 2;
+    guide_inner_x = pcb_W / 2 + pcb_guide_clear;
+    riser_w = col_outer_x - guide_inner_x;
+    riser_x = (col_outer_x + guide_inner_x) / 2;
 
     for (x_sign = [-1, 1])
-        for (y_sign = [1])
-            let(
-                y_pos = front_anchor_y,
-                anchor_y = (y_sign > 0) ? front_anchor_y : rear_anchor_y,
-                anchor_y_span = (y_sign > 0) ? battery_support_corner_size : battery_guide_t
-            ) {
-                // Grow PCB constraints from the existing battery support structure.
-                if (riser_h > 0)
-                    translate([x_sign * bat_col_x, anchor_y, riser_z])
-                        cube([battery_support_corner_size, anchor_y_span, riser_h], center = true);
-            }
+        if (riser_h > 0 && riser_w > 0.01)
+            // Use only the outer strip of the front battery columns to avoid PCB collision.
+            translate([x_sign * riser_x, front_anchor_y, riser_z])
+                cube([riser_w, battery_support_corner_size, riser_h], center = true);
 }
 
 module pcb_rear_stops() {
@@ -361,9 +383,9 @@ module brand_engrave_main() {
     // Carved on outer bottom face, horizontal and centered.
     translate([0, brand_y, outer_z_min - 0.1])
         linear_extrude(height = brand_depth + 0.2, center = false)
-            // Mirrored so it reads correctly when viewed from outside.
+            // Mirrored so it reads correctly when viewed from outside (underside).
             mirror([1, 0, 0])
-                rotate([0, 0, 90])
+                rotate([0, 0, -90])
                     text(brand_text, size = brand_size, font = brand_font, halign = "center", valign = "center");
 }
 
