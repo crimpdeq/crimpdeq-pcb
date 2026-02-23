@@ -6,10 +6,12 @@ on:
             - main
         paths:
             - "case/**"
+            - "scripts/**"
             - ".github/workflows/cad_ci.yml"
     pull_request:
         paths:
             - "case/**"
+            - "scripts/**"
             - ".github/workflows/cad_ci.yml"
     workflow_dispatch:
 
@@ -20,6 +22,12 @@ jobs:
         steps:
             - name: Setup
               uses: actions/checkout@v6
+            - name: Install OpenSCAD (CLI)
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y openscad xvfb
+            - name: Run collision checks
+              run: bash scripts/check-collisions.sh
             - name: Build enclosure_main.stl
               uses: flat35hd99/openscad-actions@v1.4
               with:
