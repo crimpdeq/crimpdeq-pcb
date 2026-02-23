@@ -52,7 +52,7 @@ jobs:
           pcb_output_gerbers_and_drill: true
           pcb_output_gerbers_and_drill_folder_name: artifacts/gerber
           pcb_output_pos: true
-          pcb_output_pos_file_name: artifacts/posistion.csv
+          pcb_output_pos_file_name: artifacts/position.csv
           pcb_output_pos_format: csv
           pcb_output_pos_side: both
 
@@ -66,7 +66,7 @@ jobs:
           path: |
             artifacts/gerber.zip
             artifacts/bom.csv
-            artifacts/posistion.csv
+            artifacts/position.csv
             artifacts/schematic.pdf
             artifacts/layout.pdf
           if-no-files-found: error
@@ -128,7 +128,7 @@ jobs:
         run: |
           test -f release-assets/pcb/gerber.zip
           test -f release-assets/pcb/bom.csv
-          test -f release-assets/pcb/posistion.csv
+          test -f release-assets/pcb/position.csv
           test -f release-assets/pcb/schematic.pdf
           test -f release-assets/pcb/layout.pdf
           test -f release-assets/case/enclosure_main.stl
