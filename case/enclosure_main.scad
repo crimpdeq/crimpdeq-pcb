@@ -65,7 +65,7 @@ brand_depth = 0.8;
 // Parameters
 show_assembly = true;
 show_lid_preview = true;
-lid_preview_z_offset = 15; // mm (above main part)
+lid_preview_z_offset = 0; // mm (above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
 
 /*** Derived placement ***/
@@ -239,21 +239,23 @@ module battery_support_bed() {
                     translate([x_sign * support_x, col_y, col_z])
                         cube([support_xy, support_xy, col_h], center = true);
 
-                    // Battery corner support pad in the 2 mm gap.
-                    translate([x_sign * support_x, pad_y, pad_z])
-                        cube([support_xy, support_xy, pad_h], center = true);
+                    // Keep the load-cell top insertion path clear:
+                    // only support/guide the battery from the rear corners (outside load-cell Y footprint).
+                    if (y_sign < 0) {
+                        // Battery corner support pad in the 2 mm gap (rear only).
+                        translate([x_sign * support_x, pad_y, pad_z])
+                            cube([support_xy, support_xy, pad_h], center = true);
 
-                    // Sloped brace from front column to pad to avoid a flat bridge.
-                    if (abs(col_y - pad_y) > 0.01)
-                        hull() {
-                            translate([x_sign * support_x, col_y, guide_bottom_z - brace_t / 2])
-                                cube([support_xy, support_xy, brace_t], center = true);
-                            translate([x_sign * support_x, pad_y, pad_bottom_z + brace_t / 2])
-                                cube([support_xy, support_xy, brace_t], center = true);
-                        }
+                        // Brace column to rear pad to avoid a flat bridge.
+                        if (abs(col_y - pad_y) > 0.01)
+                            hull() {
+                                translate([x_sign * support_x, col_y, guide_bottom_z - brace_t / 2])
+                                    cube([support_xy, support_xy, brace_t], center = true);
+                                translate([x_sign * support_x, pad_y, pad_bottom_z + brace_t / 2])
+                                    cube([support_xy, support_xy, brace_t], center = true);
+                            }
 
-                    // Front corner guides in the main enclosure replace lid battery rails.
-                    if (y_sign > 0) {
+                        // Rear corner guides keep the battery located without blocking top load-cell insertion.
                         translate([x_leg_x, pad_y, guide_z])
                             cube([battery_guide_t, support_xy, guide_h], center = true);
                         translate([x_sign * support_x, y_leg_y, guide_z])

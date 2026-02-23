@@ -36,6 +36,15 @@ align_lip_t = 1.0;
 align_lip_clear = 0.25;
 align_lip_front_back_len = 24;
 
+// Battery anti-slip tabs on lid underside (engage battery front corners when assembled).
+// Placed outside PCB width so they can extend down without colliding with the PCB.
+battery_front_stop_enable = true;
+battery_front_stop_t = 1.2;
+battery_front_stop_w = 3.0;
+battery_front_stop_x_inset = 0.5;
+battery_front_stop_y_clear = 0.3;
+battery_front_stop_z_overlap = bat_T / 2; // reach about mid battery thickness
+
 led_view_d = 2.6;
 
 brand_text = "Crimpdeq";
@@ -78,6 +87,9 @@ u_cutout_z_r = u_cutout_z_d / 2;
 u_cutout_y_span = lc_W;
 
 pcb_y_offset = front_clear - pcb_front_gap;
+battery_y_offset = inner_y_min + battery_rear_gap + bat_L / 2;
+battery_top_z = loadcell_top_z + loadcell_to_battery_gap + bat_T;
+battery_front_y = battery_y_offset + bat_L / 2;
 
 screw_x1 = outer_x_min + screw_corner_inset;
 screw_x2 = outer_x_max - screw_corner_inset;
@@ -85,8 +97,19 @@ screw_y1 = outer_y_min + screw_corner_inset;
 screw_y2 = outer_y_max - screw_corner_inset;
 head_recess_depth = max(0, min(screw_head_recess, lid_t - 0.6));
 align_lip_h_eff = align_lip_enable ? max(0, min(align_lip_h, top_clear - 0.4)) : 0;
+battery_front_stop_x = bat_W / 2 - battery_front_stop_x_inset - battery_front_stop_w / 2;
+battery_front_stop_y = battery_front_y + battery_front_stop_y_clear + battery_front_stop_t / 2;
+battery_front_stop_h = battery_front_stop_enable
+    ? max(0, lid_z_min - (battery_top_z - battery_front_stop_z_overlap))
+    : 0;
 led_x = pcb_W / 2 - led_from_left;
 led_y = pcb_y_offset + pcb_L / 2 - led_from_usb_side;
+
+assert(!battery_front_stop_enable || battery_front_stop_w > 0,
+    "battery_front_stop_w must be > 0.");
+assert(!battery_front_stop_enable || battery_front_stop_h <= 0
+    || battery_front_stop_x - battery_front_stop_w / 2 >= pcb_W / 2 + 0.2,
+    "Battery front stop tabs must stay outside PCB width.");
 
 module rounded_rect_2d(x_min, x_max, y_min, y_max, r) {
     w = x_max - x_min;
@@ -181,6 +204,16 @@ module lid_alignment_lips() {
     }
 }
 
+module battery_front_stops() {
+    if (battery_front_stop_h > 0 && battery_front_stop_t > 0 && battery_front_stop_w > 0) {
+        stop_z = lid_z_min - battery_front_stop_h / 2;
+
+        for (x_sign = [-1, 1])
+            translate([x_sign * battery_front_stop_x, battery_front_stop_y, stop_z])
+                cube([battery_front_stop_w, battery_front_stop_t, battery_front_stop_h], center = true);
+    }
+}
+
 module brand_engrave_lid() {
     // Carved on outer top face (same plane as load cell), horizontal and centered.
     translate([0, brand_y, lid_z_max - brand_depth - 0.1])
@@ -198,6 +231,7 @@ module lid_part() {
                 corner_r
             );
             lid_alignment_lips();
+            battery_front_stops();
             if (hold_down_h > 0) {
                 loadcell_hold_downs();
             }
