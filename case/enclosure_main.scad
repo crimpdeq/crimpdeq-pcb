@@ -39,6 +39,7 @@ battery_guide_h = bat_T * 0.6;
 pcb_guide_clear = 0.2;
 pcb_guide_h = 2.6;
 pcb_rear_stop_bottom_gap = 0.6;
+pcb_rear_stop_battery_clear = 0.2;
 pcb_rear_gap = front_clear + rear_clear - pcb_front_gap;
 pcb_rear_stop_w = 4;
 
@@ -63,7 +64,7 @@ brand_size = 9.5;
 brand_depth = 0.8;
 
 // Parameters
-show_assembly = false;
+show_assembly = true;
 show_lid_preview = false;
 lid_preview_z_offset = 10; // mm (above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
@@ -158,6 +159,8 @@ assert(abs(pcb_front_gap_actual - pcb_front_gap) <= 0.01,
     str("PCB front gap mismatch: target=", pcb_front_gap, " actual=", pcb_front_gap_actual));
 assert(pcb_rear_stop_bottom_gap >= 0 && pcb_rear_stop_bottom_gap <= pcb_T - 0.2,
     str("pcb_rear_stop_bottom_gap out of range: ", pcb_rear_stop_bottom_gap, " mm."));
+assert(pcb_rear_stop_battery_clear >= 0,
+    str("pcb_rear_stop_battery_clear must be >= 0. Got ", pcb_rear_stop_battery_clear, " mm."));
 assert(pcb_guide_riser_w > 0.01,
     str("PCB side-guide riser collapsed. Increase battery width support or reduce pcb_guide_clear. riser_w=", pcb_guide_riser_w));
 
@@ -321,9 +324,12 @@ module pcb_horizontal_guides() {
 }
 
 module pcb_rear_stops() {
-    stop_bottom_gap = max(0, min(pcb_rear_stop_bottom_gap, pcb_T - 0.2));
-    stop_h = min(pcb_guide_h, max(0.2, pcb_T - stop_bottom_gap));
-    stop_z = pcb_bottom_z + stop_bottom_gap + stop_h / 2;
+    stop_top_z = pcb_bottom_z + min(pcb_guide_h, pcb_T);
+    stop_bottom_z_pcb = pcb_bottom_z + max(0, min(pcb_rear_stop_bottom_gap, pcb_T - 0.2));
+    stop_bottom_z_battery = battery_bottom_z + bat_T + pcb_rear_stop_battery_clear;
+    stop_bottom_z = min(stop_bottom_z_pcb, stop_bottom_z_battery, stop_top_z - 0.2);
+    stop_h = max(0.2, stop_top_z - stop_bottom_z);
+    stop_z = stop_bottom_z + stop_h / 2;
     stop_depth = max(0, pcb_rear_gap);
     stop_x = pcb_W / 2 - pcb_rear_stop_w / 2;
 
