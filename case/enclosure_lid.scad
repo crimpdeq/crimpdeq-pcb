@@ -17,11 +17,11 @@ corner_r = 6;
 eye_access_clear = 1.0;
 u_cutout_clear = 2.0;
 
-loadcell_hold_down_clear = 0.2;
-loadcell_hold_down_w = 24;
+loadcell_hold_down_clear = 0.3;
+loadcell_hold_down_w = 22.6;
 loadcell_hold_down_d = 8;
-// Center shifted inward so widened hold-downs follow the U-cutout profile.
-loadcell_hold_down_edge_offset = 10;
+// Center shifted inward so widened hold-downs stay inside the main cavity side walls.
+loadcell_hold_down_edge_offset = 11.6;
 loadcell_hold_down_y_offset = 8;
 
 screw_clear_d = 2.8; // clearance for M2.5 screws
@@ -33,7 +33,7 @@ screw_head_recess = 1.8; // recess depth so heads do not protrude
 align_lip_enable = true;
 align_lip_h = 1.2;
 align_lip_t = 1.0;
-align_lip_clear = 0.25;
+align_lip_clear = 0.4; // extra fit margin for print tolerances / elephant foot
 align_lip_front_back_len = 24;
 
 // Battery anti-slip tabs on lid underside (engage battery front corners when assembled).
@@ -107,6 +107,12 @@ led_y = pcb_y_offset + pcb_L / 2 - led_from_usb_side;
 
 assert(!battery_front_stop_enable || battery_front_stop_w > 0,
     "battery_front_stop_w must be > 0.");
+assert(hold_down_x + loadcell_hold_down_w / 2 <= inner_x_max + 0.001,
+    str("Load-cell hold-downs overlap main side wall by ",
+        hold_down_x + loadcell_hold_down_w / 2 - inner_x_max, " mm (X)."));
+assert(hold_down_x - loadcell_hold_down_w / 2 >= bat_W / 2 - 0.001,
+    str("Load-cell hold-downs overlap battery by ",
+        bat_W / 2 - (hold_down_x - loadcell_hold_down_w / 2), " mm (X)."));
 assert(!battery_front_stop_enable || battery_front_stop_h <= 0
     || battery_front_stop_x - battery_front_stop_w / 2 >= pcb_W / 2 + 0.2,
     "Battery front stop tabs must stay outside PCB width.");

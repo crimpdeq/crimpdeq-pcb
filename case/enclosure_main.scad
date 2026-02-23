@@ -50,7 +50,7 @@ usb_hole_corner_r = 1.0;
 
 screw_post_d = 6.5;
 screw_thread_d = 2.15; // pilot for M2.5 thread-forming screws in plastic
-screw_thread_depth = 7.0; // for M2.5x10 with ~3 mm lid thickness
+screw_thread_depth = 9.0; // for M2.5x10 with recessed-head lid and better thread engagement margin
 screw_thread_tip_clear = 1.0;
 
 switch_hole_w = (abs(switch_rot_y) % 180 == 90) ? switch_h : switch_w;
@@ -65,7 +65,7 @@ brand_depth = 0.8;
 // Parameters
 show_assembly = true;
 show_lid_preview = true;
-lid_preview_z_offset = 0; // mm (above main part)
+lid_preview_z_offset = 10; // mm (above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
 
 /*** Derived placement ***/
