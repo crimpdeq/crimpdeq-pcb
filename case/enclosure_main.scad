@@ -311,16 +311,29 @@ module pcb_horizontal_guides() {
     riser_z0 = battery_bottom_z;
     riser_h = max(0, guide_top_z - riser_z0);
     riser_z = riser_z0 + riser_h / 2;
+    pcb_support_h = max(0, pcb_bottom_z - riser_z0);
+    pcb_support_z = riser_z0 + pcb_support_h / 2;
+    col_inner_x = bat_col_x - battery_support_corner_size / 2;
     col_outer_x = bat_col_x + battery_support_corner_size / 2;
     guide_inner_x = pcb_W / 2 + pcb_guide_clear;
+    // Fill the seam below the PCB while keeping the side-guide clearance above the PCB underside.
+    pcb_support_outer_x = min(col_outer_x, guide_inner_x);
+    pcb_support_w = pcb_support_outer_x - col_inner_x;
+    pcb_support_x = (col_inner_x + pcb_support_outer_x) / 2;
     riser_w = col_outer_x - guide_inner_x;
     riser_x = (col_outer_x + guide_inner_x) / 2;
 
-    for (x_sign = [-1, 1])
+    for (x_sign = [-1, 1]) {
+        if (pcb_support_h > 0 && pcb_support_w > 0.01)
+            // Extend the inner strip up to the PCB underside to support the front overhang.
+            translate([x_sign * pcb_support_x, front_anchor_y, pcb_support_z])
+                cube([pcb_support_w, battery_support_corner_size, pcb_support_h], center = true);
+
         if (riser_h > 0 && riser_w > 0.01)
-            // Use only the outer strip of the front battery columns to avoid PCB collision.
+            // Use only the outer strip above the PCB to avoid PCB collision.
             translate([x_sign * riser_x, front_anchor_y, riser_z])
                 cube([riser_w, battery_support_corner_size, riser_h], center = true);
+    }
 }
 
 module pcb_rear_stops() {

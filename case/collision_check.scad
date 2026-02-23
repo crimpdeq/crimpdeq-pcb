@@ -69,6 +69,8 @@ if (mode == "main_lid") {
     intersection() { main_part(); asm_pcb(); }
 } else if (mode == "main_pcb_eps_y_plus") {
     intersection() { main_part(); translate([0, 0.05, 0]) asm_pcb(); }
+} else if (mode == "main_pcb_eps_yz_plus") {
+    intersection() { main_part(); translate([0, 0.05, 0.05]) asm_pcb(); }
 } else if (mode == "main_switch") {
     intersection() { main_part(); asm_switch(); }
 } else if (mode == "lid_components") {

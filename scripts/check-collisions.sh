@@ -70,7 +70,8 @@ check_mode pcb_switch empty
 # Epsilon probes to verify "nonempty" cases above are contact-only
 check_mode main_lid_eps_up empty
 check_mode main_loadcell_eps_z_plus empty
-check_mode main_pcb_eps_y_plus empty
+check_mode main_pcb_eps_y_plus nonempty
+check_mode main_pcb_eps_yz_plus empty
 check_mode battery_pcb_eps_z_plus empty
 
 # Aggregate checks
