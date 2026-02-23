@@ -41,7 +41,7 @@ module switch_model() {
             cube([switch_w, switch_d, switch_h], center = true);
 }
 
-module full_assembly() {
+module full_assembly(show_pcb = true) {
     translate([0, 0, loadcell_center_z])
         loadcell_model();
 
@@ -49,9 +49,10 @@ module full_assembly() {
     translate([0, battery_y_offset, loadcell_top_z + loadcell_to_battery_gap + bat_T/2])
         battery_model(rounded = true);
 
-    // PCB laying flat on top of the battery.
-    translate([0, pcb_y_offset, loadcell_top_z + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T/2])
-        pcb_model(show_usb = true);
+    if (show_pcb)
+        // PCB laying flat on top of the battery.
+        translate([0, pcb_y_offset, loadcell_top_z + loadcell_to_battery_gap + bat_T + battery_to_pcb_gap + pcb_T/2])
+            pcb_model(show_usb = true);
 
     // Side switch inside enclosure.
     translate([switch_x, switch_y, switch_z])
