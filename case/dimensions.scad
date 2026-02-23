@@ -50,7 +50,7 @@ battery_rear_gap = 0.2; // target battery rear-edge gap to enclosure inner rear 
 clear_x = 0.8;
 rear_clear = 0.8;
 front_clear = 2.0;
-top_clear = 2;
+top_clear = 0.8; // small PCB-to-lid gap; pcb_T already includes LED thickness
 pcb_front_gap = 0.2; // target PCB front-edge gap to USB-side inner wall
 
 // Side switch (KCD11 10x15 mm)

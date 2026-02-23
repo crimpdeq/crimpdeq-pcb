@@ -28,6 +28,14 @@ screw_clear_d = 2.8; // clearance for M2.5 screws
 screw_head_d = 5.2; // typical M2.5 button/pan head clearance
 screw_head_recess = 1.8; // recess depth so heads do not protrude
 
+// Alignment tabs (underside) that register in the main cavity.
+// Intentionally only on front/rear walls so the side U-access zone stays clear.
+align_lip_enable = true;
+align_lip_h = 1.2;
+align_lip_t = 1.0;
+align_lip_clear = 0.25;
+align_lip_front_back_len = 24;
+
 led_view_d = 2.6;
 
 brand_text = "Crimpdeq";
@@ -76,6 +84,7 @@ screw_x2 = outer_x_max - screw_corner_inset;
 screw_y1 = outer_y_min + screw_corner_inset;
 screw_y2 = outer_y_max - screw_corner_inset;
 head_recess_depth = max(0, min(screw_head_recess, lid_t - 0.6));
+align_lip_h_eff = align_lip_enable ? max(0, min(align_lip_h, top_clear - 0.4)) : 0;
 led_x = pcb_W / 2 - led_from_left;
 led_y = pcb_y_offset + pcb_L / 2 - led_from_usb_side;
 
@@ -149,9 +158,27 @@ module loadcell_hold_downs() {
     hold_down_z = hold_down_target_z + hold_down_h / 2;
 
     for (x_sign = [-1, 1])
-        for (y_off = [0, -loadcell_hold_down_y_offset, loadcell_hold_down_y_offset])
+        // Keep the center open so the load-cell eye holes remain fully accessible.
+        for (y_off = [-loadcell_hold_down_y_offset, loadcell_hold_down_y_offset])
             translate([x_sign * hold_down_x, y_off, hold_down_z])
                 cube([loadcell_hold_down_w, loadcell_hold_down_d, hold_down_h], center = true);
+}
+
+module lid_alignment_lips() {
+    lip_h = align_lip_h_eff;
+    if (lip_h > 0 && align_lip_t > 0) {
+        lip_z = lid_z_min - lip_h / 2;
+
+        // Front/rear tabs locate the lid without adding geometry in the side U-access zone.
+        for (y_sign = [-1, 1]) {
+            y_pos = (y_sign > 0)
+                ? inner_y_max - align_lip_clear - align_lip_t / 2
+                : inner_y_min + align_lip_clear + align_lip_t / 2;
+
+            translate([0, y_pos, lip_z])
+                cube([align_lip_front_back_len, align_lip_t, lip_h], center = true);
+        }
+    }
 }
 
 module brand_engrave_lid() {
@@ -170,11 +197,12 @@ module lid_part() {
                 [outer_x_max, outer_y_max, lid_z_max],
                 corner_r
             );
+            lid_alignment_lips();
             if (hold_down_h > 0) {
                 loadcell_hold_downs();
             }
         }
-        corner_holes(screw_clear_d, lid_z_min, lid_z_max);
+        corner_holes(screw_clear_d, lid_z_min - align_lip_h_eff, lid_z_max);
         corner_head_recesses(screw_head_d, head_recess_depth);
         led_view_hole();
         translate([0, 0, lid_z_min]) eye_u_cutout(eye_x1, open_left = true);

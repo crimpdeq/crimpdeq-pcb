@@ -65,7 +65,7 @@ brand_depth = 0.8;
 // Parameters
 show_assembly = true;
 show_lid_preview = true;
-lid_preview_z_offset = 20; // mm (above main part)
+lid_preview_z_offset = 15; // mm (above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
 
 /*** Derived placement ***/
@@ -364,7 +364,9 @@ module eye_access_holes() {
 }
 
 module eye_u_cutout(eye_x, open_left = true) {
-    linear_extrude(height = u_cutout_y_span, center = true)
+    // Overcut in Z so no thin roof remains at the top rim of the main enclosure.
+    u_cutout_extrude_h = max(u_cutout_y_span, 2 * (outer_z_max - loadcell_center_z) + 0.4);
+    linear_extrude(height = u_cutout_extrude_h, center = true)
         union() {
             translate([eye_x, 0])
                 circle(d = u_cutout_z_d);

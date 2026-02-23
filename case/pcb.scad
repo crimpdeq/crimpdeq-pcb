@@ -15,6 +15,7 @@ led_rot_z = 90;
 
 module pcb_model(show_usb=true) {
     assert(usb_inset >= 0 && usb_inset <= pcb_T, "usb_inset must be between 0 and pcb_T");
+    assert(led_h <= pcb_T, "led_h must fit within pcb_T (PCB thickness already includes LED)");
 
     usb_x = 0;
     usb_y = pcb_L/2 - usb_d/2;               // flush to PCB edge (no overhang)
@@ -23,7 +24,8 @@ module pcb_model(show_usb=true) {
     pcb_usb_pocket_z = pcb_T/2 - usb_inset/2;
     led_x = pcb_W/2 - led_from_left;
     led_y = pcb_L/2 - led_from_usb_side;
-    led_z = pcb_T/2 + led_h/2;
+    // LED is embedded in the PCB thickness (must not protrude above the PCB top face).
+    led_z = pcb_T/2 - led_h/2;
 
     union() {
 
@@ -49,7 +51,7 @@ module pcb_model(show_usb=true) {
                 cube([usb_w, usb_d, usb_h], center=true);
         }
 
-        // LED envelope on PCB top side.
+        // LED envelope embedded within the PCB thickness.
         translate([led_x, led_y, led_z])
             color("yellow")
                 rotate([0, 0, led_rot_z])
