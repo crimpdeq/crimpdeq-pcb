@@ -36,6 +36,8 @@ battery_support_bottom_gap = 0.5;
 battery_guide_clear = 0.5;
 battery_guide_t = 1.8;
 battery_guide_h = bat_T * 0.6;
+battery_glue_spacer_size = 2; // square spacer glued to battery underside (XY)
+battery_glue_spacer_h = 2; // battery support spacer height to keep battery level
 pcb_guide_clear = 0.2;
 pcb_guide_h = 2.6;
 pcb_rear_stop_bottom_gap = 0.6;
@@ -68,6 +70,7 @@ show_assembly = true;
 show_lid_preview = false;
 lid_preview_z_offset = 10; // mm (above main part)
 lid_preview_alpha = 0.8; // higher alpha = more opaque
+show_battery_glue_spacer = true;
 
 /*** Derived placement ***/
 inner_x_min = -lc_L / 2 - clear_x;
@@ -430,6 +433,19 @@ module brand_engrave_main() {
                     text(brand_text, size = brand_size, font = brand_font, halign = "center", valign = "center");
 }
 
+module battery_glue_spacer() {
+    cube([battery_glue_spacer_size, battery_glue_spacer_size, battery_glue_spacer_h], center = true);
+}
+
+module battery_glue_spacer_print_layout() {
+    // Loose printed spacer for gluing to the battery underside (typically near the unsupported front area).
+    spacer_x = outer_x_max + wall_t + battery_glue_spacer_size / 2 + 4;
+    spacer_y = outer_y_min + battery_glue_spacer_size / 2 + 4;
+    spacer_z = outer_z_min + battery_glue_spacer_h / 2;
+    translate([spacer_x, spacer_y, spacer_z])
+        battery_glue_spacer();
+}
+
 module main_part() {
     difference() {
         union() {
@@ -495,6 +511,9 @@ module main_part() {
 }
 
 main_part();
+if (show_battery_glue_spacer) {
+    battery_glue_spacer_print_layout();
+}
 if (show_assembly) {
     %full_assembly();
 }
