@@ -1,6 +1,6 @@
-# Crimpdeq Hardware
+# Crimpdeq PCB
 
-Hardware files and KiCad PCB design for Crimpdeq. See the [Crimpdeq book](https://crimpdeq.github.io/book/) for more details on the project!
+KiCad PCB design for Crimpdeq. See the [Crimpdeq book](https://crimpdeq.github.io/book/) for more details on the project!
 
 ## PCB
 
@@ -13,11 +13,4 @@ The PCB was sponsored by [PCBWay](https://www.pcbway.com/), thank you! Working w
 [![PCBWay](assets/PCBWay.png)](https://www.pcbway.com/)
 
 
-## Prototype
-
-Several people on the internet have already built a prototype. Here is how it looks like:
-
-![Prototype](assets/prototype.png)
-
-The [Making Your Own Crimpdeq](https://crimpdeq.github.io/book/assembly.html) chapter explains the required materials and steps to build your own Crimpdeq.
 
