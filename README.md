@@ -1,6 +1,6 @@
 # Crimpdeq PCB
 
-KiCad PCB design for Crimpdeq. See the [Crimpdeq book](https://crimpdeq.github.io/book/) for more details on the project!
+KiCad PCB design for Crimpdeq. See the [Crimpdeq book](https://crimpdeq.com/) for more details on the project!
 
 ## PCB
 
