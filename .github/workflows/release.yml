@@ -54,6 +54,8 @@ jobs:
           schematic_output_pdf_file_name: artifacts/schematic.pdf
           schematic_output_bom: true
           schematic_output_bom_file_name: artifacts/bom.csv
+          schematic_output_bom_fields: Reference,Value,Datasheet,Footprint,${QUANTITY},${DNP},AssemblyNote
+          schematic_output_bom_labels: Reference,Value,Datasheet,Footprint,Qty,DNP,Assembly Note
 
           pcb_file_name: ${{ env.PCB_FILE }}
           pcb_output_pdf: true
