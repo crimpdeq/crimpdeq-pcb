@@ -23,18 +23,28 @@ jobs:
         run: mkdir -p artifacts/gerber reports
 
       - name: Run schematic ERC
+        id: erc
         uses: actions-for-kicad/kicad-actions@v1-k9.0
+        continue-on-error: true
         with:
           schematic_file_name: ${{ env.SCH_FILE }}
           run_erc: true
           erc_output_file_name: reports/erc.rpt
 
+      - name: Evaluate ERC report
+        run: bash .github/scripts/check-kicad-report.sh reports/erc.rpt "Schematic ERC"
+
       - name: Run PCB DRC
+        id: drc
         uses: actions-for-kicad/kicad-actions@v1-k9.0
+        continue-on-error: true
         with:
           pcb_file_name: ${{ env.PCB_FILE }}
           run_drc: true
           drc_output_file_name: reports/drc.rpt
+
+      - name: Evaluate DRC report
+        run: bash .github/scripts/check-kicad-report.sh reports/drc.rpt "PCB DRC"
 
       - name: Export PCB production files
         uses: actions-for-kicad/kicad-actions@v1-k9.0
