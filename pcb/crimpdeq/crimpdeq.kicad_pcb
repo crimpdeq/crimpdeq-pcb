@@ -208,6 +208,19 @@
 				)
 			)
 		)
+		(property "AssemblyNote" "Critical value: 100Ω 0402 resistor. Do not use the 100kΩ."
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "2c3ee16f-31b7-4c5c-afbf-ad87d9711fe3")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(property ki_fp_filters "R_*")
 		(path "/e8d77bec-5d70-4d93-8b62-0f10245af615")
 		(sheetname "/")
@@ -2611,6 +2624,19 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "4f2f21e7-9633-45f9-9b47-cb48be3d7e52")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "AssemblyNote" "Critical value: 8.2kΩ 0402 resistor. Do not use 100kΩ."
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6ec6d0de-f3db-44eb-958c-945d40919b8c")
 			(effects
 				(font
 					(size 1 1)
@@ -8351,6 +8377,19 @@
 				)
 			)
 		)
+		(property "AssemblyNote" "TH part: assemble TO-92 inline S8550 only. Do not substitute an SMD package."
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "a33df2dc-2176-4a60-98ef-6bb63ec6747f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(property ki_fp_filters "TO?92*")
 		(path "/81d13318-3c40-4793-9416-94128dfb4c90")
 		(sheetname "/")
@@ -8579,6 +8618,19 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "849cf42e-1fff-478c-b709-3d19a11bc820")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "AssemblyNote" "Critical value: 33kΩ 0402 resistor. Do not use 10kΩ."
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "8cd7c12b-dd28-4ca8-b140-fad82e838535")
 			(effects
 				(font
 					(size 1 1)
@@ -9633,6 +9685,19 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "d17c3fd9-67bf-4f4f-bf11-a3ea8c36ae27")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "AssemblyNote" "Critical value: 100Ω 0402 resistor. Do not use 100kΩ."
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "379abe0a-9d6a-40ef-84c0-769bb09528fe")
 			(effects
 				(font
 					(size 1 1)
@@ -12604,6 +12669,19 @@
 				)
 			)
 		)
+		(property "AssemblyNote" "Critical value: 12kΩ 0402 resistor. Do not use 100kΩ."
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "22d9b8e4-9c66-4977-97c7-9eac825f5c7d")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(property ki_fp_filters "R_*")
 		(path "/2221bd7f-d34e-4d02-8da1-96a5aeed7b53")
 		(sheetname "/")
@@ -13449,6 +13527,19 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "791bd15f-128c-457d-b195-675cc5e1fad3")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "AssemblyNote" "Approved alternate: TYPE-C-31-M-12 may be assembled if footprint, pinout, and shell tabs match USB4105-GF-A."
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "1f64cc8f-cb72-4a77-b204-b805e540210f")
 			(effects
 				(font
 					(size 1 1)

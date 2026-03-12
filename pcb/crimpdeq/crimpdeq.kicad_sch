@@ -9020,6 +9020,15 @@
 				(hide yes)
 			)
 		)
+		(property "AssemblyNote" "Critical value: 33kΩ 0402 resistor. Do not use 10kΩ."
+			(at 172.72 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "735c25fb-a8cd-405d-8442-b56962525a01")
 		)
@@ -9996,6 +10005,15 @@
 			)
 		)
 		(property "LCSC" "C25741"
+			(at 72.39 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "AssemblyNote" "Critical value: 12kΩ 0402 resistor. Do not use 100kΩ."
 			(at 72.39 137.16 0)
 			(effects
 				(font
@@ -13066,6 +13084,15 @@
 				(hide yes)
 			)
 		)
+		(property "AssemblyNote" "TH part: assemble TO-92 inline S8550 only. Do not substitute an SMD package."
+			(at 74.93 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "277043be-c6c7-4970-82bd-e78f582f26f5")
 		)
@@ -13409,6 +13436,15 @@
 			)
 		)
 		(property "LCSC" "C165948"
+			(at 213.36 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "AssemblyNote" "Approved alternate: TYPE-C-31-M-12 may be assembled if footprint, pinout, and shell tabs match USB4105-GF-A."
 			(at 213.36 39.37 0)
 			(effects
 				(font
@@ -14847,6 +14883,15 @@
 				(hide yes)
 			)
 		)
+		(property "AssemblyNote" "Critical value: 8.2kΩ 0402 resistor. Do not use 100kΩ."
+			(at 67.31 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "ffa16a20-3954-4f4f-abba-fb73774c78d5")
 		)
@@ -14995,6 +15040,15 @@
 			)
 		)
 		(property "LCSC" "C25741"
+			(at 31.75 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "AssemblyNote" "Critical value: 100Ω 0402 resistor. Do not use 100kΩ."
 			(at 31.75 146.05 0)
 			(effects
 				(font
@@ -15779,6 +15833,15 @@
 			)
 		)
 		(property "LCSC" "C25741"
+			(at 31.75 153.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "AssemblyNote" "Critical value: 100Ω 0402 resistor. Do not use 100kΩ."
 			(at 31.75 153.67 0)
 			(effects
 				(font

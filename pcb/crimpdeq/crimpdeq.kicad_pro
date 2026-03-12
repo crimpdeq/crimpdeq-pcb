@@ -583,6 +583,12 @@
         },
         {
           "group_by": false,
+          "label": "Assembly Note",
+          "name": "AssemblyNote",
+          "show": true
+        },
+        {
+          "group_by": false,
           "label": "MANUFACTURER",
           "name": "MANUFACTURER",
           "show": false
