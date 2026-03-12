@@ -76,10 +76,17 @@ jobs:
           path: reports/drc.rpt
           if-no-files-found: warn
 
+      - name: Evaluate DRC report
+        if: always()
+        id: drc_check
+        continue-on-error: true
+        run: bash .github/scripts/check-kicad-report.sh reports/drc.rpt "PCB DRC"
+
       - name: Write action summary
         if: always()
         env:
           DRC_OUTCOME: ${{ steps.drc.outcome }}
+          DRC_CHECK_OUTCOME: ${{ steps.drc_check.outcome }}
           SCHEMATIC_ARTIFACT_URL: ${{ steps.upload_schematic.outputs.artifact-url }}
           LAYOUT_ARTIFACT_URL: ${{ steps.upload_layout.outputs.artifact-url }}
         run: |
@@ -90,7 +97,8 @@ jobs:
           {
             echo "## PCB CI"
             echo
-            echo "- DRC result: ${DRC_OUTCOME:-unknown}"
+            echo "- DRC action result: ${DRC_OUTCOME:-unknown}"
+            echo "- DRC error gate: ${DRC_CHECK_OUTCOME:-unknown}"
             echo "- [Schematic PDF]($schematic_url)"
             echo "- [Layout PDF]($layout_url)"
             echo
@@ -105,6 +113,6 @@ jobs:
             fi
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Fail workflow if DRC failed
-        if: steps.drc.outcome == 'failure'
+      - name: Fail workflow if DRC has error-level violations
+        if: steps.drc_check.outcome == 'failure'
         run: exit 1
