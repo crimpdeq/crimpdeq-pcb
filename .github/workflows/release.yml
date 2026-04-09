@@ -53,9 +53,9 @@ jobs:
           schematic_output_pdf: true
           schematic_output_pdf_file_name: artifacts/schematic.pdf
           schematic_output_bom: true
-          schematic_output_bom_file_name: artifacts/bom.csv
-          schematic_output_bom_fields: Reference,Value,Datasheet,Footprint,${QUANTITY},${DNP},AssemblyNote
-          schematic_output_bom_labels: Reference,Value,Datasheet,Footprint,Qty,DNP,Assembly Note
+          schematic_output_bom_file_name: artifacts/bom.raw.csv
+          schematic_output_bom_fields: Reference,Footprint,${QUANTITY},Value,LCSC,${DNP},AssemblyNote
+          schematic_output_bom_labels: Reference,Footprint,Quantity,Value,LCSC Part #,DNP,Assembly Note
 
           pcb_file_name: ${{ env.PCB_FILE }}
           pcb_output_pdf: true
@@ -67,6 +67,11 @@ jobs:
           pcb_output_pos_file_name: artifacts/position.csv
           pcb_output_pos_format: csv
           pcb_output_pos_side: both
+
+      - name: Format grouped BOM
+        run: |
+          python3 .github/scripts/format-bom.py artifacts/bom.raw.csv artifacts/bom.csv
+          rm artifacts/bom.raw.csv
 
       - name: Create gerber archive
         run: cd artifacts/gerber && zip -r ../gerber.zip .
