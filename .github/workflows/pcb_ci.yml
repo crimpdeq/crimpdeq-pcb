@@ -30,7 +30,7 @@ jobs:
 
       - name: Export schematic and layout PDFs
 
-        uses: actions-for-kicad/kicad-actions@v1-k9.0
+        uses: actions-for-kicad/kicad-actions@v1-k10.0
         with:
           schematic_file_name: ${{ env.SCH_FILE }}
           schematic_output_pdf: true
@@ -43,7 +43,7 @@ jobs:
 
       - name: Run PCB DRC
         id: drc
-        uses: actions-for-kicad/kicad-actions@v1-k9.0
+        uses: actions-for-kicad/kicad-actions@v1-k10.0
         continue-on-error: true
         with:
           pcb_file_name: ${{ env.PCB_FILE }}
