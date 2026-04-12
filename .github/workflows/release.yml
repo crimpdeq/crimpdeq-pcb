@@ -24,7 +24,7 @@ jobs:
 
       - name: Run schematic ERC
         id: erc
-        uses: actions-for-kicad/kicad-actions@v1-k10.0
+        uses: actions-for-kicad/kicad-actions@v2-k10.0
         continue-on-error: true
         with:
           schematic_file_name: ${{ env.SCH_FILE }}
@@ -36,7 +36,7 @@ jobs:
 
       - name: Run PCB DRC
         id: drc
-        uses: actions-for-kicad/kicad-actions@v1-k10.0
+        uses: actions-for-kicad/kicad-actions@v2-k10.0
         continue-on-error: true
         with:
           pcb_file_name: ${{ env.PCB_FILE }}
@@ -47,7 +47,7 @@ jobs:
         run: bash .github/scripts/check-kicad-report.sh reports/drc.rpt "PCB DRC"
 
       - name: Export PCB production files
-        uses: actions-for-kicad/kicad-actions@v1-k10.0
+        uses: actions-for-kicad/kicad-actions@v2-k10.0
         with:
           schematic_file_name: ${{ env.SCH_FILE }}
           schematic_output_pdf: true
