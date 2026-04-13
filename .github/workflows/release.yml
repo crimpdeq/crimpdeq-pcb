@@ -70,7 +70,7 @@ jobs:
 
       - name: Format grouped BOM
         run: |
-          python3 .github/scripts/format-bom.py artifacts/bom.raw.csv artifacts/bom.csv
+          bash .github/scripts/generate-bom.sh artifacts/bom.raw.csv "$SCH_FILE" artifacts/bom.csv
           rm artifacts/bom.raw.csv
 
       - name: Create gerber archive

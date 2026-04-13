@@ -3,6 +3,7 @@
 import argparse
 import csv
 import re
+import sys
 from collections import OrderedDict
 from pathlib import Path
 
@@ -65,13 +66,93 @@ def parse_quantity(row: dict, references: list[str]) -> int:
     return max(len(references), 1)
 
 
+def sexpr_paren_delta(text: str) -> int:
+    delta = 0
+    in_string = False
+    escape = False
+    for ch in text:
+        if escape:
+            escape = False
+            continue
+        if in_string and ch == "\\":
+            escape = True
+            continue
+        if ch == '"':
+            in_string = not in_string
+            continue
+        if not in_string:
+            if ch == "(":
+                delta += 1
+            elif ch == ")":
+                delta -= 1
+    return delta
+
+
+def load_schematic_properties(path: Path) -> dict[str, dict[str, str]]:
+    symbols: dict[str, dict[str, str]] = {}
+    depth = 0
+    in_symbol_block = False
+    symbol_depth = 0
+    block_lines: list[str] = []
+
+    with path.open("r", encoding="utf-8") as infile:
+        for line in infile:
+            stripped = line.lstrip()
+            if not in_symbol_block and depth == 1 and stripped.startswith("(symbol"):
+                in_symbol_block = True
+                symbol_depth = depth
+                block_lines = [line]
+            elif in_symbol_block:
+                block_lines.append(line)
+
+            depth += sexpr_paren_delta(line)
+
+            if in_symbol_block and depth == symbol_depth:
+                block = "".join(block_lines)
+                props = dict(re.findall(r'\(property "([^"]+)" "([^"]*)"', block))
+                ref = props.get("Reference", "").strip()
+                if ref:
+                    symbols[ref] = props
+                in_symbol_block = False
+                block_lines = []
+
+    return symbols
+
+
+def get_schematic_property_values(
+    schematic_props: dict[str, dict[str, str]], references: list[str], property_name: str
+) -> list[str]:
+    values: list[str] = []
+    seen = set()
+    for ref in references:
+        value = schematic_props.get(ref, {}).get(property_name, "").strip()
+        if property_name == "AssemblyNote":
+            value = normalize_note(value)
+        if value and value not in seen:
+            values.append(value)
+            seen.add(value)
+    return values
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Convert a KiCad BOM into grouped assembly BOM format.")
     parser.add_argument("input", type=Path)
     parser.add_argument("output", type=Path)
+    parser.add_argument(
+        "--allow-missing-lcsc",
+        action="store_true",
+        help="Allow populated BOM entries without an LCSC Part # and leave the field empty.",
+    )
+    parser.add_argument(
+        "--schematic",
+        type=Path,
+        help="Optional KiCad schematic used to backfill properties like LCSC and AssemblyNote by reference.",
+    )
     args = parser.parse_args()
 
     grouped = OrderedDict()
+    missing_lcsc = []
+    schematic_props = load_schematic_properties(args.schematic) if args.schematic else {}
 
     with args.input.open("r", encoding="utf-8-sig", newline="") as infile:
         reader = csv.DictReader(infile)
@@ -86,6 +167,23 @@ def main() -> int:
             if is_dnp(dnp):
                 continue
 
+            if schematic_props:
+                if not lcsc:
+                    lcsc_values = get_schematic_property_values(schematic_props, references, "LCSC")
+                    if len(lcsc_values) == 1:
+                        lcsc = lcsc_values[0]
+                if not note:
+                    note = " | ".join(get_schematic_property_values(schematic_props, references, "AssemblyNote"))
+
+            if not lcsc:
+                missing_lcsc.append(
+                    {
+                        "refs": references,
+                        "value": value,
+                        "footprint": footprint,
+                    }
+                )
+
             key = (footprint, value, lcsc, note)
             if key not in grouped:
                 grouped[key] = {
@@ -98,6 +196,17 @@ def main() -> int:
             grouped[key]["quantity"] += parse_quantity(row, references)
             if note and note not in grouped[key]["notes"]:
                 grouped[key]["notes"].append(note)
+
+    if missing_lcsc:
+        level = "warning" if args.allow_missing_lcsc else "error"
+        print(f"{level}: missing LCSC Part # for populated BOM entries:", file=sys.stderr)
+        for item in missing_lcsc:
+            refs = ", ".join(item["refs"]) or "<unknown ref>"
+            value = item["value"] or "<unknown value>"
+            footprint = item["footprint"] or "<unknown footprint>"
+            print(f"  - {refs}: {value} [{footprint}]", file=sys.stderr)
+        if not args.allow_missing_lcsc:
+            return 1
 
     rows = []
     for (footprint, value, lcsc, note), data in grouped.items():
