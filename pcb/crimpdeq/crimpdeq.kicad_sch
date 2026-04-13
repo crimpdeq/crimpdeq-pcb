@@ -5050,7 +5050,7 @@
 		)
 		(uuid "4f202ace-9e59-44af-aab9-32764b70e577")
 	)
-	(text "USB & Battery Switch\n"
+	(text "USB / Battery VSYS power path\n"
 		(exclude_from_sim no)
 		(at 161.036 177.546 0)
 		(effects
@@ -10516,81 +10516,25 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "power:+5V")
+	(global_label "VSYS"
+		(shape bidirectional)
 		(at 203.2 76.2 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "2b23c28b-1f93-49a6-a6d2-5db173d9d8cc")
-		(property "Reference" "#PWR039"
-			(at 203.2 80.01 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
+			(justify left)
 		)
-		(property "Value" "+5V"
-			(at 200.66 72.39 0)
-			(show_name no)
-			(do_not_autoplace no)
+		(uuid "2b23c28b-1f93-49a6-a6d2-5db173d9d8cc")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 209.9575 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 203.2 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 203.2 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 203.2 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0e09886a-5619-4760-b456-36fdc5fb1374")
-		)
-		(instances
-			(project "crimpdeq"
-				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
-					(reference "#PWR039")
-					(unit 1)
-				)
+				(hide yes)
 			)
 		)
 	)
@@ -15120,81 +15064,25 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "power:+5V")
+	(global_label "VSYS"
+		(shape bidirectional)
 		(at 154.94 160.02 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
 		(uuid "a7ae6617-912a-4151-9470-b6ccbee52f79")
-		(property "Reference" "#PWR027"
-			(at 151.13 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 154.94 168.6116 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-			)
-		)
-		(property "Value" "+5V"
-			(at 157.48 160.02 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 154.94 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 154.94 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 154.94 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "7b5e7dcd-040a-417f-8bb6-32877362203e")
-		)
-		(instances
-			(project "crimpdeq"
-				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
-					(reference "#PWR027")
-					(unit 1)
-				)
+				(justify right)
+				(hide yes)
 			)
 		)
 	)
@@ -17451,5 +17339,16 @@
 				)
 			)
 		)
+	)
+(text "VBUS = USB input\n+BATT = raw battery\nVBAT_SW = switched battery\nVSYS = USB/battery-selected system / buck input"
+		(exclude_from_sim no)
+		(at 160.782 180.594 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "f46c424c-c6e4-4895-bba0-44b16598c553")
 	)
 )
