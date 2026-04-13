@@ -76,12 +76,43 @@ jobs:
       - name: Create gerber archive
         run: cd artifacts/gerber && zip -r ../gerber.zip .
 
+      - name: Create fab-friendly gerber archive
+        run: |
+          mkdir -p artifacts/fab-gerber
+          shopt -s nullglob
+
+          copied=0
+          for src in artifacts/gerber/*; do
+            base="$(basename "$src")"
+
+            case "$base" in
+              *-F_Cu.gbr) dst="${base%.gbr}.gtl" ;;
+              *-B_Cu.gbr) dst="${base%.gbr}.gbl" ;;
+              *-F_Mask.gbr) dst="${base%.gbr}.gts" ;;
+              *-B_Mask.gbr) dst="${base%.gbr}.gbs" ;;
+              *-F_Paste.gbr) dst="${base%.gbr}.gtp" ;;
+              *-B_Paste.gbr) dst="${base%.gbr}.gbp" ;;
+              *-F_Silkscreen.gbr) dst="${base%.gbr}.gto" ;;
+              *-B_Silkscreen.gbr) dst="${base%.gbr}.gbo" ;;
+              *-Edge_Cuts.gbr) dst="${base%.gbr}.gm1" ;;
+              *.drl) dst="$base" ;;
+              *) continue ;;
+            esac
+
+            cp "$src" "artifacts/fab-gerber/$dst"
+            copied=1
+          done
+
+          test "$copied" -eq 1
+          cd artifacts/fab-gerber && zip -r ../crimpdeq.zip .
+
       - name: Upload PCB release files
         uses: actions/upload-artifact@v6
         with:
           name: release-pcb-files
           path: |
             artifacts/gerber.zip
+            artifacts/crimpdeq.zip
             artifacts/bom.csv
             artifacts/position.csv
             artifacts/schematic.pdf
@@ -104,6 +135,7 @@ jobs:
       - name: Verify release assets exist
         run: |
           test -f release-assets/pcb/gerber.zip
+          test -f release-assets/pcb/crimpdeq.zip
           test -f release-assets/pcb/bom.csv
           test -f release-assets/pcb/position.csv
           test -f release-assets/pcb/schematic.pdf
