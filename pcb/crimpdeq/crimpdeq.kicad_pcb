@@ -323,7 +323,7 @@
 	(footprint "Diode_SMD:D_SOD-523"
 		(layer "F.Cu")
 		(uuid "09ef36a2-9845-42f7-8ff6-8c0a638ac997")
-		(at 141 100.1 90)
+		(at 141 100.35 90)
 		(descr "http://www.diodes.com/datasheets/ap02001.pdf p.144")
 		(tags "Diode SOD523")
 		(property "Reference" "D10"
@@ -394,7 +394,6 @@
 		(sheetname "/")
 		(sheetfile "crimpdeq.kicad_sch")
 		(attr smd)
-		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start 0.7 -0.6)
 			(end -1.26 -0.6)
@@ -1057,7 +1056,7 @@
 	(footprint "Diode_SMD:D_SOD-523"
 		(layer "F.Cu")
 		(uuid "1ab8d32e-ade4-45c2-a793-764da513c584")
-		(at 142.8 100.2 90)
+		(at 142.8 100.35 90)
 		(descr "http://www.diodes.com/datasheets/ap02001.pdf p.144")
 		(tags "Diode SOD523")
 		(property "Reference" "D9"
@@ -1128,7 +1127,6 @@
 		(sheetname "/")
 		(sheetfile "crimpdeq.kicad_sch")
 		(attr smd)
-		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start 0.7 -0.6)
 			(end -1.26 -0.6)
@@ -13320,11 +13318,11 @@
 		(uuid "b1ab0d7d-f6d9-4036-ad0d-f449c7fda8d2")
 	)
 	(segment
-		(start 141 101.1976)
-		(end 141 100.8)
+		(start 141 101.05)
+		(end 141.98513 99.81487)
 		(width 0.1524)
 		(layer "F.Cu")
-		(net "USB_D+")
+		(net 18)
 		(uuid "0f0f1069-294b-4e4b-9e8e-b57450875637")
 	)
 	(segment
@@ -13337,10 +13335,10 @@
 	)
 	(segment
 		(start 140.47 102.445)
-		(end 140.47 101.33)
+		(end 140.47 101.58)
 		(width 0.1524)
 		(layer "F.Cu")
-		(net "USB_D+")
+		(net 18)
 		(uuid "20787a0d-faba-40dc-93f8-8f37a4ff25ab")
 	)
 	(segment
@@ -13352,11 +13350,11 @@
 		(uuid "265f6113-4ac6-4162-a71b-05491fa761ad")
 	)
 	(segment
-		(start 141.47 101.6676)
-		(end 141 101.1976)
+		(start 141.47 101.52)
+		(end 141 101.05)
 		(width 0.1524)
 		(layer "F.Cu")
-		(net "USB_D+")
+		(net 18)
 		(uuid "26d26d6a-453b-4d2b-91c6-383ee03b9db8")
 	)
 	(segment
@@ -13392,11 +13390,11 @@
 		(uuid "7369ad12-6ce5-47de-b3dc-4247cf32f16f")
 	)
 	(segment
-		(start 140.47 101.33)
-		(end 141 100.8)
+		(start 140.47 101.58)
+		(end 141 101.05)
 		(width 0.1524)
 		(layer "F.Cu")
-		(net "USB_D+")
+		(net 18)
 		(uuid "80168351-3b43-4a2d-b003-f44378831fae")
 	)
 	(segment
@@ -13408,14 +13406,6 @@
 		(uuid "86db5f67-3e33-423c-9ebf-967956c5f0e2")
 	)
 	(segment
-		(start 141 100.8)
-		(end 141.98513 99.81487)
-		(width 0.1524)
-		(layer "F.Cu")
-		(net "USB_D+")
-		(uuid "90f01f76-405d-4aea-b009-dd3e7c403efe")
-	)
-	(segment
 		(start 148.4162 78.61257)
 		(end 148.4162 89.0162)
 		(width 0.1524)
@@ -13425,10 +13415,10 @@
 	)
 	(segment
 		(start 141.47 102.445)
-		(end 141.47 101.6676)
+		(end 141.47 101.52)
 		(width 0.1524)
 		(layer "F.Cu")
-		(net "USB_D+")
+		(net 18)
 		(uuid "b494679e-7d0c-4b16-badf-f22e0726f844")
 	)
 	(segment
@@ -16998,11 +16988,11 @@
 		(uuid "3c072978-5e9d-4cc4-a649-8baa8b9107f8")
 	)
 	(segment
-		(start 142.8 100.9)
+		(start 142.8 101.05)
 		(end 143.7 100.9)
 		(width 0.508)
 		(layer "F.Cu")
-		(net "Net-(D8-A)")
+		(net 17)
 		(uuid "4ab3b677-92e1-4ff2-b207-2716874bb4ce")
 	)
 	(segment
@@ -17038,19 +17028,19 @@
 		(uuid "b951d938-20a9-455d-b2c0-0b45e269485e")
 	)
 	(segment
-		(start 143.12 101.22)
+		(start 143.12 101.37)
 		(end 143.12 102.445)
 		(width 0.508)
 		(layer "F.Cu")
-		(net "Net-(D8-A)")
+		(net 17)
 		(uuid "cef7d392-a165-4533-a6aa-b402e61722af")
 	)
 	(segment
-		(start 142.8 100.9)
-		(end 143.12 101.22)
+		(start 142.8 101.05)
+		(end 143.12 101.37)
 		(width 0.508)
 		(layer "F.Cu")
-		(net "Net-(D8-A)")
+		(net 17)
 		(uuid "d7ef9617-342e-4b87-9328-34463da94d64")
 	)
 	(segment
