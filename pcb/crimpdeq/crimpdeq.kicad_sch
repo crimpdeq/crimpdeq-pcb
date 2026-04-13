@@ -15198,80 +15198,25 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "power:+BATT")
-		(at 275.59 130.81 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
+	(global_label "VBAT_SW"
+		(shape bidirectional)
+		(at 275.59 130.81 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
 		(uuid "a7e6c2b0-7c2e-45ea-9f98-fe994d990c9e")
-		(property "Reference" "#PWR037"
-			(at 275.59 134.62 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 264.0433 130.81 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-			)
-		)
-		(property "Value" "+BATT"
-			(at 275.59 124.46 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 275.59 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 275.59 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 275.59 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b1145e8a-331a-4f5f-a97c-88b033ba4cc7")
-		)
-		(instances
-			(project "crimpdeq"
-				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
-					(reference "#PWR037")
-					(unit 1)
-				)
+				(justify right)
+				(hide yes)
 			)
 		)
 	)
@@ -16266,80 +16211,25 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "power:+BATT")
+	(global_label "VBAT_SW"
+		(shape bidirectional)
 		(at 166.37 68.58 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
 		(uuid "da4ca9b2-b9f0-45f2-80fe-3d255028fb05")
-		(property "Reference" "#PWR031"
-			(at 166.37 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 178.9048 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-			)
-		)
-		(property "Value" "+BATT"
-			(at 166.37 63.5 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 166.37 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 166.37 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 166.37 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "83855d94-c5f7-4605-a721-e8837d03c507")
-		)
-		(instances
-			(project "crimpdeq"
-				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
-					(reference "#PWR031")
-					(unit 1)
-				)
+				(justify left)
+				(hide yes)
 			)
 		)
 	)
@@ -17496,4 +17386,70 @@
 		)
 	)
 	(embedded_fonts no)
+(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 275.59 130.81 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6df6ae8a-86dc-4fb4-b74c-16fa65e27308")
+		(property "Reference" "#FLG08"
+			(at 275.59 132.715 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 275.59 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 275.59 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 275.59 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 275.59 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6df6ae8a-86dc-4fb4-b74c-16fa65e27309")
+		)
+		(instances
+			(project "crimpdeq"
+				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
+					(reference "#FLG08")
+					(unit 1)
+				)
+			)
+		)
+	)
 )
