@@ -243,7 +243,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": ""
+      "sch_revision": "1.0"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -512,13 +512,14 @@
         "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.2,
+        "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
       }
     ],
     "meta": {
-      "version": 4
+      "version": 5
     },
     "net_colors": null,
     "netclass_assignments": null,
@@ -697,7 +698,7 @@
       {
         "filename": "crimpdeq.kicad_sch",
         "name": "crimpdeq",
-        "uuid": "00000000-0000-0000-0000-000000000000"
+        "uuid": "eb289f4a-30cd-4b15-be5d-5da73d92c8be"
       }
     ],
     "used_designators": "",
@@ -706,7 +707,7 @@
   "sheets": [
     [
       "eb289f4a-30cd-4b15-be5d-5da73d92c8be",
-      "Root"
+      "crimpdeq"
     ]
   ],
   "text_variables": {},
