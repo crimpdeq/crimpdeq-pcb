@@ -3608,7 +3608,7 @@
 	(footprint "Package_TO_SOT_SMD:SOT-23"
 		(layer "F.Cu")
 		(uuid "52399624-43d1-4957-83aa-eefb8ae4c1b4")
-		(at 145.85 99.2 -90)
+		(at 145.65 98.8 -90)
 		(descr "SOT, 3 Pin (JEDEC TO-236 Var AB https://www.jedec.org/document_search?search_api_views_fulltext=TO-236), generated with kicad-footprint-generator ipc_gullwing_generator.py")
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "Q2"
@@ -10008,7 +10008,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "d1dab11a-9872-4daf-92f0-782943eb5510")
-		(at 147.4 102.8 -90)
+		(at 147 102.6 -90)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
 		(property "Reference" "C6"
@@ -10079,7 +10079,6 @@
 		(sheetname "/")
 		(sheetfile "crimpdeq.kicad_sch")
 		(attr smd)
-		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -0.14058 0.51)
 			(end 0.14058 0.51)
@@ -16790,11 +16789,11 @@
 		(uuid "7c592ccd-4ae3-4318-b11e-f6c665ddf909")
 	)
 	(segment
-		(start 146.8 98.2625)
+		(start 146.6 97.8625)
 		(end 147.3725 97.69)
 		(width 0.6096)
 		(layer "F.Cu")
-		(net "VBUS")
+		(net 4)
 		(uuid "88d7e3aa-73af-41fb-8a9f-b2a51425bbf7")
 	)
 	(segment
@@ -17232,11 +17231,11 @@
 		(uuid "d71b35c6-97cb-423c-8cb9-b30b81dd2854")
 	)
 	(segment
-		(start 144.9 98.2625)
+		(start 144.7 97.8625)
 		(end 144.9 96.75)
 		(width 0.6096)
 		(layer "F.Cu")
-		(net "+5V")
+		(net 13)
 		(uuid "e1aa4049-5373-4c72-882c-e4e55d92bf1a")
 	)
 	(segment
@@ -18174,11 +18173,11 @@
 		(uuid "28942cb3-ad21-40c0-a0eb-47cae2088515")
 	)
 	(segment
-		(start 147.4 102.025)
+		(start 147 101.825)
 		(end 147.4 101.6875)
 		(width 0.4064)
 		(layer "F.Cu")
-		(net "+BATT")
+		(net 5)
 		(uuid "29e8d322-9688-4831-bb11-632e59faab5d")
 	)
 	(segment
@@ -18190,11 +18189,11 @@
 		(uuid "2ddd1728-7219-4d38-b2e4-b9e0d2ebf374")
 	)
 	(segment
-		(start 145.85 100.1375)
+		(start 145.65 99.7375)
 		(end 144.9375 100.1375)
 		(width 0.508)
 		(layer "F.Cu")
-		(net "+BATT")
+		(net 5)
 		(uuid "42154ee1-bc06-4413-b345-2c41dec1cd18")
 	)
 	(segment
@@ -18239,10 +18238,10 @@
 	)
 	(segment
 		(start 146.75625 101.04375)
-		(end 145.85 100.1375)
+		(end 145.65 99.7375)
 		(width 0.4064)
 		(layer "F.Cu")
-		(net "+BATT")
+		(net 5)
 		(uuid "5fda62ff-7b94-4dd9-8279-11d51c578fd2")
 	)
 	(segment
@@ -18262,11 +18261,11 @@
 		(uuid "8993c60e-c3b0-4b5e-8e63-c18e7457f69b")
 	)
 	(segment
-		(start 147.4 102.025)
+		(start 147 101.825)
 		(end 147.4 101.4)
 		(width 0.4064)
 		(layer "F.Cu")
-		(net "+BATT")
+		(net 5)
 		(uuid "92d2ad48-6944-40cd-aa0b-17b79a8a788d")
 	)
 	(segment
@@ -18310,11 +18309,11 @@
 		(uuid "ab1f3ea9-bfb8-4163-9e07-8733007915ca")
 	)
 	(segment
-		(start 145.85 100.1375)
+		(start 145.65 99.7375)
 		(end 146.15 100.4375)
 		(width 0.508)
 		(layer "F.Cu")
-		(net "+BATT")
+		(net 5)
 		(uuid "abe4c9d3-ab2c-4d8b-807c-cfe9068f8827")
 	)
 	(segment
