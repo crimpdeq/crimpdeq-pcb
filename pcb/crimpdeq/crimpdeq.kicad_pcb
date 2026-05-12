@@ -686,7 +686,7 @@
 				)
 			)
 		)
-		(fp_text user "VBUS"
+		(fp_text user "SW+"
 			(at -0.4 25.9 0)
 			(layer "F.SilkS")
 			(uuid "ed42ef31-c00c-434a-b944-3b12d8f430f5")
@@ -748,7 +748,7 @@
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "VBUS")
-			(pinfunction "VBUS")
+			(pinfunction "SW+/VBUS")
 			(pintype "passive")
 			(uuid "3b175f68-1c78-4293-b6c2-7ca35f3d7e23")
 		)
@@ -4170,7 +4170,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "DNP for charge-while-off wiring; switch output feeds SW+/VBUS pad instead."
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -4205,7 +4205,7 @@
 				(pins "1" "3" "2")
 			)
 		)
-		(attr smd)
+		(attr smd dnp)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start 0 1.56)

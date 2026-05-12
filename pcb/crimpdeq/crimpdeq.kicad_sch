@@ -5244,7 +5244,7 @@
 		)
 		(uuid "e70b162a-2c0d-473c-8f8e-226eb6940bc9")
 	)
-	(text "VBUS = USB input\n+BATT = raw battery\nVBAT_SW = switched battery\nVSYS = USB/battery-selected system / buck input"
+	(text "VBUS = USB input and switched battery input (SW+)\n+BATT = raw battery / charger battery node\nVBAT_SW = battery sense after switch\nVSYS = USB/SW+-selected system / buck input\nFor charge-while-off: battery + to B+, switch output to SW+/VBUS; Q2 DNP."
 		(exclude_from_sim no)
 		(at 125.476 182.372 0)
 		(effects
@@ -9197,7 +9197,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "183ccd35-9d0d-4e22-ad00-61bbd9330c61")
 		(property "Reference" "Q2"
 			(at 151.2316 152.5016 0)
@@ -9246,7 +9246,7 @@
 				(justify left)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "DNP for charge-while-off wiring; switch output feeds SW+/VBUS pad instead."
 			(at 146.05 153.67 0)
 			(hide yes)
 			(show_name no)
