@@ -1299,7 +1299,7 @@
 				)
 			)
 		)
-		(property "AssemblyNote" "Critical value: 33kΩ 0402 resistor. Do not use 10kΩ."
+		(property "AssemblyNote" ""
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")

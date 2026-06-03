@@ -5817,40 +5817,6 @@
 		(at 58.42 39.37)
 		(uuid "28001b7c-6864-47d0-89cd-a8751b5090a2")
 	)
-	(wire
-		(pts
-			(xy 262.89 133.35) (xy 274.32 133.35)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c26fb218-09c4-4a2f-878e-c56dd729d713")
-	)
-	(global_label "+BATT"
-		(shape bidirectional)
-		(at 274.32 133.35 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "e3af6193-f9ff-47af-9ba2-6ea67e86f36b")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 281.9073 133.35 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-	)
 	(no_connect
 		(at 58.42 72.39)
 		(uuid "5589d9e6-2ed8-40c7-ae99-acc18827ea5c")
@@ -7583,6 +7549,16 @@
 	)
 	(wire
 		(pts
+			(xy 262.89 133.35) (xy 274.32 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c26fb218-09c4-4a2f-878e-c56dd729d713")
+	)
+	(wire
+		(pts
 			(xy 262.89 135.89) (xy 279.4 135.89)
 		)
 		(stroke
@@ -8081,6 +8057,30 @@
 		)
 		(uuid "f19100d8-8c1e-4006-b9dd-b5d124d48120")
 	)
+	(global_label "SW_BATT"
+		(shape bidirectional)
+		(at 148.59 147.32 90)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "027946c7-d93f-4ef8-9087-4a8e17820e55")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 148.59 140.1853 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+	)
 	(global_label "ENABLE"
 		(shape input)
 		(at 212.09 88.9 270)
@@ -8270,6 +8270,30 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+			)
+		)
+	)
+	(global_label "SW_BATT"
+		(shape bidirectional)
+		(at 279.4 130.81 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "60a5cad8-d2ea-4834-8d92-e82a50a486e6")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 288.5675 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 	)
@@ -8705,6 +8729,30 @@
 			)
 		)
 	)
+	(global_label "+BATT"
+		(shape bidirectional)
+		(at 274.32 133.35 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e3af6193-f9ff-47af-9ba2-6ea67e86f36b")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 281.9073 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+	)
 	(global_label "A-"
 		(shape bidirectional)
 		(at 25.4 153.67 180)
@@ -8790,30 +8838,6 @@
 		(uuid "f4e2cf25-35a5-4abe-8e8d-f4337e567e60")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 269.7079 123.19 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-	)
-	(global_label "SW_BATT"
-		(shape bidirectional)
-		(at 148.59 147.32 90)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "027946c7-d93f-4ef8-9087-4a8e17820e55")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 148.59 140.1853 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12792,30 +12816,6 @@
 			)
 		)
 	)
-	(global_label "SW_BATT"
-		(shape bidirectional)
-		(at 279.4 130.81 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "60a5cad8-d2ea-4834-8d92-e82a50a486e6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 288.5675 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-	)
 	(symbol
 		(lib_id "power:+3V3")
 		(at 147.32 66.04 0)
@@ -16692,7 +16692,7 @@
 				)
 			)
 		)
-		(property "AssemblyNote" "Critical value: 33kΩ 0402 resistor. Do not use 10kΩ."
+		(property "AssemblyNote" ""
 			(at 134.62 76.2 0)
 			(hide yes)
 			(show_name no)
