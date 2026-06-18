@@ -13,4 +13,8 @@ The PCB was sponsored by [PCBWay](https://www.pcbway.com/), thank you! Working w
 [![PCBWay](assets/PCBWay.png)](https://www.pcbway.com/)
 
 
+## License
 
+This repository is source-available for personal and educational use only.
+
+Commercial manufacture, sale of PCBs, sale of 3D-printed cases, kits, or assembled Crimpdeq devices requires prior written permission.
