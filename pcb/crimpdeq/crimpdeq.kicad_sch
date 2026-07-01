@@ -3294,6 +3294,24 @@
 			)
 			(symbol "Rust_Board_1_1"
 				(pin passive line
+					(at 21.59 -5.08 180)
+					(length 2.54)
+					(name "B-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
 					(at 21.59 -2.54 180)
 					(length 2.54)
 					(name "SW+"
@@ -3314,7 +3332,7 @@
 				(pin passive line
 					(at 21.59 0 180)
 					(length 2.54)
-					(name "VBAT"
+					(name "B+/VBAT"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -5518,7 +5536,7 @@
 		)
 		(uuid "e70b162a-2c0d-473c-8f8e-226eb6940bc9")
 	)
-	(text "VBUS = USB input / charger input only\n+BATT = raw battery / charger battery node and MAX17048 sense/supply\nSW_BATT = switched battery output from external power switch\nB- = battery negative / GND pad near B+/SW+\nVSYS = diode/PMOS-selected system / buck input\nFor charge-while-off: battery + to B+/+BATT, switch output to SW+/SW_BATT, battery - to B-/GND; Q2 populated blocks USB backfeed."
+	(text "VBUS = USB input / charger input only\nB+ / +BATT = raw battery positive pad / charger battery node and MAX17048 sense/supply\nSW+ / SW_BATT = switched battery positive pad from external power switch\nB- / GND = battery negative pad near B+/SW+\nVSYS = diode/PMOS-selected system / buck input\nFor charge-while-off: battery + to B+/+BATT, switch output to SW+/SW_BATT, battery - to B-/GND; Q2 populated blocks USB backfeed."
 		(exclude_from_sim no)
 		(at 125.476 182.372 0)
 		(effects
@@ -7569,6 +7587,16 @@
 	)
 	(wire
 		(pts
+			(xy 262.89 138.43) (xy 274.32 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f6656b44-23c2-48b9-a5b4-a79b2fb214be")
+	)
+	(wire
+		(pts
 			(xy 74.93 146.05) (xy 40.64 146.05)
 		)
 		(stroke
@@ -8657,6 +8685,30 @@
 			)
 		)
 	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 274.32 138.43 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "9f9eecb7-af38-4294-b644-07b10d0e42cf")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 274.32 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+	)
 	(global_label "A+"
 		(shape bidirectional)
 		(at 262.89 130.81 0)
@@ -9108,6 +9160,9 @@
 		)
 		(pin "15"
 			(uuid "c47a8dbe-4c5b-4ad5-ae9f-23eab5126daa")
+		)
+		(pin "16"
+			(uuid "1af25104-cb4c-48cc-b97c-12a6bc13e991")
 		)
 		(instances
 			(project "crimpdeq"
