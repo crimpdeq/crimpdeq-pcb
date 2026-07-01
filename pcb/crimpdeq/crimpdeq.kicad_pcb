@@ -697,7 +697,18 @@
 				)
 			)
 		)
-		(fp_text user "VBAT"
+		(fp_text user "B-"
+			(at -0.4 29.1 0)
+			(layer "F.SilkS")
+			(uuid "2f8060b7-5a56-451e-b2df-346183841d81")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.12)
+				)
+			)
+		)
+		(fp_text user "B+"
 			(at 0 18.6 0)
 			(layer "F.SilkS")
 			(uuid "2d3c902c-114d-4580-aa57-034e5bf90d40")
@@ -751,6 +762,17 @@
 			(pinfunction "SW+")
 			(pintype "passive")
 			(uuid "3b175f68-1c78-4293-b6c2-7ca35f3d7e23")
+		)
+		(pad "5" thru_hole circle
+			(at -1.06 27.5)
+			(size 1.5 1.5)
+			(drill 0.8)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "GND")
+			(pinfunction "B-")
+			(pintype "passive")
+			(uuid "a3fb4b9b-3c9a-42b2-9c6b-b249d9993918")
 		)
 		(embedded_fonts no)
 	)
@@ -15622,6 +15644,14 @@
 		(filling no)
 		(net "GND")
 		(uuid "fb674894-eb96-41cb-af43-277a57990b0e")
+	)
+	(segment
+		(start 149.6 105.685)
+		(end 149 105)
+		(width 0.4064)
+		(layer "B.Cu")
+		(net "GND")
+		(uuid "b53d837a-32af-450a-9de8-8ae8df2507e8")
 	)
 	(segment
 		(start 146.6 74.065)

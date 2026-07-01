@@ -5518,7 +5518,7 @@
 		)
 		(uuid "e70b162a-2c0d-473c-8f8e-226eb6940bc9")
 	)
-	(text "VBUS = USB input / charger input only\n+BATT = raw battery / charger battery node and MAX17048 sense/supply\nSW_BATT = switched battery output from external power switch\nVSYS = diode/PMOS-selected system / buck input\nFor charge-while-off: battery + to B+/+BATT, switch output to SW+/SW_BATT; Q2 populated blocks USB backfeed."
+	(text "VBUS = USB input / charger input only\n+BATT = raw battery / charger battery node and MAX17048 sense/supply\nSW_BATT = switched battery output from external power switch\nB- = battery negative / GND pad near B+/SW+\nVSYS = diode/PMOS-selected system / buck input\nFor charge-while-off: battery + to B+/+BATT, switch output to SW+/SW_BATT, battery - to B-/GND; Q2 populated blocks USB backfeed."
 		(exclude_from_sim no)
 		(at 125.476 182.372 0)
 		(effects
