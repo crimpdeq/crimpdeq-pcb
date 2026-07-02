@@ -853,6 +853,254 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Crimpdeq:External_Pads_2"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(in_pos_files no)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "External_Pads_2"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 -7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Two external solder pads"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "External_Pads_2_0_1"
+				(rectangle
+					(start -5.08 3.81)
+					(end 5.08 -3.81)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "External_Pads_2_1_1"
+				(pin passive line
+					(at 7.62 1.27 180)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 -1.27 180)
+					(length 2.54)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Crimpdeq:External_Pads_3"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(in_pos_files no)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "External_Pads_3"
+				(at 0 -6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 -8.89 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Three external solder pads"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "External_Pads_3_0_1"
+				(rectangle
+					(start -5.08 5.08)
+					(end 5.08 -5.08)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "External_Pads_3_1_1"
+				(pin passive line
+					(at 7.62 2.54 180)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 0 180)
+					(length 2.54)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 -2.54 180)
+					(length 2.54)
+					(name "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:C"
 			(pin_numbers
 				(hide yes)
@@ -3294,24 +3542,6 @@
 			)
 			(symbol "Rust_Board_1_1"
 				(pin passive line
-					(at 21.59 -5.08 180)
-					(length 2.54)
-					(name "B-"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "16"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
 					(at 21.59 -2.54 180)
 					(length 2.54)
 					(name "SW+"
@@ -3412,6 +3642,24 @@
 						)
 					)
 					(number "15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 21.59 -5.08 180)
+					(length 2.54)
+					(name "B-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "16"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -5523,6 +5771,19 @@
 		)
 		(uuid "cd41562b-e470-468a-81ba-b84d6faf91b6")
 	)
+	(text "Schematic-linked external solder pads"
+		(exclude_from_sim no)
+		(at 245.11 105.664 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "e4dd8b5c-c02b-491a-8b6f-d39c3cd9775b")
+	)
 	(text "DC/DC Buck Converter 3V3 Rails"
 		(exclude_from_sim no)
 		(at 251.714 101.346 0)
@@ -5538,7 +5799,7 @@
 	)
 	(text "VBUS = USB input / charger input only\nB+ / +BATT = raw battery positive pad / charger battery node and MAX17048 sense/supply\nSW+ / SW_BATT = switched battery positive pad from external power switch\nB- / GND = battery negative pad near B+/SW+\nVSYS = diode/PMOS-selected system / buck input\nFor charge-while-off: battery + to B+/+BATT, switch output to SW+/SW_BATT, battery - to B-/GND; Q2 populated blocks USB backfeed."
 		(exclude_from_sim no)
-		(at 125.476 182.372 0)
+		(at 124.206 183.134 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5887,7 +6148,7 @@
 	)
 	(wire
 		(pts
-			(xy 273.05 123.19) (xy 270.51 123.19)
+			(xy 250.19 116.84) (xy 247.65 116.84)
 		)
 		(stroke
 			(width 0)
@@ -6094,6 +6355,16 @@
 			(type default)
 		)
 		(uuid "1884de30-21da-4f6d-b322-51af82d76e1b")
+	)
+	(wire
+		(pts
+			(xy 240.03 132.08) (xy 243.84 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1983f57f-a0d1-4fa1-8816-abf37b62696c")
 	)
 	(wire
 		(pts
@@ -6497,6 +6768,16 @@
 	)
 	(wire
 		(pts
+			(xy 243.84 132.08) (xy 243.84 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "44543ba2-d854-43bf-be89-5078ed6f1cec")
+	)
+	(wire
+		(pts
 			(xy 203.2 73.66) (xy 203.2 77.47)
 		)
 		(stroke
@@ -6537,7 +6818,7 @@
 	)
 	(wire
 		(pts
-			(xy 270.51 125.73) (xy 270.51 123.19)
+			(xy 247.65 119.38) (xy 247.65 116.84)
 		)
 		(stroke
 			(width 0)
@@ -7087,6 +7368,16 @@
 	)
 	(wire
 		(pts
+			(xy 264.16 147.32) (xy 270.51 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8aad6971-6057-4254-9956-7df55ba03f33")
+	)
+	(wire
+		(pts
 			(xy 170.18 39.37) (xy 173.99 39.37)
 		)
 		(stroke
@@ -7167,7 +7458,7 @@
 	)
 	(wire
 		(pts
-			(xy 273.05 125.73) (xy 273.05 123.19)
+			(xy 250.19 119.38) (xy 250.19 116.84)
 		)
 		(stroke
 			(width 0)
@@ -7507,7 +7798,7 @@
 	)
 	(wire
 		(pts
-			(xy 262.89 125.73) (xy 270.51 125.73)
+			(xy 240.03 119.38) (xy 247.65 119.38)
 		)
 		(stroke
 			(width 0)
@@ -7564,36 +7855,6 @@
 			(type default)
 		)
 		(uuid "c1ffc613-8e23-4ff3-8853-084f04257a71")
-	)
-	(wire
-		(pts
-			(xy 262.89 133.35) (xy 274.32 133.35)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c26fb218-09c4-4a2f-878e-c56dd729d713")
-	)
-	(wire
-		(pts
-			(xy 262.89 135.89) (xy 279.4 135.89)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c3acc703-5bd1-4f84-b7b9-b10d1cc6dcd9")
-	)
-	(wire
-		(pts
-			(xy 262.89 138.43) (xy 274.32 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f6656b44-23c2-48b9-a5b4-a79b2fb214be")
 	)
 	(wire
 		(pts
@@ -7764,6 +8025,16 @@
 			(type default)
 		)
 		(uuid "d7acafd0-718c-4432-9934-750959caca19")
+	)
+	(wire
+		(pts
+			(xy 269.24 114.3) (xy 275.59 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d87d25a6-6f32-4d67-ab7a-22c936aa8b2f")
 	)
 	(polyline
 		(pts
@@ -7997,6 +8268,16 @@
 	)
 	(wire
 		(pts
+			(xy 270.51 147.32) (xy 270.51 148.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f8d7925d-8457-49a2-b239-39c70c868b1f")
+	)
+	(wire
+		(pts
 			(xy 49.53 80.01) (xy 58.42 80.01)
 		)
 		(stroke
@@ -8014,16 +8295,6 @@
 			(type default)
 		)
 		(uuid "fa6168e8-7c63-4c63-bdc5-5f2cbb561498")
-	)
-	(wire
-		(pts
-			(xy 279.4 135.89) (xy 279.4 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb33907d-fb1e-4c1c-9883-0cc8cb0b431e")
 	)
 	(wire
 		(pts
@@ -8231,7 +8502,7 @@
 	)
 	(global_label "A-"
 		(shape bidirectional)
-		(at 262.89 128.27 0)
+		(at 240.03 121.92 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -8241,7 +8512,7 @@
 		)
 		(uuid "2ce5c1e4-828f-411c-ab65-54f7235833d8")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 269.6475 128.27 0)
+			(at 246.7875 121.92 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8250,6 +8521,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+			)
+		)
+	)
+	(global_label "E+"
+		(shape bidirectional)
+		(at 269.24 111.76 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "39f1add8-0f6b-4e87-a56d-3cb276770c14")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 269.24 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 	)
@@ -8303,7 +8596,7 @@
 	)
 	(global_label "SW_BATT"
 		(shape bidirectional)
-		(at 279.4 130.81 0)
+		(at 240.03 129.54 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -8313,7 +8606,7 @@
 		)
 		(uuid "60a5cad8-d2ea-4834-8d92-e82a50a486e6")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 288.5675 130.81 0)
+			(at 249.1975 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8565,6 +8858,28 @@
 			)
 		)
 	)
+	(global_label "SW_BATT"
+		(shape bidirectional)
+		(at 264.16 144.78 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "a29b71b7-ccab-40a5-8503-9110ceea1f17")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 264.16 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "VSYS"
 		(shape bidirectional)
 		(at 154.94 160.02 270)
@@ -8685,9 +9000,9 @@
 			)
 		)
 	)
-	(global_label "GND"
+	(global_label "A+"
 		(shape bidirectional)
-		(at 274.32 138.43 0)
+		(at 240.03 124.46 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -8695,9 +9010,9 @@
 			)
 			(justify left)
 		)
-		(uuid "9f9eecb7-af38-4294-b644-07b10d0e42cf")
+		(uuid "cbfc250a-58ab-4025-9aa1-67e735f596b5")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 274.32 138.43 0)
+			(at 246.7875 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8709,19 +9024,18 @@
 			)
 		)
 	)
-	(global_label "A+"
+	(global_label "+BATT"
 		(shape bidirectional)
-		(at 262.89 130.81 0)
-		(fields_autoplaced yes)
+		(at 264.16 142.24 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "cbfc250a-58ab-4025-9aa1-67e735f596b5")
+		(uuid "cc8c7d34-875c-4989-aabb-04eb27b5e047")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 269.6475 130.81 0)
+			(at 264.16 142.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8729,7 +9043,6 @@
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 	)
@@ -8783,7 +9096,7 @@
 	)
 	(global_label "+BATT"
 		(shape bidirectional)
-		(at 274.32 133.35 0)
+		(at 240.03 127 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -8793,7 +9106,7 @@
 		)
 		(uuid "e3af6193-f9ff-47af-9ba2-6ea67e86f36b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 281.9073 133.35 0)
+			(at 247.6173 127 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8802,6 +9115,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+			)
+		)
+	)
+	(global_label "A-"
+		(shape bidirectional)
+		(at 267.97 128.27 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e54c1a90-c397-4ad6-b502-a5221d867038")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 267.97 128.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 	)
@@ -8853,6 +9188,28 @@
 			)
 		)
 	)
+	(global_label "A+"
+		(shape bidirectional)
+		(at 267.97 130.81 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "f047818f-9971-4f16-9e37-64373151ca78")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 267.97 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "USB_D+"
 		(shape bidirectional)
 		(at 57.15 67.31 180)
@@ -8879,7 +9236,7 @@
 	)
 	(global_label "E+"
 		(shape bidirectional)
-		(at 262.89 123.19 0)
+		(at 240.03 116.84 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -8889,7 +9246,7 @@
 		)
 		(uuid "f4e2cf25-35a5-4abe-8e8d-f4337e567e60")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 269.7079 123.19 0)
+			(at 246.8479 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9081,7 +9438,7 @@
 	)
 	(symbol
 		(lib_id "Rust_Board:Rust_Board")
-		(at 241.3 133.35 0)
+		(at 218.44 127 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9091,7 +9448,7 @@
 		(dnp no)
 		(uuid "0db110f3-f1b6-4ad5-a86a-df560aa3ae11")
 		(property "Reference" "U4"
-			(at 241.554 111.506 0)
+			(at 218.694 105.156 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9101,7 +9458,7 @@
 			)
 		)
 		(property "Value" "Rust_Board"
-			(at 241.808 113.284 0)
+			(at 218.948 106.934 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9111,7 +9468,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 242.57 143.256 0)
+			(at 219.71 136.906 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9122,7 +9479,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 241.3 130.81 0)
+			(at 218.44 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9133,7 +9490,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 241.3 132.08 0)
+			(at 218.44 125.73 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10588,6 +10945,85 @@
 		)
 	)
 	(symbol
+		(lib_id "Crimpdeq:External_Pads_2")
+		(at 261.62 113.03 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "2b1a32e8-c75d-4c87-9dd3-6ce39ba7fc81")
+		(property "Reference" "J3"
+			(at 261.62 106.68 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Loadcell_Pads"
+			(at 261.62 119.38 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "External_Cable_Pads_Left"
+			(at 261.62 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 261.62 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 261.62 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "44323285-73f7-4f35-964e-9df23f7c8413")
+		)
+		(pin "2"
+			(uuid "5848fdb4-d043-4c90-ae60-47da43aaf6e8")
+		)
+		(instances
+			(project "crimpdeq"
+				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
+					(reference "J3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R_Small_US")
 		(at 274.32 31.75 0)
 		(unit 1)
@@ -11380,6 +11816,83 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 270.51 148.59 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "30745ab1-3141-4c40-a120-2cfbe5e94904")
+		(property "Reference" "#PWR039"
+			(at 270.51 154.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 268.986 151.892 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 270.51 148.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 270.51 148.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 270.51 148.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "dd48c142-2c8d-4be3-b12b-41d10c9bf2b1")
+		)
+		(instances
+			(project "crimpdeq"
+				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
+					(reference "#PWR039")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:L_Small")
 		(at 240.03 77.47 90)
 		(unit 1)
@@ -11618,6 +12131,83 @@
 			(project "crimpdeq"
 				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
 					(reference "#PWR07")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 243.84 134.62 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "3bcdaa86-b188-4f9a-a125-fe5a231e1d87")
+		(property "Reference" "#PWR037"
+			(at 243.84 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 242.316 137.922 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 243.84 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 243.84 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 243.84 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "5212e7a7-fc1d-4b2e-a38b-21ee342e552e")
+		)
+		(instances
+			(project "crimpdeq"
+				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
+					(reference "#PWR037")
 					(unit 1)
 				)
 			)
@@ -12280,7 +12870,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 273.05 125.73 0)
+		(at 250.19 119.38 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12290,7 +12880,7 @@
 		(dnp no)
 		(uuid "55de4b41-1a0a-4648-915e-41669ac88c30")
 		(property "Reference" "#PWR036"
-			(at 273.05 132.08 0)
+			(at 250.19 125.73 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12301,7 +12891,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 271.526 129.032 0)
+			(at 248.666 122.682 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12311,7 +12901,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 273.05 125.73 0)
+			(at 250.19 119.38 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12322,7 +12912,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 273.05 125.73 0)
+			(at 250.19 119.38 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12333,7 +12923,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 273.05 125.73 0)
+			(at 250.19 119.38 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13698,6 +14288,83 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 275.59 114.3 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "82f2ef33-f03a-4b6e-bd2f-7607f5bcc928")
+		(property "Reference" "#PWR038"
+			(at 275.59 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 274.066 117.602 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 275.59 114.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 275.59 114.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 275.59 114.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "313336aa-d2d3-4e78-935b-6ae988259cce")
+		)
+		(instances
+			(project "crimpdeq"
+				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
+					(reference "#PWR038")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Small")
 		(at 43.18 36.83 0)
 		(unit 1)
@@ -13883,6 +14550,85 @@
 			(project "crimpdeq"
 				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
 					(reference "U6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Crimpdeq:External_Pads_2")
+		(at 260.35 129.54 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "8d78a3e5-d3ca-4544-bc4c-61dd391b0f4f")
+		(property "Reference" "J4"
+			(at 297.18 85.09 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Sense_Pads"
+			(at 260.35 135.89 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "External_Sense_Pads_Right"
+			(at 260.35 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 260.35 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 260.35 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8a06638c-9a95-421a-9c0a-b5cc16b9e7e9")
+		)
+		(pin "2"
+			(uuid "b83e995c-6908-46db-bc1d-f697bd4b9662")
+		)
+		(instances
+			(project "crimpdeq"
+				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
+					(reference "J4")
 					(unit 1)
 				)
 			)
@@ -15029,6 +15775,88 @@
 			(project "crimpdeq"
 				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
 					(reference "#PWR06")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Crimpdeq:External_Pads_3")
+		(at 256.54 144.78 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "acdfd30d-fd3e-4ac4-a436-ad8c65fbfbf8")
+		(property "Reference" "J5"
+			(at 256.54 138.43 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Battery_Switch_Pads"
+			(at 256.54 151.13 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "External_Battery_Switch_Pads_Left"
+			(at 256.54 153.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 256.54 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 256.54 144.78 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9b8a035d-ec49-4132-90c4-3df3bac87ab6")
+		)
+		(pin "2"
+			(uuid "89fd6d7f-27bd-4aac-91ef-53eeb4fc1db8")
+		)
+		(pin "3"
+			(uuid "45a58b4b-8655-4849-ae7a-164bf7d4c7dd")
+		)
+		(instances
+			(project "crimpdeq"
+				(path "/eb289f4a-30cd-4b15-be5d-5da73d92c8be"
+					(reference "J5")
 					(unit 1)
 				)
 			)
