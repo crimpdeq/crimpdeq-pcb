@@ -42,5 +42,6 @@ fp-info-cache
 # macOS
 .DS_Store
 
-# Analysis output -- regenerable from source files
+# Analysis/output -- regenerable from source files
 pcb/crimpdeq/analysis/
+pcb/crimpdeq/production/

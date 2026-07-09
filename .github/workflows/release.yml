@@ -46,7 +46,7 @@ jobs:
       - name: Evaluate DRC report
         run: bash .github/scripts/check-kicad-report.sh reports/drc.rpt "PCB DRC"
 
-      - name: Export PCB production files
+      - name: Export schematic production files
         uses: actions-for-kicad/kicad-actions@v2-k10.0
         with:
           schematic_file_name: ${{ env.SCH_FILE }}
@@ -54,13 +54,22 @@ jobs:
           schematic_output_pdf_file_name: artifacts/schematic.pdf
           schematic_output_bom: true
           schematic_output_bom_file_name: artifacts/bom.raw.csv
-          schematic_output_bom_fields: Reference,Footprint,${QUANTITY},Value,LCSC,${DNP},AssemblyNote
-          schematic_output_bom_labels: Reference,Footprint,Quantity,Value,LCSC Part #,DNP,Assembly Note
+          schematic_output_bom_fields: 'Reference,Footprint,${QUANTITY},Value,LCSC,${DNP},AssemblyNote'
+          schematic_output_bom_labels: 'Reference,Footprint,Quantity,Value,LCSC Part #,DNP,Assembly Note'
 
+      - name: Export PCB layout PDF
+        uses: actions-for-kicad/kicad-actions@v2-k10.0
+        with:
           pcb_file_name: ${{ env.PCB_FILE }}
           pcb_output_pdf: true
           pcb_output_pdf_file_name: artifacts/layout.pdf
           pcb_output_layers: F.Cu,B.Cu,F.Silkscreen,B.Silkscreen,Edge.Cuts
+
+      - name: Export PCB fabrication files
+        uses: actions-for-kicad/kicad-actions@v2-k10.0
+        with:
+          pcb_file_name: ${{ env.PCB_FILE }}
+          pcb_output_layers: F.Cu,B.Cu,F.Mask,B.Mask,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,Edge.Cuts
           pcb_output_gerbers_and_drill: true
           pcb_output_gerbers_and_drill_folder_name: artifacts/gerber
           pcb_output_pos: true
@@ -72,6 +81,38 @@ jobs:
         run: |
           bash .github/scripts/generate-bom.sh artifacts/bom.raw.csv "$SCH_FILE" artifacts/bom.csv
           rm artifacts/bom.raw.csv
+
+      - name: Verify Gerber fabrication layers
+        run: |
+          required=(
+            "F_Cu:*.gtl *-F_Cu.gbr"
+            "B_Cu:*.gbl *-B_Cu.gbr"
+            "F_Mask:*.gts *-F_Mask.gbr"
+            "B_Mask:*.gbs *-B_Mask.gbr"
+            "F_Paste:*.gtp *-F_Paste.gbr"
+            "B_Paste:*.gbp *-B_Paste.gbr"
+            "F_Silkscreen:*.gto *-F_Silkscreen.gbr"
+            "B_Silkscreen:*.gbo *-B_Silkscreen.gbr"
+            "Edge_Cuts:*.gm1 *.gko *-Edge_Cuts.gbr"
+            "Drill:*.drl"
+          )
+
+          for item in "${required[@]}"; do
+            name="${item%%:*}"
+            patterns="${item#*:}"
+            found=0
+            for pattern in $patterns; do
+              if compgen -G "artifacts/gerber/$pattern" > /dev/null; then
+                found=1
+                break
+              fi
+            done
+            if [ "$found" -ne 1 ]; then
+              echo "::error::Missing Gerber fabrication output for $name"
+              ls -la artifacts/gerber
+              exit 1
+            fi
+          done
 
       - name: Create gerber archive
         run: cd artifacts/gerber && zip -r ../gerber.zip .
@@ -86,6 +127,9 @@ jobs:
             base="$(basename "$src")"
 
             case "$base" in
+              *.gtl|*.gbl|*.gts|*.gbs|*.gtp|*.gbp|*.gto|*.gbo|*.gm1|*.gko|*.drl)
+                dst="$base"
+                ;;
               *-F_Cu.gbr) dst="${base%.gbr}.gtl" ;;
               *-B_Cu.gbr) dst="${base%.gbr}.gbl" ;;
               *-F_Mask.gbr) dst="${base%.gbr}.gts" ;;
@@ -95,7 +139,6 @@ jobs:
               *-F_Silkscreen.gbr) dst="${base%.gbr}.gto" ;;
               *-B_Silkscreen.gbr) dst="${base%.gbr}.gbo" ;;
               *-Edge_Cuts.gbr) dst="${base%.gbr}.gm1" ;;
-              *.drl) dst="$base" ;;
               *) continue ;;
             esac
 
