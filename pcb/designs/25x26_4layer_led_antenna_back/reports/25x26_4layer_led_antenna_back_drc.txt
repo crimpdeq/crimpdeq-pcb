@@ -1,0 +1,18 @@
+** Drc report for 25x26_4layer_led_antenna_back.kicad_pcb **
+** Created on 2026-07-16T20:02:41 **
+** Report includes: Errors **
+
+** Found 0 DRC violations **
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **

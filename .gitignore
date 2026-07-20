@@ -2,6 +2,8 @@
 # Format documentation: https://kicad.org/help/file-formats/
 
 # Temporary files
+__pycache__/
+*.pyc
 *.000
 *.bak
 *.bck
@@ -31,7 +33,6 @@ fp-info-cache
 
 # Exported BOM files
 *.xml
-*.csv
 
 # Archived Backups (KiCad 6.0)
 **/*-backups/*.zip
@@ -42,6 +43,9 @@ fp-info-cache
 # macOS
 .DS_Store
 
+# Editor local-history caches
+.history/
+
 # Analysis/output -- regenerable from source files
-pcb/crimpdeq/analysis/
-pcb/crimpdeq/production/
+pcb/designs/crimpdeq-v2/analysis/
+pcb/designs/crimpdeq-v2/production/
