@@ -60,8 +60,8 @@ scripts live in `tools/compact/`.
 
 ## Session Log — 2026-07-16
 
-- Added `25x26_4layer_led_antenna_back` as a new design under `pcb/designs/`. Reduced nominal
-  PCB area from 918.75 mm2 to 650.00 mm2 (29.25% reduction) versus the prior 4-layer layout.
+- Added `25x26_4layer_led_antenna_back` as a new design under `pcb/designs/`. Nominal board
+  area is `650.00 mm2`, about 56% smaller than the `crimpdeq-v2` reference (`1467.40 mm2`).
 - Kept U1 and D4 on the back, J2 and U3 on the front, and the exact 48-component / 197-pad
   electrical design. Moved every cable pad to an edge and placed functional silk beside it.
 - Allowed the ESP32 antenna body to extend beyond the top edge, preserving the all-layer copper
