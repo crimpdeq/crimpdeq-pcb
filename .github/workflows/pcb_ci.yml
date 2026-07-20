@@ -15,11 +15,21 @@ on:
 
 jobs:
   pcb:
-    name: Check PCB
+    name: Check PCB (${{ matrix.name }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: crimpdeq-v2
+            pcb: pcb/designs/crimpdeq-v2/crimpdeq.kicad_pcb
+            schematic: pcb/designs/crimpdeq-v2/crimpdeq.kicad_sch
+          - name: crimpdeq-v2-nano
+            pcb: pcb/designs/crimpdeq-v2-nano/crimpdeq-v2-nano.kicad_pcb
+            schematic: pcb/designs/crimpdeq-v2-nano/crimpdeq-v2-nano.kicad_sch
     env:
-      PCB_FILE: pcb/crimpdeq/crimpdeq.kicad_pcb
-      SCH_FILE: pcb/crimpdeq/crimpdeq.kicad_sch
+      PCB_FILE: ${{ matrix.pcb }}
+      SCH_FILE: ${{ matrix.schematic }}
 
     steps:
       - name: Checkout
@@ -55,7 +65,7 @@ jobs:
         id: upload_schematic
         uses: actions/upload-artifact@v6
         with:
-          name: pcb-schematic-pdf
+          name: pcb-${{ matrix.name }}-schematic-pdf
           path: artifacts/schematic.pdf
           if-no-files-found: warn
 
@@ -64,7 +74,7 @@ jobs:
         id: upload_layout
         uses: actions/upload-artifact@v6
         with:
-          name: pcb-layout-pdf
+          name: pcb-${{ matrix.name }}-layout-pdf
           path: artifacts/layout.pdf
           if-no-files-found: warn
 
@@ -72,7 +82,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: pcb-drc-report
+          name: pcb-${{ matrix.name }}-drc-report
           path: reports/drc.rpt
           if-no-files-found: warn
 
@@ -95,7 +105,7 @@ jobs:
           layout_url="${LAYOUT_ARTIFACT_URL:-$run_url}"
 
           {
-            echo "## PCB CI"
+            echo "## PCB CI: ${{ matrix.name }}"
             echo
             echo "- DRC action result: ${DRC_OUTCOME:-unknown}"
             echo "- DRC error gate: ${DRC_CHECK_OUTCOME:-unknown}"
