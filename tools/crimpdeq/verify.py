@@ -10,7 +10,7 @@ import pcbnew
 EXPECTED_REFS = frozenset(
     "C1 C2 C3 C4 C5 C6 C9 C10 C11 C12 C15 C16 C17 C18 C19 "
     "D1 D2 D3 D4 D7 D8 D9 D10 J2 J5 J6 J7 J8 J9 J10 J11 J12 L1 Q2 "
-    "R1 R2 R3 R7 R8 R9 R13 R14 R15 R16 R17 R18 R19 R20 R21 R22 "
+    "R1 R2 R3 R7 R8 R9 R13 R14 R15 R16 R17 R18 R19 R20 R21 R22 R23 R24 R25 R26 "
     "U1 U2 U3 U5 U6".split()
 )
 
@@ -60,11 +60,15 @@ GOLDEN_NETS = {
         "U3.8 U5.1 U5.4 U5.6 U5.9 U6.2"
     ),
     "IO10_ALRT": "R22.1 U1.16 U5.5",
-    "IO1_MISO": "U1.13 U3.15",
+    "IO1_MISO": "R26.2 U1.13",
     "IO2_LED": "R13.1 U1.5",
-    "IO3_CS": "U1.6 U3.2",
-    "IO4_MOSI": "U1.18 U3.16",
-    "IO5_SCK": "U1.19 U3.1",
+    "IO3_CS": "R25.1 U1.6",
+    "IO4_MOSI": "R24.1 U1.18",
+    "IO5_SCK": "R23.1 U1.19",
+    "ADS_DOUT": "R26.1 U3.15",
+    "ADS_CS": "R25.2 U3.2",
+    "ADS_DIN": "R24.2 U3.16",
+    "ADS_SCLK": "R23.2 U3.1",
     "IO6_SCL": "R20.1 U1.20 U5.7",
     "IO7_SDA": "R21.1 U1.21 U5.8",
     "Net-(D1-K)": "D1.1 R3.2",
@@ -177,6 +181,34 @@ def verify_golden_netlist(footprints):
     return len(actual)
 
 
+def verify_adc_parts(footprints):
+    """Keep the selected filter capacitor and source-local SPI dampers explicit."""
+    selected = {
+        "C12": ("0.1uF", "Capacitor_SMD:C_1206_3216Metric", "GRM31C5C2A104JA01L", "C405303"),
+        **{ref: ("47R 1%", "Resistor_SMD:R_0402_1005Metric", "0402WGF470JTCE", "C25118")
+           for ref in ("R23", "R24", "R25", "R26")},
+    }
+    for ref, expected in selected.items():
+        fp = footprints[ref]
+        fields = [fp.GetField(name) for name in ("MPN", "LCSC")]
+        actual = (fp.GetValue(), fp.GetFPIDAsString(),
+                  *(field.GetText() if field else None for field in fields))
+        if actual != expected:
+            raise SystemExit(f"{ref} ADC part mismatch: actual={actual}, expected={expected}")
+    for ref in ("R7", "R8"):
+        if footprints[ref].GetValue() != "100R 1%":
+            raise SystemExit(f"{ref} analog filter must remain 100R 1%")
+    for ref, source, number in (("R23", "U1", "19"), ("R24", "U1", "18"),
+                                ("R25", "U1", "6"), ("R26", "U3", "15")):
+        a = footprints[ref].GetPosition()
+        z = pad(footprints[source], number).GetPosition()
+        distance = math.hypot(mm(a.x - z.x), mm(a.y - z.y))
+        if distance > 3.0:
+            raise SystemExit(f"{ref} is {distance:.3f} mm from source {source}.{number}; limit 3 mm")
+    if not pad(footprints["U3"], "14").GetNetname().startswith("unconnected-"):
+        raise SystemExit("U3.14 dedicated DRDY must remain unconnected")
+
+
 def verify_schematic_links(footprints):
     """Reject missing or duplicate symbol paths before a PCB sync can misidentify parts."""
     references_by_path = {}
@@ -234,7 +266,7 @@ def verify_analog_corridor(board, footprints):
     crossings = []
     for item in tracks:
         net = item.GetNetname()
-        if not (net.startswith(("IO", "USB_")) or net in {"CHIP_PU", "Net-(D4-DIN)"}):
+        if not (net.startswith(("IO", "USB_", "ADS_")) or net in {"CHIP_PU", "Net-(D4-DIN)"}):
             continue
         # Project all layers, including vias, onto the same XY corridor.
         layer = pcbnew.F_Cu if item.Type() == pcbnew.PCB_VIA_T else item.GetLayer()
@@ -256,6 +288,7 @@ def main():
         )
 
     verify_schematic_links(footprints)
+    verify_adc_parts(footprints)
     connected_pads = verify_golden_netlist(footprints)
     verify_usb_geometry(board)
     verify_analog_corridor(board, footprints)
