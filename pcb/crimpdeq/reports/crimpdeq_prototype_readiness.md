@@ -340,7 +340,7 @@ A symmetrical bridge excited at 3.3 V nominally places its common mode near 1.65
 | C2 | **STILL RESOLVED.** Saved canonical fill content unchanged; final isolated refill check has zero errors/unconnected. |
 | W1 | **SOURCE METADATA FIXED; RELEASE HANDLING OPEN.** J5–J12 DNP=true in schematic and PCB, matching BOM Do Not Place intent. Existing CPL still lists all eight; its correction/assembler handling awaits a separately authorized release step. |
 | W2 | **STILL RESOLVED.** Parent `verify.py` corridor and USB-overlap guards PASS; surviving copper and zones unchanged. |
-| W3 | **OPEN; MEASURED, NOT TUNED.** U1→J2 A-side D−/D+ planar difference 3.6374 mm; B-side 0.3134 mm. Branch-separated paths and limitations in §7; no USB copper changed. PCBWay stackup/90 Ω assessment and tuning decision pending. |
+| W3 | **OPEN; MEASURED, NOT TUNED.** U1→J2 planar shortest-path D− minus D+ is +0.6494 mm on the A side and −2.6746 mm on the B side. The former 3.6374/0.3134 mm figures incorrectly included the 2.988 mm D− ESD shunt in the connector path. Branch-separated paths and limitations are in §7; no USB copper changed. PCBWay stackup/90 Ω assessment and tuning decision pending. |
 | W4 | **OPEN; PROPOSAL ONLY.** Both 100 nF bypass capacitors share a 0.8786 mm routed return segment; current-loop impedance remains unqualified. Four 47 Ω SPI resistors and specified C12 C0G dielectric are proposed in §7, not applied. |
 | W5 | **FIXED.** Original ten parity findings resolved; final all-severity parity zero. All 57 schematic net endpoint sets and existing UUIDs preserved. Library/procurement quality is not inferred from metadata parity. |
 | W6 | **PARTIALLY FIXED.** Text warning categories remain zero. Original six dangling objects and the subsequent four queued objects are removed. **43 warnings** remain: 39 library mismatches + 2 aliases + 2 newly exposed dangling tracks retained outside follow-up removal scope. Written dispositions below and §7. |
@@ -473,14 +473,14 @@ R2 measured unique routed centerline paths from U1 pad centers to each tied USB-
 |---|---:|---:|---:|---:|
 | D+ U1.27 → J2.A6 | 1.2108 | 32.6514 | 1.3020 | 35.1643 |
 | D+ U1.27 → J2.B6 | 1.2108 | 32.6514 | 1.8720 | 35.7343 |
-| D− U1.26 → J2.A7 | 2.0406 | 30.6233 | 6.1378 | 38.8017 |
-| D− U1.26 → J2.B7 | 2.0406 | 30.6233 | 3.3838 | 36.0477 |
+| D− U1.26 → J2.A7 | 2.0406 | 27.6353 | 6.1378 | 35.8137 |
+| D− U1.26 → J2.B7 | 2.0406 | 27.6353 | 3.3838 | 33.0597 |
 
-D− minus D+: **A-side 3.6374 mm; B-side 0.3134 mm** (totals rounded independently). Through-route layer transitions: D+ B.Cu→In2.Cu at (136.8020,61.0260), In2.Cu→F.Cu at (146.9650,77.0322); D− at (134.2450,62.3310) and (147.6500,77.8500), respectively. Additional via taps lead to TVS branches: D+ (146.1940,72.6247)→D10.1 (146.3000,73.5000), **0.9189 mm F.Cu**; D− (141.9120,73.4517)→D7.1 (143.3000,73.5000), **1.4079 mm F.Cu**. Aggregate copper totals 37.7452/40.2096 mm include branches and must not be presented as paired endpoint paths. These measurements do not prove coupling, skew tolerance or impedance.
+D− minus D+: **A-side +0.6494 mm; B-side −2.6746 mm** (totals rounded independently). The former 3.6374/0.3134 mm figures incorrectly counted the separate 2.988 mm D− In2.Cu ESD shunt as part of each connector path. Through-route layer transitions: D+ B.Cu→In2.Cu at (136.8020,61.0260), In2.Cu→F.Cu at (146.9650,77.0322); D− at (134.2450,62.3310) and (147.6500,77.8500), respectively. Additional via taps lead to TVS branches: D+ (146.1940,72.6247)→D10.1 (146.3000,73.5000), **0.9189 mm F.Cu**; D− (141.9120,73.4517)→D7.1 (143.3000,73.5000), **1.4079 mm F.Cu**. Aggregate copper totals 37.7452/40.2096 mm include branches and must not be presented as paired endpoint paths. These measurements do not prove coupling, skew tolerance or impedance.
 
 **Question to PCBWay (not sent):** “For this four-layer Crimpdeq board with USB_D± routed on F.Cu, In2.Cu and B.Cu using 0.20 mm traces, please supply the exact proposed production stackup: total thickness/tolerance, each core/prepreg thickness and material Dk/Df, finished copper thickness per layer, reference planes and soldermask assumptions. Please assess the actual pair spacing, transitions and TVS/USB-C branches against 90 Ω differential impedance on each routed layer; state your impedance tolerance, required width/spacing adjustments and coupon/test method. Do not assume a nominal stackup or modify routing without approval.”
 
-**Sergio decision:** after that response, choose an explicit full-speed USB impedance/skew acceptance target and whether to authorize coupled-route tuning, preserving ESD branches and the W2 analog corridor. No tuning applied.
+**Sergio decision:** after that response, choose an explicit full-speed USB impedance/skew acceptance target and whether to authorize coupled-route tuning, preserving ESD branches and the W2 analog corridor. No tuning applied. The tracked closure gates and manufacturer inquiry are maintained in `crimpdeq_usb_signal_actions.md`.
 
 ### W4 — Sergio approval of component substitutions/additions and qualification plan
 
