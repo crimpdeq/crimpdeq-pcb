@@ -1246,7 +1246,7 @@
 			)
 		)
 	)
-	(footprint "Package_TO_SOT_SMD:SOT-23-5"
+	(footprint "Crimpdeq:SY8088_SOT-23-5"
 		(layer "F.Cu")
 		(uuid "1beb6e2e-7c58-46e0-b6a3-6ce6077c0ece")
 		(at 136.5 56.5 -90)
@@ -2249,7 +2249,7 @@
 			)
 		)
 	)
-	(footprint "TSSOP-16_4.4x5mm_P0.65mm"
+	(footprint "Package_SO:TSSOP-16_4.4x5mm_P0.65mm"
 		(layer "F.Cu")
 		(uuid "4cd895bf-5b3c-49e5-b443-5172d6a35d75")
 		(at 134.2 68.5)
@@ -2277,7 +2277,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/ads1220.pdf"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -2304,6 +2304,45 @@
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "ed9678bb-204f-4096-9988-eb2f5da09d03")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MANUFACTURER" "Texas Instruments"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "afd5cade-b6aa-450f-b387-3c701082ed94")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "ADS1220IPWR"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5001a238-d87b-4561-b023-819b95bacff6")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C48263"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f6fa2ce9-14a9-48ca-bffc-3f4933b04871")
 			(effects
 				(font
 					(size 1 1)
@@ -5354,7 +5393,7 @@
 			)
 		)
 	)
-	(footprint "C_0603_1608Metric"
+	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "b87f6fb4-d341-43b5-9269-2d54cbf0dac7")
 		(at 140.8 69.1)
@@ -6872,7 +6911,7 @@
 			)
 		)
 	)
-	(footprint "C_0603_1608Metric"
+	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "df2b6f86-cb00-4cb8-803d-4f7a88bfd44d")
 		(at 140.3 67.6)
@@ -7351,7 +7390,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.analog.com/media/en/technical-documentation/data-sheets/MAX17048-MAX17049.pdf"
 			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -7378,6 +7417,45 @@
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "79ac02ad-b1f5-4079-bd24-adb6f159aeb8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MANUFACTURER" "Analog Devices / Maxim Integrated"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "c16df202-ccf4-4e9e-a3e8-1bcc9f6711e7")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "MAX17048G+T10"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "02726063-dad1-44fa-9408-e9df6d152d9b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C2682616"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5cdfe86a-6c8a-4d8e-b683-2494ed9e2dbc")
 			(effects
 				(font
 					(size 1 1)
@@ -7812,7 +7890,7 @@
 		)
 		(embedded_fonts no)
 	)
-	(footprint "Rust_Board:GCT_USB4105-GF-A"
+	(footprint "Crimpdeq:GCT_USB4105-GF-A"
 		(layer "F.Cu")
 		(uuid "f9ad2d67-e39f-4164-b27d-53446794ac38")
 		(at 147 80.7)
@@ -7840,7 +7918,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://gct.co/files/drawings/usb4105.pdf"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -7935,6 +8013,19 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "1f64cc8f-cb72-4a77-b204-b805e540210f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "USB4105-GF-A"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "c15a6ece-a6d3-44d1-a5d9-34d9c2cca0b7")
 			(effects
 				(font
 					(size 1 1)
@@ -9573,7 +9664,7 @@
 			)
 		)
 	)
-	(footprint "Package_TO_SOT_SMD:SOT-23"
+	(footprint "Crimpdeq:SOT-23"
 		(layer "B.Cu")
 		(uuid "52399624-43d1-4957-83aa-eefb8ae4c1b4")
 		(at 155 68.2 -90)
@@ -9605,7 +9696,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" "https://www.diodes.com/assets/Datasheets/DMG2301L.pdf"
+		(property "Datasheet" "https://www.diodes.com/assets/Datasheets/DMG3415U.pdf"
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
@@ -9643,6 +9734,32 @@
 					(thickness 0.15)
 				)
 				(justify mirror)
+			)
+		)
+		(property "MANUFACTURER" "Diodes Incorporated"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "9e4542cf-2051-4ae8-8523-a6dc2345d1da")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "DMG3415U-7"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "317404d0-d778-45e6-b521-8cf3129f6b85")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
 			)
 		)
 		(property ki_fp_filters "SOT?23*")
@@ -10115,7 +10232,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" "https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C52917433.pdf"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -10141,6 +10258,45 @@
 					(thickness 0.15)
 				)
 				(justify mirror)
+			)
+		)
+		(property "MANUFACTURER" "Worldsemi"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "af880df7-0e0f-473c-b129-4136d6728bf1")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "WS2812B-V6"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "2b4ce647-50cb-4444-aa3e-8071627158a7")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C52917433"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "b7cf2f45-da7b-4992-8e88-1317a33e683b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
 			)
 		)
 		(property ki_fp_filters "LED*WS2812*PLCC*5.0x5.0mm*P3.2mm*")
@@ -10698,7 +10854,7 @@
 			)
 		)
 	)
-	(footprint "Package_TO_SOT_SMD:SOT-23-5"
+	(footprint "Crimpdeq:MCP73831_SOT-23-5"
 		(layer "B.Cu")
 		(uuid "66aae7a8-4d29-4032-ae69-b90fbd598f47")
 		(at 131.5 62.2 -90)
@@ -11447,7 +11603,7 @@
 			)
 		)
 	)
-	(footprint "PCM_Espressif:ESP32-C3-MINI-1"
+	(footprint "Crimpdeq:ESP32-C3-MINI-1"
 		(layer "B.Cu")
 		(uuid "73246ac5-37f1-4d99-a6df-eb4744722b72")
 		(at 141.8 55.5 180)
@@ -11517,6 +11673,32 @@
 					(thickness 0.15)
 				)
 				(justify mirror)
+			)
+		)
+		(property "MANUFACTURER" "Espressif Systems"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "aee3ce4c-217d-44d9-b277-83e7267d84a5")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "ESP32-C3-MINI-1"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "B.Fab")
+			(hide yes)
+			(uuid "93f19308-c3f9-40d3-8e1a-ddf08f15d708")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
 			)
 		)
 		(path "/5e352ba9-5ed8-4ebd-806c-492f8b1d731f")

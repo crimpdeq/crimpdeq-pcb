@@ -24,7 +24,7 @@ COMPONENT_GEOMETRY = {
     "Q2": (pcbnew.B_Cu, -90.0, ":SOT-23", {
         "1": (-0.9375, -0.95), "2": (-0.9375, 0.95), "3": (0.9375, 0.0),
     }),
-    "U2": (pcbnew.B_Cu, -90.0, ":SOT-23-5", {
+    "U2": (pcbnew.B_Cu, -90.0, ":MCP73831_SOT-23-5", {
         "1": (-1.1375, -0.95), "2": (-1.1375, 0.0), "3": (-1.1375, 0.95),
         "4": (1.1375, 0.95), "5": (1.1375, -0.95),
     }),
@@ -34,7 +34,7 @@ COMPONENT_GEOMETRY = {
         "5": (0.9875, 0.75), "6": (0.9875, 0.25),
         "7": (0.9875, -0.25), "8": (0.9875, -0.75), "9": (0.0, 0.0),
     }),
-    "U6": (pcbnew.F_Cu, -90.0, ":SOT-23-5", {
+    "U6": (pcbnew.F_Cu, -90.0, ":SY8088_SOT-23-5", {
         "1": (-1.1375, -0.95), "2": (-1.1375, 0.0), "3": (-1.1375, 0.95),
         "4": (1.1375, 0.95), "5": (1.1375, -0.95),
     }),
@@ -320,7 +320,7 @@ def main():
         raise SystemExit(f"U3 footprint mismatch: {u3.GetFPIDAsString()}")
 
     u6 = footprints["U6"]
-    if u6.GetValue() != "SY8088" or not u6.GetFPIDAsString().endswith(":SOT-23-5"):
+    if u6.GetValue() != "SY8088" or not u6.GetFPIDAsString().endswith(":SY8088_SOT-23-5"):
         raise SystemExit(
             f"U6 identity mismatch: value={u6.GetValue()}, "
             f"footprint={u6.GetFPIDAsString()}"

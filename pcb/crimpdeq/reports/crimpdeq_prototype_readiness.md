@@ -1,8 +1,16 @@
 # Crimpdeq prototype readiness review
 
-**Last updated:** 2026-09-14, D4 DIN dangling-track closure on `fix/usb-signal-integrity`, baseline commit `1f16a68`.
+**Last updated:** 2026-09-14, project-library and component-identification cleanup on `fix/usb-signal-integrity`, baseline commit `af4c732`.
 
-**Current verdict: NEEDS ATTENTION.** The D4 DIN dangling-track finding is resolved in source. Final checks: **0 DRC errors, 40 DRC warnings, 0 unconnected items, 0 schematic-parity findings; ERC 0 errors and 30 warnings; `verify.py` PASS.** The remaining DRC warnings are 38 footprint-library mismatches and two unavailable library aliases; no dangling-copper warnings remain. Manufacturer acceptance, component decisions and physical qualification remain open. The latest round below supersedes historical D4 dispositions and warning counts later in this document.
+**Current verdict: NEEDS ATTENTION.** The unresolved U1/J2 footprint links, U1/J2/U5/U6 symbol-library links, U2/U6/Q2 courtyard-source discrepancies, unqualified C11/C19/U3 footprint links, and selected-part metadata gaps are resolved in source. Final checks: **0 DRC errors, 35 DRC warnings, 0 unconnected items, 0 schematic-parity findings; ERC 0 errors and 21 warnings; `verify.py` PASS.** The remaining findings are historical standard-library artwork/metadata mismatches; no missing-library, footprint-link, symbol-link, dangling-copper, or parity findings remain. Manufacturer acceptance and physical qualification remain open. The latest round below supersedes historical library-link and warning counts later in this document.
+
+## 2026-09-14 project-library and identification cleanup
+
+A portable project `Crimpdeq` symbol library now provides the exact embedded U1, J2, U5 and U6 symbol definitions. A matching project footprint library provides canonical sources for U1, J2, U2, U6 and Q2. U1's footprint-library antenna keepout uses footprint-local coordinates while preserving the existing placed keepout geometry. U2, U6 and Q2 now reference their reviewed placed courtyard/artwork definitions rather than drifting global-library copies. C11/C19 and U3 use qualified standard-library footprint IDs.
+
+The schematic and board now agree on library IDs and selected-part fields. Added or corrected manufacturer, MPN, supplier and datasheet identification covers U1, J2, Q2, U3, U5 and D4; notably U3 is identified as ADS1220IPWR, Q2 as DMG3415U-7, U5 as MAX17048G+T10 and D4 as WS2812B-V6. No component value used by the verifier, pad, net, placement, routing, via, zone placement or outline changed.
+
+Post-change all-severity DRC reports 35 `lib_footprint_mismatch` warnings with zero errors, unconnected items or schematic-parity findings. All-severity ERC reports 21 `lib_symbol_mismatch` warnings with zero errors and no `lib_symbol_issues` or `footprint_link_issues`. These remaining standard-library mismatches are retained for separate per-item artwork review rather than applying a blind global-library refresh.
 
 ## 2026-09-14 D4 DIN dangling-track closure
 
