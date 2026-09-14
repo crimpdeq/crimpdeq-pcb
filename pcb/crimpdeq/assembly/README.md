@@ -5,7 +5,10 @@ Assembly files for `../crimpdeq.kicad_pcb`.
 - `crimpdeq_bom.csv`: PCBWay BOM (`Item`, `Quantity`, `Designator`, `Value`,
   `Footprint`, `MPN`, `Type`, `Notes`). `MPN` currently holds reviewed LCSC
   catalog numbers for sourcing.
-- `crimpdeq_cpl.csv`: 47 fitted placements, 28 top / 19 bottom; J5–J12 are omitted as DNP.
+- `crimpdeq_cpl.csv`: 51 fitted placements, 30 top / 21 bottom; J5–J12 are omitted as DNP.
+- R23–R26 are fitted 47 Ω 0402 SPI series resistors and are included in both exports.
+- C12 is sourced separately as C405303 (Murata GRM31C5C2A104JA01L), 100 nF
+  C0G, 1206; it must not be grouped with the 0603 X7R bypass capacitors.
 - `J5`–`J12` are bare cable pads and must be marked Do Not Place.
 - R20/R21/R22 are 10 kΩ 0402 pull-ups using the same validated part as R1/R2/R14.
 - `_gen_cpl.py` converts KiCad positions to the PCBWay convention, applies
