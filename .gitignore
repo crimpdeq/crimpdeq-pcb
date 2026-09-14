@@ -33,6 +33,7 @@ fp-info-cache
 
 # Generated release artifacts
 /artifacts/
+/artifacts.zip
 
 # Exported BOM files
 *.xml

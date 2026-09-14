@@ -12,6 +12,7 @@ EXPECTED_REFS = frozenset(
     "C1 C2 C3 C4 C5 C6 C9 C10 C11 C12 C15 C16 C17 C18 C19 "
     "D1 D2 D3 D4 D7 D8 D9 D10 J2 J5 J6 J7 J8 J9 J10 J11 J12 L1 Q2 "
     "R1 R2 R3 R7 R8 R9 R13 R14 R15 R16 R17 R18 R19 R20 R21 R22 "
+    "R23 R24 R25 R26 "
     "U1 U2 U3 U5 U6".split()
 )
 DNP_REFS = frozenset({"J5", "J6", "J7", "J8", "J9", "J10", "J11", "J12"})
@@ -25,10 +26,10 @@ CORRECTION_EXPECTATIONS = {
     "D4": ("LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm", "bottom"),
     "J2": ("GCT_USB4105-GF-A", "top"),
     "Q2": ("SOT-23", "bottom"),
-    "U2": ("SOT-23-5", "bottom"),
+    "U2": ("MCP73831_SOT-23-5", "bottom"),
     "U3": ("TSSOP-16_4.4x5mm_P0.65mm", "top"),
     "U5": ("TDFN-8-1EP_2x2mm_P0.5mm_EP0.8x1.2mm", "top"),
-    "U6": ("SOT-23-5", "top"),
+    "U6": ("SY8088_SOT-23-5", "top"),
 }
 ROTATION_EXPECTATIONS = {
     "D4": 90.0,
