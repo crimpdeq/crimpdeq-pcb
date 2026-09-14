@@ -35,6 +35,7 @@ fp-info-cache
 /artifacts/
 /artifacts.zip
 /pcb/crimpdeq/gerbers/*.zip
+/pcb/crimpdeq/assembly/*.csv
 
 # Exported BOM files
 *.xml
