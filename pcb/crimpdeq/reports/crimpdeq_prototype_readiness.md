@@ -1,8 +1,14 @@
 # Crimpdeq prototype readiness review
 
-**Last updated:** 2026-09-10, owner-authorized W1/W3/W4/W6/W7/W8 round on `fix/adc-bypass-cleanup`, accepted baseline `c4dcad8300f53da1a8a7c072f7c7c78ad2f5c3da`. Changes remain uncommitted.
+**Last updated:** 2026-09-14, D4 DIN dangling-track closure on `fix/usb-signal-integrity`, baseline commit `1f16a68`.
 
-**Current verdict: NEEDS ATTENTION.** W1 placement exclusion and the two authorized W6 stub removals are complete in source. Final/recovery checks: **0 DRC errors, 42 DRC warnings, 0 unconnected items, 0 schematic-parity findings; ERC 0 errors and 30 warnings; `verify.py` PASS; no unexpected netlist changes.** One newly exposed track remains. Manufacturer acceptance, component decisions and physical qualification remain open. The new round below supersedes historical counts and decision queues later in this document.
+**Current verdict: NEEDS ATTENTION.** The D4 DIN dangling-track finding is resolved in source. Final checks: **0 DRC errors, 40 DRC warnings, 0 unconnected items, 0 schematic-parity findings; ERC 0 errors and 30 warnings; `verify.py` PASS.** The remaining DRC warnings are 38 footprint-library mismatches and two unavailable library aliases; no dangling-copper warnings remain. Manufacturer acceptance, component decisions and physical qualification remain open. The latest round below supersedes historical D4 dispositions and warning counts later in this document.
+
+## 2026-09-14 D4 DIN dangling-track closure
+
+Fresh all-severity DRC identified exactly one dangling item: D4 DIN B.Cu segment `4e46c557-e838-4274-bf20-cfee8c8d323d`, 0.9435 mm from `(146.843,63.8327)` to `(147.51,64.5)`. Its second endpoint joined the surviving D4 DIN route while its first endpoint was the dead end exposed by the earlier authorized deletion. The segment was removed through KiCad IPC without recursively deleting any newly exposed copper. Zones were refilled and the board was saved through KiCad.
+
+Post-change DRC reports 40 warnings—38 `lib_footprint_mismatch` and two `lib_footprint_issues`—with zero errors, unconnected items, schematic-parity findings, or `track_dangling` findings. All-severity ERC reports 30 warnings and zero errors. `tools/crimpdeq/verify.py` passes with 59 components, 180 connected named pads, and 13 GND vias. The D4 DIN net retains nine routed segments and no dangling endpoint. Final board SHA-256: `e2db49e4e40b05dc27ba8633e1a2b5ec3cd3a9cabfb681663265c5503961cefa`.
 
 ## 2026-09-10 accepted-c4dcad8 remediation round
 
@@ -35,7 +41,7 @@ One worker's incomplete fixture omitted `.kicad_dru` and libraries and reported 
 | Bucket | Current disposition / next action |
 |---|---|
 | **(a) Completed locally** | W1 native placement exclusion plus BOM/CPL review; exactly two W6 dead stubs removed; full digital checks and focused visual inspection; read-only W3/W4/W6/W7/W8 evidence prepared. No electrical substitutions applied |
-| **(b) Owner design decisions** | Decide disposition of retained `4e46c557…`; review U2/U6/Q2 courtyard differences and unresolved U1/J2 library sources; approve/reject four 47 Ω SPI resistors; choose a verified C12 dielectric/MPN; choose exact WS2812B-V6 retention with explicit prototype risk versus a researched replacement. USB retuning awaits stackup; no retune approved |
+| **(b) Owner design decisions** | Review U2/U6/Q2 courtyard differences and unresolved U1/J2 library sources; approve/reject four 47 Ω SPI resistors; choose a verified C12 dielectric/MPN; choose exact WS2812B-V6 retention with explicit prototype risk versus a researched replacement. USB retuning awaits stackup; no retune approved |
 | **(c) PCBWay contact/acceptance** | Obtain actual stackup/dielectric/impedance data and written acceptance of 0.10 mm nominal annular ring, holes/slots, clearances and assembly process. Questions below are drafted, not sent |
 | **(d) Procurement/spending** | C12 requires a current manufacturer approval sheet/orderability confirmation before part approval or purchase; any LED replacement also requires exact compatibility evidence and spending authorization. No parts ordered |
 | **(e) Physical prototype testing** | ADS1220 startup/ramp/reset/back-power and noise with USB/radio/LED activity; LED supply/data/brightness tests over measured rail tolerance and intended temperature. Define owner noise/transient acceptance targets before pass/fail; no hardware testing performed |
