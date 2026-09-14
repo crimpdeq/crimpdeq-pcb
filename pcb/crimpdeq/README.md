@@ -26,8 +26,8 @@ power/USB routing.
 
 Production files:
 
-- Gerbers: `gerbers/crimpdeq.zip`
-- Assembly package: `assembly/`
+- Gerbers, drills, BOM, and pick-and-place files: GitHub Release artifacts
+- Assembly source and generators: `assembly/`
 
 Manufacturer DFM review and physical validation of power integrity, USB, ADS1220 noise, antenna
 performance, and connector fit remain required before production.
