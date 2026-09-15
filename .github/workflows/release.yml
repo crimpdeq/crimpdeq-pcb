@@ -69,10 +69,17 @@ jobs:
           pcb_output_gerbers_and_drill: true
           pcb_output_gerbers_and_drill_folder_name: artifacts/gerber
 
-      - name: Generate validated assembly files
-        run: |
-          python3 pcb/crimpdeq/assembly/_gen_bom.py
-          python3 pcb/crimpdeq/assembly/_gen_cpl.py
+      - name: Generate validated assembly BOM
+        uses: docker://kicad/kicad:10.0
+        with:
+          entrypoint: python3
+          args: pcb/crimpdeq/assembly/_gen_bom.py
+
+      - name: Generate validated assembly CPL
+        uses: docker://kicad/kicad:10.0
+        with:
+          entrypoint: python3
+          args: pcb/crimpdeq/assembly/_gen_cpl.py
 
       - name: Copy validated assembly files
         run: |
