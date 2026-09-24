@@ -1,0 +1,36 @@
+{
+  "name": "crimpdeq-pcb",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Crimpdeq tscircuit migration with KiCad equivalence checks",
+  "license": "SEE LICENSE IN LICENSE",
+  "dependencies": {
+    "@tscircuit/checks": "0.0.208",
+    "@tscircuit/core": "0.0.1971",
+    "@tscircuit/props": "0.0.666",
+    "@types/node": "26.6.2",
+    "@types/react": "19.3.0",
+    "circuit-json": "0.0.489",
+    "circuit-json-to-connectivity-map": "0.0.30",
+    "circuit-json-to-gerber": "0.0.107",
+    "circuit-json-to-pnp-csv": "0.0.13",
+    "circuit-to-svg": "0.0.431",
+    "kicad-to-circuit-json": "0.0.133",
+    "react": "19.3.0",
+    "tscircuit": "0.0.2646",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "build": "node --import tsx scripts/build.ts",
+    "export": "node --import tsx scripts/export.ts",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm run build && python3 scripts/verify-geometry.py && node --import tsx scripts/check.ts && node --import tsx scripts/diagnose-checker.ts",
+    "test": "npm run check && npm run export && python3 scripts/test-verifier.py && python3 scripts/verify-assembly.py",
+    "verify:cam": "python3 scripts/verify-cam.py",
+    "tsci": "node --import tsx node_modules/@tscircuit/cli/dist/cli/main.js",
+    "check:native": "python3 scripts/check-native-cli.py",
+    "tokens": "python3 scripts/count-tokens.py"
+  }
+}
