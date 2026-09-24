@@ -1,0 +1,36 @@
+name: tscircuit equivalence
+on:
+  pull_request:
+    paths: ['pcb/**', 'scripts/**', 'package*.json', 'tsconfig.json', 'index.circuit.tsx', 'tscircuit.config.json', '.github/workflows/tscircuit.yml']
+  push:
+    branches: ['feat/tscircuit', 'refactor/tscircuit']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  conversion:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npm test
+      - name: Native netlist and four-layer shorts gates
+        run: npm run check:native -- --checks netlist shorts
+      - name: Native placement advice (classified in VALIDATION.md)
+        continue-on-error: true
+        run: npm run check:native -- --checks schematic-placement placement --output dist/crimpdeq/native-placement
+      - run: python3 -m pip install -r scripts/requirements-cam.txt
+      - run: npm run verify:cam
+      - run: python3 scripts/verify-assembly.py
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: tscircuit-conversion-validation-not-production
+          path: dist/crimpdeq/

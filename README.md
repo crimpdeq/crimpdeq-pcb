@@ -1,6 +1,16 @@
 # Crimpdeq PCB
 
-KiCad PCB design for Crimpdeq. See the [Crimpdeq book](https://crimpdeq.com/) for more details on the project!
+PCB design for Crimpdeq, with native tscircuit authoring and the original KiCad reference. See the [Crimpdeq book](https://crimpdeq.com/) for more details on the project!
+
+## tscircuit
+
+The converted design is in [`pcb/crimpdeq/tscircuit/`](pcb/crimpdeq/tscircuit/).
+Run `npm ci` and `npm test` using Node 24 and Python 3.10+.
+See [MIGRATION.md](MIGRATION.md) for the full build/export workflow and
+[VALIDATION.md](VALIDATION.md) for the verification results and limits.
+The refactor uses shared package/device definitions and functional schematic sections.
+See [REFACTOR.md](REFACTOR.md) for the design decisions and token comparison.
+The conversion preserves the original circuit; it is not a fabrication approval.
 
 ## PCB
 

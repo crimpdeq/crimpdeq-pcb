@@ -55,3 +55,7 @@ fp-info-cache
 
 # Editor local-history caches
 .history/
+
+# tscircuit dependencies and validation/export products
+/node_modules/
+/dist/

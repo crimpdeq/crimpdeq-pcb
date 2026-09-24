@@ -6,6 +6,21 @@ KiCad 10 hardware project. Canonical project: `pcb/crimpdeq/`. Shared footprints
 Do not create versioned design directories. Update the canonical project only when the user
 explicitly requests a design change.
 
+## tscircuit authoring
+
+The native TypeScript implementation is in `pcb/crimpdeq/tscircuit/`; see
+`REFACTOR.md` and `MIGRATION.md`. Keep shared device and exact footprint definitions
+reusable. `parts.ts` owns physical-pin net assignments; `nets.ts` derives membership.
+Do not replace verified land patterns with generic footprint defaults or autoroute
+saved copper merely to simplify the source. `copper.ts` retains exact fill vertices.
+
+Run `npm test`, `npm run verify:cam` (Python CAM dependencies required), and
+`npm run check:native` after meaningful changes. Preserve and explain native reports;
+never remove keepouts or hide diagnostics to obtain a clean result. Schematic-only
+changes must leave the independent geometry and assembly comparisons passing.
+The original KiCad files remain the independent reference. Native tscircuit source
+edits do not require a live KiCad editor; native KiCad edits follow the workflow below.
+
 ## Konnect workflow
 
 Prefer Konnect for KiCad operations, including its supported file-based edits. When no suitable
