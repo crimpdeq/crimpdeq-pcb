@@ -12715,7 +12715,7 @@
 			(uuid "1fecda82-44ff-4074-9619-4e29531b1da2")
 		)
 		(embedded_fonts no)
-		(model "${RUST3D}/USB4105-GF-A.step"
+		(model "${KIPRJMOD}/../../libraries/USB4105-GF-A/USB4105-GF-A.step"
 			(offset
 				(xyz 0 0 0)
 			)
