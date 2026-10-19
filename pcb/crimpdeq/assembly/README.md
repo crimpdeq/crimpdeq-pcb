@@ -23,7 +23,8 @@ order includes the required THT/manual soldering operation.
 
 ```sh
 DESIGN=pcb/crimpdeq
-# Use KiCad's bundled Python interpreter because the scripts import pcbnew.
+# The scripts import pcbnew: use python3 on Linux, or KiCad's bundled Python on macOS
+# (/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/3.9/bin/python3).
 PY=python3
 
 $PY "$DESIGN/assembly/_gen_bom.py"
