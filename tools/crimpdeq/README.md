@@ -8,9 +8,10 @@ and the dedicated DRDY no-connect. Digital tracks and vias on every layer—incl
 `ADS_*` nets—must stay outside the AIN and cable-signal copper envelopes, each guarded by
 0.20 mm. These geometry checks do not qualify ADC noise or prove ground-plane coverage.
 
-Run it from the repository root with KiCad's bundled Python:
+Run it from the repository root with a Python that imports `pcbnew`: `python3` on Linux, or
+KiCad's bundled Python on macOS:
 
 ```sh
-PY=/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/3.9/bin/python3
+PY=python3  # macOS: /Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/3.9/bin/python3
 $PY tools/crimpdeq/verify.py pcb/crimpdeq/crimpdeq.kicad_pcb
 ```

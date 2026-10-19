@@ -1,6 +1,6 @@
 # Crimpdeq — 30 x 30 mm Four-Layer Design
 
-This is the repository's single canonical PCB design and current production candidate. It
+This is the repository's single canonical PCB design, released as PCB V3 in `v3.0.0`. It
 includes corrected ESP32 module grounding, an ADS1220 load-cell front-end, and compact
 power/USB routing.
 
@@ -17,7 +17,8 @@ power/USB routing.
 - The buck input, switch, output, and feedback components form a compact front-side cluster.
 - Twelve dedicated GND stitching vias tie the outer floods to the solid L2 plane.
 - All four load-cell pads (`E-`, `A-`, `A+`, `E+`) are together on the bottom edge near U3 and
-  away from the antenna. `B+` and `SW` are on the right edge.
+  away from the antenna. `B-`, `B+`, `SW+`, and `SW-` are on the right edge, next to the USB-C
+  connector.
 - The ESP32 antenna body overhangs the top edge; its all-layer copper keepout is retained.
 - The USB-C housing overhangs the bottom edge by 1.00 mm; connector copper remains in-board.
 - L2 is a signal-free GND plane. L3 carries the 3V3 pour and low-speed signals.
@@ -29,5 +30,4 @@ Production files:
 - Gerbers, drills, BOM, and pick-and-place files: GitHub Release artifacts
 - Assembly source and generators: `assembly/`
 
-Manufacturer DFM review and physical validation of power integrity, USB, ADS1220 noise, antenna
-performance, and connector fit remain required before production.
+Check the manufacturer's DFM review on every order.
