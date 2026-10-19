@@ -21,9 +21,10 @@ Shared footprints are under `libraries/`; datasheets remain under `pcb/datasheet
 
 ## Revisions
 
-The PCB, [firmware](https://github.com/crimpdeq/crimpdeq-firmware), and
-[case](https://github.com/crimpdeq/crimpdeq-case) work together only within the same major
-version. Use the latest release of each for your PCB revision:
+Use the [firmware](https://github.com/crimpdeq/crimpdeq-firmware) and
+[case](https://github.com/crimpdeq/crimpdeq-case) releases in the row for your PCB revision.
+From V2 on, the PCB, firmware, and case share the major version; V1 uses firmware and case
+`v0.4.0`.
 
 | PCB revision | PCB release                                                            | ADC     | Firmware                                                                      | Case                                                                      |
 | ------------ | ---------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
