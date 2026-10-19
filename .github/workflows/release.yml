@@ -20,7 +20,10 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Prepare output folders
-        run: mkdir -p artifacts/gerber reports
+        run: |
+          mkdir -p artifacts/gerber reports
+          # The kicad/kicad container runs as a different user than the checkout owner.
+          chmod a+w pcb/crimpdeq/assembly
 
       - name: Run schematic ERC
         id: erc
