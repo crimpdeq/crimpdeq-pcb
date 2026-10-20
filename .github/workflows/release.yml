@@ -23,31 +23,30 @@ jobs:
         run: |
           mkdir -p artifacts/gerber reports
           # The kicad/kicad container runs as a different user than the checkout owner.
-          chmod a+w pcb/crimpdeq/assembly
+          chmod a+w pcb/crimpdeq/assembly reports
 
-      - name: Run schematic ERC
-        id: erc
-        uses: actions-for-kicad/kicad-actions@v2-k10.0
-        continue-on-error: true
+      - name: Validate schematic, PCB, and design invariants
+        uses: docker://kicad/kicad:10.0
         with:
-          schematic_file_name: ${{ env.SCH_FILE }}
-          run_erc: true
-          erc_output_file_name: reports/erc.rpt
+          entrypoint: python3
+          args: tools/crimpdeq/check.py
 
-      - name: Evaluate ERC report
-        run: bash .github/scripts/check-kicad-report.sh reports/erc.rpt "Schematic ERC"
-
-      - name: Run PCB DRC
-        id: drc
-        uses: actions-for-kicad/kicad-actions@v2-k10.0
-        continue-on-error: true
+      - name: Upload validation reports and logs
+        if: always()
+        uses: actions/upload-artifact@v6
         with:
-          pcb_file_name: ${{ env.PCB_FILE }}
-          run_drc: true
-          drc_output_file_name: reports/drc.rpt
+          name: release-pcb-validation-reports
+          path: reports/
+          if-no-files-found: error
 
-      - name: Evaluate DRC report
-        run: bash .github/scripts/check-kicad-report.sh reports/drc.rpt "PCB DRC"
+      - name: Write validation summary
+        if: always()
+        run: |
+          if [ -f reports/summary.md ]; then
+            cat reports/summary.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "PCB validation did not produce a summary; see the failed step." >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Export schematic production files
         uses: actions-for-kicad/kicad-actions@v2-k10.0

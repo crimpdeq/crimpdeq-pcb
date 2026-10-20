@@ -7,18 +7,37 @@ on:
     paths:
       - "pcb/**"
       - "libraries/**"
+      - "tools/crimpdeq/**"
+      - ".github/scripts/**"
       - ".github/workflows/pcb_ci.yml"
+      - ".github/workflows/release.yml"
   pull_request:
     paths:
       - "pcb/**"
       - "libraries/**"
+      - "tools/crimpdeq/**"
+      - ".github/scripts/**"
       - ".github/workflows/pcb_ci.yml"
+      - ".github/workflows/release.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
+  tooling:
+    name: Test validation tooling
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Test validation failures and report handling
+        run: python3 -m unittest discover -s tools/crimpdeq/tests -v
+
   pcb:
     name: Check PCB
     runs-on: ubuntu-latest
+    needs: tooling
     env:
       PCB_FILE: pcb/crimpdeq/crimpdeq.kicad_pcb
       SCH_FILE: pcb/crimpdeq/crimpdeq.kicad_sch
@@ -28,10 +47,18 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Prepare output folders
-        run: mkdir -p artifacts reports
+        run: |
+          mkdir -p artifacts reports
+          # Match the release workflow: the KiCad image runs as a different user.
+          chmod a+w reports
+
+      - name: Validate schematic, PCB, and design invariants
+        uses: docker://kicad/kicad:10.0
+        with:
+          entrypoint: python3
+          args: tools/crimpdeq/check.py
 
       - name: Export schematic and layout PDFs
-
         uses: actions-for-kicad/kicad-actions@v2-k10.0
         with:
           schematic_file_name: ${{ env.SCH_FILE }}
@@ -41,16 +68,7 @@ jobs:
           pcb_file_name: ${{ env.PCB_FILE }}
           pcb_output_pdf: true
           pcb_output_pdf_file_name: artifacts/layout.pdf
-          pcb_output_layers: F.Cu,B.Cu,F.Silkscreen,B.Silkscreen,Edge.Cuts
-
-      - name: Run PCB DRC
-        id: drc
-        uses: actions-for-kicad/kicad-actions@v2-k10.0
-        continue-on-error: true
-        with:
-          pcb_file_name: ${{ env.PCB_FILE }}
-          run_drc: true
-          drc_output_file_name: reports/drc.rpt
+          pcb_output_layers: F.Cu,In1.Cu,In2.Cu,B.Cu,F.Silkscreen,B.Silkscreen,Edge.Cuts
 
       - name: Upload schematic PDF
         if: always()
@@ -70,51 +88,28 @@ jobs:
           path: artifacts/layout.pdf
           if-no-files-found: warn
 
-      - name: Upload DRC report
+      - name: Upload validation reports and logs
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: pcb-drc-report
-          path: reports/drc.rpt
-          if-no-files-found: warn
-
-      - name: Evaluate DRC report
-        if: always()
-        id: drc_check
-        continue-on-error: true
-        run: bash .github/scripts/check-kicad-report.sh reports/drc.rpt "PCB DRC"
+          name: pcb-validation-reports
+          path: reports/
+          if-no-files-found: error
 
       - name: Write action summary
         if: always()
         env:
-          DRC_OUTCOME: ${{ steps.drc.outcome }}
-          DRC_CHECK_OUTCOME: ${{ steps.drc_check.outcome }}
           SCHEMATIC_ARTIFACT_URL: ${{ steps.upload_schematic.outputs.artifact-url }}
           LAYOUT_ARTIFACT_URL: ${{ steps.upload_layout.outputs.artifact-url }}
         run: |
-          run_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          schematic_url="${SCHEMATIC_ARTIFACT_URL:-$run_url}"
-          layout_url="${LAYOUT_ARTIFACT_URL:-$run_url}"
-
-          {
-            echo "## PCB CI"
-            echo
-            echo "- DRC action result: ${DRC_OUTCOME:-unknown}"
-            echo "- DRC error gate: ${DRC_CHECK_OUTCOME:-unknown}"
-            echo "- [Schematic PDF]($schematic_url)"
-            echo "- [Layout PDF]($layout_url)"
-            echo
-            if [ -f reports/drc.rpt ]; then
-              echo "<details><summary>DRC report preview</summary>"
-              echo
-              echo '```text'
-              sed -n '1,40p' reports/drc.rpt
-              echo '```'
-              echo
-              echo "</details>"
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Fail workflow if DRC has error-level violations
-        if: steps.drc_check.outcome == 'failure'
-        run: exit 1
+          if [ -f reports/summary.md ]; then
+            cat reports/summary.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "PCB validation did not produce a summary; see the failed step." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -n "$SCHEMATIC_ARTIFACT_URL" ]; then
+            echo "- [Schematic PDF]($SCHEMATIC_ARTIFACT_URL)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -n "$LAYOUT_ARTIFACT_URL" ]; then
+            echo "- [Layout PDF]($LAYOUT_ARTIFACT_URL)" >> "$GITHUB_STEP_SUMMARY"
+          fi
