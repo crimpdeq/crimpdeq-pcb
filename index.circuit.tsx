@@ -448,11 +448,13 @@ export default ({ pours = true }: { pours?: boolean }) => (
       schRotation={0}
       connections={{ pin1: "net.CHG_STAT", pin2: "net.CHG_LED_K" }}
     />
+    {/* led0603 closes the silkscreen outline at the cathode, as assemblers expect;
+        plain 0603 closes it at pin 1, the anode */}
     <led
       name="D1"
       displayName="D1 - Charge LED"
       color="red"
-      footprint="0603"
+      footprint="led0603"
       {...part(PARTS.LED_RED_0603)}
       pcbX={4.1}
       pcbY={-3.403}
