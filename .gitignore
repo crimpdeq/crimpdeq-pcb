@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Python bytecode (scripts/*.py)
+__pycache__/
+
 # Build output
 dist/
 build/

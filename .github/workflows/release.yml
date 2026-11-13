@@ -41,7 +41,7 @@ jobs:
         env:
           TAG: ${{ github.event.release.tag_name }}
         run: |
-          prefix="crimpdeq-tscircuit-${TAG:-${GITHUB_SHA::7}}"
+          prefix="crimpdeq-pcb-${TAG:-${GITHUB_SHA::7}}"
           mkdir release
           for f in dist/fab/*; do cp "$f" "release/$prefix-$(basename "$f")"; done
           (cd release && shasum -a 256 -- * > "$prefix-SHA256SUMS")
