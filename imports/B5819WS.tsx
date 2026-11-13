@@ -21,10 +21,9 @@ export const B5819WS = (props: DiodeProps) => {
       footprint={<footprint>
         <smtpad portHints={["pin1","anode","pos"]} pcbX="-1.039876mm" pcbY="0mm" width="0.7800086mm" height="0.499999mm" shape="rect" />
 <smtpad portHints={["pin2","cathode","neg"]} pcbX="1.039876mm" pcbY="0mm" width="0.7800086mm" height="0.499999mm" shape="rect" />
-<silkscreenpath route={[{"x":-0.9261856000000108,"y":-0.4301489999999859},{"x":-0.9261856000000108,"y":-0.7012940000000043}]} />
-<silkscreenpath route={[{"x":-0.9261856000000108,"y":0.7011924000000107},{"x":-0.9261856000000108,"y":0.4301490000000001}]} />
-<silkscreenpath route={[{"x":-0.9261856000000108,"y":0.7011924000000107},{"x":0.926210999999995,"y":0.7011924000000107}]} />
-<silkscreenpath route={[{"x":-0.926084000000003,"y":-0.7012940000000043},{"x":0.9263380000000012,"y":-0.7012940000000043}]} />
+{/* Outline closed past the cathode pad and open at the anode, plus the
+    cathode band: assemblers read the closed end as the cathode */}
+<silkscreenpath route={[{"x":-0.926,"y":0.7012},{"x":1.6,"y":0.7012},{"x":1.6,"y":-0.7012},{"x":-0.926,"y":-0.7012}]} />
 <silkscreenpath route={[{"x":0.42141140000001087,"y":0.7011924000000107},{"x":0.42141140000001087,"y":-0.7011923999999965}]} />
 <silkscreentext text="{NAME}" pcbX="0.0127mm" pcbY="1.7874mm" anchorAlignment="center" fontSize="1mm" />
 <fabricationnotepath route={[{"x":-1.113993199999996,"y":-0.08300719999999728},{"x":-1.113993199999996,"y":0.06700519999999699},{"x":-1.113993199999996,"y":0.06700519999999699},{"x":-0.5139944000000014,"y":0.06700519999999699},{"x":-0.5139944000000014,"y":0.06700519999999699},{"x":-0.5139944000000014,"y":-0.08300719999999728},{"x":-1.113993199999996,"y":-0.08300719999999728}]} strokeWidth="0.254mm" />

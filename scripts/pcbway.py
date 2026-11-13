@@ -46,7 +46,7 @@ NOTES["GRM1555C1E103JE01D"] = "C0G/NP0 only (no X7R/X5R): 10nF 0402, >= 16V"
 NOTES["GRM1555C1H102JA01D"] = "C0G/NP0 only (no X7R/X5R): 1nF 0402, >= 16V"
 NOTES["0402CG220J500NT"] = "C0G/NP0 only (no X7R/X5R): 22pF 0402, >= 16V"
 NOTES["BLM15HG102SN1D"] = "Substitute only with a GHz-band 0402 ferrite bead, 1kOhm@100MHz, >= 200mA"
-NOTES["B5819WS"] = "Any B5819WS in SOD-323; cathode per silkscreen band"
+NOTES["B5819WS"] = "Any B5819WS in SOD-323; cathode at the closed silkscreen end and band"
 
 source = {e["source_component_id"]: e for e in cj if e["type"] == "source_component"}
 # Stitching vias also get a pcb_component, without a source component
