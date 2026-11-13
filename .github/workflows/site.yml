@@ -1,0 +1,35 @@
+# Build the viewer site and deploy it to https://tscircuit.crimpdeq.com
+# (Cloudflare Pages) on pushes to main; manual runs on other branches only build.
+# macOS arm64: the autorouter output differs on Linux x64, and scripts/site.sh
+# refuses to publish a routing that differs from scripts/routing.expected.json.
+name: Site
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["**.md", ".agents/**"]
+  workflow_dispatch:
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  site:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - name: Build
+        if: github.ref != 'refs/heads/main'
+        run: npm run site
+      - name: Build and deploy
+        if: github.ref == 'refs/heads/main'
+        run: npm run site:deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 2fc7f8105c4c2a621b320949cae125ae

@@ -1,0 +1,14 @@
+[
+  {"net": "GND", "width": 0.2, "from": ".U1 > .GND4", "single": true},
+  {"net": "VSYS", "width": 0.3},
+  {"net": "VBUS", "width": 0.3},
+  {"net": "VBAT", "width": 0.25},
+  {"net": "ADC_DIN", "width": 0.15},
+  {"net": "ADC_SCLK", "width": 0.15},
+  {"net": "V3_3_LED", "width": 0.25},
+  {"net": "V3_3", "width": 0.25},
+  {"net": "ADC_CS", "width": 0.15},
+  {"net": "LED_DATA", "width": 0.15},
+  {"net": "CHIP_PU", "width": 0.15},
+  {"net": "BOOT", "width": 0.15}
+]

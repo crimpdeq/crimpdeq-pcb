@@ -1,0 +1,289 @@
+{
+ "ADC_AIN0": [
+  "C12 pin1",
+  "C20 pin1",
+  "C22 pin1",
+  "R7 pin1",
+  "U3 AIN0"
+ ],
+ "ADC_AIN1": [
+  "C12 pin2",
+  "C21 pin1",
+  "C23 pin1",
+  "R8 pin1",
+  "U3 AIN1"
+ ],
+ "ADC_CS": [
+  "R23 pin1",
+  "U1 IO3",
+  "U3 N_CS"
+ ],
+ "ADC_DIN": [
+  "U1 IO4",
+  "U3 DIN"
+ ],
+ "ADC_DOUT": [
+  "U1 IO1",
+  "U3 DOUT"
+ ],
+ "ADC_DRDY": [
+  "U1 IO0",
+  "U3 N_DRDY"
+ ],
+ "ADC_SCLK": [
+  "U1 IO5",
+  "U3 SCLK"
+ ],
+ "BOOT": [
+  "TP3 pin1",
+  "U1 IO9"
+ ],
+ "BUCK_EN": [
+  "R14 pin2",
+  "U6 EN"
+ ],
+ "BUCK_FB": [
+  "C16 pin2",
+  "R15 pin2",
+  "R16 pin1",
+  "U6 FB"
+ ],
+ "BUCK_LX": [
+  "L1 pin1",
+  "U6 LX"
+ ],
+ "CC1": [
+  "J2 A5",
+  "R19 pin1"
+ ],
+ "CC2": [
+  "J2 B5",
+  "R18 pin1"
+ ],
+ "CHG_LED_K": [
+  "D1 pin2",
+  "R3 pin2"
+ ],
+ "CHG_PROG": [
+  "R2 pin1",
+  "U2 PROG"
+ ],
+ "CHG_STAT": [
+  "R3 pin1",
+  "U2 STAT"
+ ],
+ "CHIP_PU": [
+  "C3 pin1",
+  "R1 pin2",
+  "TP1 pin1",
+  "U1 EN"
+ ],
+ "FG_ALRT": [
+  "U1 IO10",
+  "U5 N_ALRT"
+ ],
+ "GND": [
+  "C1 pin2",
+  "C10 pin2",
+  "C11 pin2",
+  "C13 pin2",
+  "C14 pin2",
+  "C15 pin2",
+  "C17 pin2",
+  "C18 pin2",
+  "C19 pin2",
+  "C2 pin2",
+  "C20 pin2",
+  "C21 pin2",
+  "C22 pin2",
+  "C23 pin2",
+  "C3 pin2",
+  "C4 pin2",
+  "C5 pin2",
+  "C6 pin2",
+  "C9 pin2",
+  "D10 pin2",
+  "D3 pin2",
+  "D4 GND",
+  "D7 pin2",
+  "D9 pin2",
+  "J2 A1B12",
+  "J2 B1A12",
+  "J2 EH1",
+  "J2 EH2",
+  "J2 EH3",
+  "J2 EH4",
+  "J4 BAT_N",
+  "R16 pin2",
+  "R18 pin2",
+  "R19 pin2",
+  "R2 pin2",
+  "R9 pin2",
+  "TP2 pin1",
+  "U1 GND1",
+  "U1 GND10",
+  "U1 GND11",
+  "U1 GND12",
+  "U1 GND13",
+  "U1 GND14",
+  "U1 GND15",
+  "U1 GND16",
+  "U1 GND17",
+  "U1 GND18",
+  "U1 GND19",
+  "U1 GND2",
+  "U1 GND20",
+  "U1 GND21",
+  "U1 GND22",
+  "U1 GND23",
+  "U1 GND24",
+  "U1 GND25",
+  "U1 GND26",
+  "U1 GND27",
+  "U1 GND28",
+  "U1 GND29",
+  "U1 GND3",
+  "U1 GND30",
+  "U1 GND4",
+  "U1 GND5",
+  "U1 GND6",
+  "U1 GND7",
+  "U1 GND8",
+  "U1 GND9",
+  "U2 VSS",
+  "U3 AVSS",
+  "U3 CLK",
+  "U3 DGND",
+  "U3 EP",
+  "U5 CTG",
+  "U5 EP",
+  "U5 GND",
+  "U5 QSTRT",
+  "U6 GND"
+ ],
+ "I2C_SCL": [
+  "R21 pin2",
+  "U1 IO7",
+  "U5 SCL"
+ ],
+ "I2C_SDA": [
+  "R20 pin2",
+  "U1 IO6",
+  "U5 SDA"
+ ],
+ "IO8_PU": [
+  "R25 pin2",
+  "U1 IO8"
+ ],
+ "LC_EN": [
+  "J3 E_N",
+  "U3 AIN3",
+  "U3 REFN0"
+ ],
+ "LC_EP": [
+  "C14 pin1",
+  "J3 E_P",
+  "R22 pin2",
+  "U3 REFP0"
+ ],
+ "LC_SN": [
+  "FB2 pin2",
+  "R8 pin2"
+ ],
+ "LC_SN_J3": [
+  "FB2 pin1",
+  "J3 S_N"
+ ],
+ "LC_SP": [
+  "FB1 pin2",
+  "R7 pin2"
+ ],
+ "LC_SP_J3": [
+  "FB1 pin1",
+  "J3 S_P"
+ ],
+ "LED_DATA": [
+  "R13 pin1",
+  "U1 IO2"
+ ],
+ "LED_DIN": [
+  "D4 DIN",
+  "R13 pin2"
+ ],
+ "SW_BATT": [
+  "J4 SW_N",
+  "Q2 pin3"
+ ],
+ "USB_DM": [
+  "D7 pin1",
+  "J2 A7",
+  "J2 B7",
+  "U1 IO18"
+ ],
+ "USB_DP": [
+  "D10 pin1",
+  "J2 A6",
+  "J2 B6",
+  "U1 IO19"
+ ],
+ "V3_3": [
+  "C1 pin1",
+  "C10 pin1",
+  "C11 pin1",
+  "C13 pin1",
+  "C16 pin1",
+  "C17 pin1",
+  "C2 pin1",
+  "C4 pin1",
+  "C9 pin1",
+  "D3 pin1",
+  "L1 pin2",
+  "R1 pin1",
+  "R15 pin1",
+  "R20 pin1",
+  "R21 pin1",
+  "R22 pin1",
+  "R23 pin2",
+  "R24 pin1",
+  "R25 pin1",
+  "U1 3V3",
+  "U3 AVDD",
+  "U3 DVDD"
+ ],
+ "V3_3_LED": [
+  "C19 pin1",
+  "D4 VDD",
+  "R24 pin2"
+ ],
+ "VBAT": [
+  "C18 pin1",
+  "C6 pin1",
+  "J4 BAT_P",
+  "J4 SW_P",
+  "U2 VBAT",
+  "U5 CELL",
+  "U5 VDD"
+ ],
+ "VBUS": [
+  "C5 pin1",
+  "D1 pin1",
+  "D2 anode",
+  "D8 cathode",
+  "Q2 pin1",
+  "R9 pin1",
+  "U2 VDD"
+ ],
+ "VBUS_IN": [
+  "D8 anode",
+  "D9 pin1",
+  "J2 A4B9",
+  "J2 B4A9"
+ ],
+ "VSYS": [
+  "C15 pin1",
+  "D2 cathode",
+  "Q2 pin2",
+  "R14 pin1",
+  "U6 IN"
+ ]
+}

@@ -1,0 +1,59 @@
+# Build the PCBWay package (scripts/fab.sh) and attach it to published releases.
+# Pull requests that touch the fab scripts and manual runs only build it and keep
+# it as a workflow artifact.
+# macOS arm64: the autorouter output differs on Linux x64, and `npm run verify`
+# fails on a routing that differs from scripts/routing.expected.json.
+name: Release
+
+on:
+  release:
+    types: [published]
+  pull_request:
+    paths:
+      - .github/workflows/release.yml
+      - scripts/fab.sh
+      - scripts/fab-json.ts
+      - scripts/pcbway.py
+      - scripts/assembly.ts
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  fab:
+    name: Build PCBWay package
+    runs-on: macos-26
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      # Netlist and routing baselines, DRC and shorts gate the package
+      - run: npm run verify
+      - run: npm run fab
+      - name: Name the files after the release
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          prefix="crimpdeq-tscircuit-${TAG:-${GITHUB_SHA::7}}"
+          mkdir release
+          for f in dist/fab/*; do cp "$f" "release/$prefix-$(basename "$f")"; done
+          (cd release && shasum -a 256 -- * > "$prefix-SHA256SUMS")
+          ls -l release
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pcbway-${{ github.event.release.tag_name || github.sha }}
+          path: release/
+          if-no-files-found: error
+      - name: Upload to the release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$TAG" release/* --clobber --repo "$GITHUB_REPOSITORY"
