@@ -7,6 +7,7 @@ import { LESD5D5_0CT1G } from "./imports/LESD5D5_0CT1G"
 import { LESD8D3_3CAT5G } from "./imports/LESD8D3_3CAT5G"
 import { MAX17048G_T10 } from "./imports/MAX17048G_T10"
 import { MCP73831T_2ACI_OT } from "./imports/MCP73831T_2ACI_OT"
+import { NTK3139PT1G } from "./imports/NTK3139PT1G"
 import { SY8088IAAC } from "./imports/SY8088IAAC"
 import { TYPE_C_31_M_12 } from "./imports/TYPE_C_31_M_12"
 import { XL_2121RGBC_2812B } from "./imports/XL_2121RGBC_2812B"
@@ -778,7 +779,7 @@ export default ({ pours = true }: { pours?: boolean }) => (
         EN: "net.CHIP_PU",
         IO0: "net.ADC_DRDY",
         IO1: "net.ADC_DOUT",
-        IO2: "net.LED_DATA",
+        IO2: "net.LED_PWR_N",
         IO3: "net.ADC_CS",
         IO4: "net.ADC_DIN",
         IO5: "net.ADC_SCLK",
@@ -789,6 +790,7 @@ export default ({ pours = true }: { pours?: boolean }) => (
         IO10: "net.FG_ALRT",
         IO18: "net.USB_DM",
         IO19: "net.USB_DP",
+        RXD0: "net.LED_DATA",
         ...Object.fromEntries(esp32GndPins.map((pin) => [pin, "net.GND"])),
       }}
     />
@@ -911,8 +913,8 @@ export default ({ pours = true }: { pours?: boolean }) => (
       schRotation={-90}
       connections={{ pin1: "net.V3_3", pin2: "net.IO8_PU" }}
     />
-    {/* 3V3 from R24: the USB pair on inner1 below R25 leaves no room for a via */}
-    <trace from=".R25 > .pin1" to=".R24 > .pin1" thickness="0.25mm" pcbPath={[".R24 > .pin1"]} />
+    {/* 3V3 from Q3: the USB pair on inner1 below R25 leaves no room for a via */}
+    <trace from=".R25 > .pin1" to=".Q3 > .S" thickness="0.25mm" pcbPath={[".Q3 > .S"]} />
     <trace from=".R25 > .pin2" to=".U1 > .IO8" thickness="0.15mm" pcbPath={[".U1 > .IO8"]} />
     {/* Recovery pads on the bottom, under U1: hold BOOT (IO9) to GND and tap
         EN to GND to enter download mode. Bare pads, 1.5 mm apart, so tweezers
@@ -975,29 +977,41 @@ export default ({ pours = true }: { pours?: boolean }) => (
       schY={-6}
       connections={{ DIN: "net.LED_DIN", VDD: "net.V3_3_LED", GND: "net.GND" }}
     />
-    {/* LED supply link: its 3V3 pad is nearer C10 than any U3 supply pad, so the
-        router joins it at the bulk capacitor and the LED PWM current stays off
-        the U3 AVDD/DVDD path */}
-    <resistor
-      name="R24"
-      resistance="0"
-      footprint="0402"
-      {...part(PARTS.R0)}
+    {/* LED supply switch: a WS2812 draws idle current even when dark, so firmware
+        drives IO2 low to power D4 and releases it before deep sleep, where R26
+        holds Q3 off. R26 also gives the IO2 strapping pin the pull-up Espressif
+        recommends. Q3's 3V3 pad is nearer C10 than any U3 supply pad, so the
+        LED PWM current stays off the U3 AVDD/DVDD path (scripts/drc.ts). */}
+    <NTK3139PT1G
+      name="Q3"
+      displayName="Q3 - NTK3139P"
       pcbX={0.8}
-      pcbY={-2.15}
-      pcbRotation={180}
+      pcbY={-2.45}
       schSectionName="led"
       schX={-9}
       schY={-3.5}
+      connections={{ G: "net.LED_PWR_N", S: "net.V3_3", D: "net.V3_3_LED" }}
+    />
+    <resistor
+      name="R26"
+      resistance="100k"
+      footprint="0402"
+      {...part(PARTS.R100k)}
+      pcbX={1.3}
+      pcbY={-4.3}
+      pcbRotation={90}
+      schSectionName="led"
+      schX={-10.5}
+      schY={-3.5}
       schRotation={-90}
-      connections={{ pin1: "net.V3_3", pin2: "net.V3_3_LED" }}
+      connections={{ pin1: "net.V3_3", pin2: "net.LED_PWR_N" }}
     />
     <capacitor
       name="C19"
       capacitance="100nF"
       footprint="0402"
       {...part(PARTS.C100n)}
-      // also the LED supply links from D4.VDD and R24 (up to 10 mm); core
+      // also the LED supply links from D4.VDD and Q3 (up to 10 mm); core
       // otherwise limits capacitor traces to 1 mm and skips autorouting
       maxDecouplingTraceLength="11mm"
       pcbX={-6.3}

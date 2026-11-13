@@ -16,6 +16,7 @@ PARTS = {
     "MAX17048G+T10": ("Analog Devices (Maxim)", "TDFN-8 2x2mm", "1-cell fuel gauge, I2C"),
     "SY8088IAAC": ("Silergy", "SOT-23-5", "1A 1.5MHz sync buck"),
     "DMG3415U-7": ("Diodes Incorporated", "SOT-23", "P-MOSFET 20V 4A"),
+    "NTK3139PT1G": ("onsemi", "SOT-723", "P-MOSFET 20V 0.78A"),
     "B5819WS": ("MCC (B5819WS-TP) or equivalent", "SOD-323", "Schottky 40V 1A"),
     "LESD5D5.0CT1G": ("LRC (Leshan Radio)", "SOD-523", "ESD protection 5V"),
     "LESD8D3.3CAT5G": ("LRC (Leshan Radio)", "SOD-882", "ESD protection 3.3V bidirectional"),
