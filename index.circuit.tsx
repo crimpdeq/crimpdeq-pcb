@@ -103,6 +103,9 @@ const TEST_PADS = [
   { name: "TP3", label: "BOOT", net: "net.BOOT", x: -3.0 },
 ]
 
+// Overrides the board's hidden silkscreen text
+const VISIBLE_SILK = { "& silkscreentext": { visibility: "visible" } } as const
+
 const esp32GndPins = [
   "GND1", "GND2", "GND3", "GND4", "GND5", "GND6", "GND7", "GND8", "GND9",
   "GND10", "GND11", "GND12", "GND13", "GND14", "GND15", "GND16", "GND17",
@@ -129,7 +132,9 @@ export default ({ pours = true }: { pours?: boolean }) => (
     minViaPadDiameter="0.5mm"
     // Only C13's 3V3 via overlaps a pad; scripts/drc.ts fails any other
     isViaInPadAllowed
-    pcbStyle={{ viaPadDiameter: "0.5mm", viaHoleDiameter: "0.3mm" }}
+    // No reference designators: at this size they are illegible. Only the
+    // J3/J4 wire pad labels (lib/WirePads.tsx) and the EN/GND/BOOT labels.
+    pcbStyle={{ viaPadDiameter: "0.5mm", viaHoleDiameter: "0.3mm", silkscreenTextVisibility: "hidden" }}
   >
     <net name="GND" isGroundNet />
     <net name="V3_3" isPowerNet nominalTraceWidth="0.25mm" />
@@ -554,8 +559,6 @@ export default ({ pours = true }: { pours?: boolean }) => (
       layer="bottom"
       pcbX={5.9}
       pcbY={-5.406}
-      // Reference designator above the part, clear of the J4 labels below it
-      pcbSx={{ "& silkscreentext": { pcbY: 1.7 } }}
       schSectionName="pwrpath"
       schX={5}
       schY={9}
@@ -918,8 +921,6 @@ export default ({ pours = true }: { pours?: boolean }) => (
         layer="bottom"
         pcbX={x}
         pcbY={TEST_PAD_Y}
-        // Reference designator under the function label (the BOOT via is above)
-        pcbSx={{ "& silkscreentext": { pcbY: -1.55 } }}
         schSectionName="mcu"
         schX={-15}
         schY={-7 - 1.5 * i}
@@ -934,6 +935,7 @@ export default ({ pours = true }: { pours?: boolean }) => (
         pcbY={TEST_PAD_Y - 0.9}
         anchorAlignment="center"
         fontSize="0.5mm"
+        pcbSx={VISIBLE_SILK}
       />
     ))}
     <trace from=".TP1 > .pin1" to=".R1 > .pin2" thickness="0.15mm" pcbPath={[".R1 > .pin2"]} />

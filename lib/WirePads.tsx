@@ -60,6 +60,8 @@ export const WirePads = ({
                 pcbY={top - i * pitch}
                 anchorAlignment="center"
                 fontSize="0.7mm"
+                // Printed even where the board hides silkscreen text
+                pcbSx={{ "& silkscreentext": { visibility: "visible" } }}
               />
             </Fragment>
           ))}

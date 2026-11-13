@@ -176,6 +176,11 @@ substitution notes), `pcbway_centroid.csv` (mm, origin at the board center) and
 top/bottom assembly drawings from `scripts/assembly.ts` (bottom mirrored, as seen
 from below; the corner triangle marks pin 1, or the cathode of diodes and LEDs).
 
+The silkscreen has no reference designators, which are illegible at this size and
+are on the assembly drawings: its only text is the J3/J4 wire pad labels and the
+EN/GND/BOOT recovery pad labels. The polarized diodes (D1, D2, D8) have their
+silkscreen outline closed at the cathode; D3, D7, D9 and D10 are bidirectional.
+
 `.github/workflows/release.yml` builds the same package on every published GitHub
 release, after `npm run verify` passes, and attaches it to the release as
 `crimpdeq-pcb-<tag>-*` with a `SHA256SUMS` file. Pull requests that change
