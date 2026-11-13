@@ -1,6 +1,6 @@
 # Generate PCBWay assembly files from dist/index/circuit.json:
 #   dist/fab/pcbway_bom.csv       BOM grouped by manufacturer part number
-#   dist/fab/pcbway_centroid.csv  pick-and-place (mm, origin = board center)
+#   dist/fab/pcbway_centroid.csv  pick-and-place (mm, the Gerbers' coordinates)
 # Usage: python3 scripts/pcbway.py
 import csv, json, os
 from collections import defaultdict

@@ -15,16 +15,20 @@ import { GND_PLANE_REGIONS } from "./lib/gndPlane"
 import { gndPlaneAutorouter } from "./lib/gndPlaneRouter"
 import { HAND_ROUTES } from "./lib/handRoutes"
 
-// Board outline: 17 x 31.5 mm, origin at the board center, antenna at +Y.
-const W = 17
-const L = 31.5
-const TOP = L / 2
-const BOTTOM = -L / 2
-
 // ESP32-C3-MINI-1 footprint origin is the pad-array center; the antenna
-// region spans y = +5.6..+11.0 from it. Keep the body flush with the top edge.
-const U1_Y = TOP - 11.35
-const ANTENNA_Y = U1_Y + 5.6
+// region spans y = +5.6..+11.0 from it.
+const U1_Y = 4.4
+
+// Board outline: 17 x 25.75 mm, antenna at +Y. The board ends where the antenna
+// starts, so the antenna overhangs it (Espressif: place the PCB antenna outside
+// the base board, cut off any board under it); U1's top pads end 0.3 mm from
+// the edge. Coordinates keep the origin of the earlier 31.5 mm board, whose
+// top edge was at the antenna tip.
+const W = 17
+const BOTTOM = -15.75
+const TOP = U1_Y + 5.6
+const L = TOP - BOTTOM
+const CENTER_Y = (TOP + BOTTOM) / 2
 
 // Routing keepout band along the board edges
 const EDGE_BAND = 0.35
@@ -117,6 +121,7 @@ export default ({ pours = true }: { pours?: boolean }) => (
   <board
     width={W}
     height={L}
+    outlineOffsetY={CENTER_Y}
     layers={4}
     autorouter={{ algorithmFn: gndPlaneAutorouter }}
     thickness="1.6mm"
@@ -1611,21 +1616,12 @@ export default ({ pours = true }: { pours?: boolean }) => (
     ))}
 
     {/* ---------------- Layout constraints ---------------- */}
-    {/* No copper under the ESP32-C3-MINI-1 PCB antenna on any layer */}
-    <keepout
-      shape="rect"
-      pcbX={0.0}
-      pcbY={(ANTENNA_Y + TOP) / 2}
-      width={W}
-      height={TOP - ANTENNA_Y}
-      layers={["top", "inner1", "inner2", "bottom"]}
-      excludeRefs={[".U1"]}
-    />
-    {/* Keep routed copper off the board edges (router under-applies edge clearance) */}
+    {/* Keep routed copper off the board edges (router under-applies edge clearance).
+        None along the top edge: U1's pads reach into the band there. */}
     <keepout
       shape="rect"
       pcbX={-W / 2 + EDGE_BAND / 2}
-      pcbY={0}
+      pcbY={CENTER_Y}
       width={EDGE_BAND}
       height={L}
       layers={["top", "inner1", "inner2", "bottom"]}
@@ -1634,7 +1630,7 @@ export default ({ pours = true }: { pours?: boolean }) => (
     <keepout
       shape="rect"
       pcbX={W / 2 - EDGE_BAND / 2}
-      pcbY={0}
+      pcbY={CENTER_Y}
       width={EDGE_BAND}
       height={L}
       layers={["top", "inner1", "inner2", "bottom"]}
