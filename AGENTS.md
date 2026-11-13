@@ -1,8 +1,16 @@
 # Agent guidelines
 
-tscircuit design of the crimpdeq board (ADS1220 variant). See `README.md` for the
-design and `.agents/skills/tscircuit/` for general tscircuit usage. The rules
-below override the skill where they conflict.
+Canonical Crimpdeq PCB, designed in tscircuit (`index.circuit.tsx`). See
+`README.md` for the design and `.agents/skills/tscircuit/` for general tscircuit
+usage. The rules below override the skill where they conflict.
+
+- Part datasheets, as searchable Markdown, are in `datasheets/`; search them with
+  `rg` and read only the matching section.
+- The KiCad revisions (V1 to V3) live only at their release tags; do not restore
+  KiCad files.
+- Pin assignments, wire pads, board outline and ADS1220 configuration (`PSW`) are
+  shared with `crimpdeq-firmware`, `crimpdeq-case` and `crimpdeq-book`: report
+  changes to them as follow-ups in those repositories.
 
 ## Tooling
 

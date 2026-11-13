@@ -1248,7 +1248,7 @@ export default ({ pours = true }: { pours?: boolean }) => (
     />
     {/* Input RC filter: 1k + 1k + 10nF C0G differential (~8 kHz); C0G because
         X7R is piezoelectric and TI asks for C0G here. BLE TX couples into the
-        inputs (#23), so each input also has 22 pF C0G (self-resonant near
+        inputs (crimpdeq-tscircuit#23), so each input also has 22 pF C0G (self-resonant near
         2.4 GHz) and 1 nF C0G common-mode to GND between its resistor and the
         pin, and a GHz ferrite at J3. AIN1: pin, C21, C12, R8 (C23 at R8);
         AIN0: pin, C12, C20, C22, R7. */}
@@ -1295,7 +1295,7 @@ export default ({ pours = true }: { pours?: boolean }) => (
       schRotation={90}
       connections={{ pin1: "net.ADC_AIN0", pin2: "net.ADC_AIN1" }}
     />
-    {/* RF and common-mode capacitors (#23). Vias can't go under U1's left pad
+    {/* RF and common-mode capacitors (crimpdeq-tscircuit#23). Vias can't go under U1's left pad
         column, so the AIN0 pair returns to C11's GND pad and via, C21 through a
         via to U1's GND20 pad and C23 to C3's GND pad. */}
     <capacitor
@@ -1380,7 +1380,7 @@ export default ({ pours = true }: { pours?: boolean }) => (
         E_N: "net.LC_EN",
       }}
     />
-    {/* GHz ferrites in the signal lines at the cable entry (#23), on the top
+    {/* GHz ferrites in the signal lines at the cable entry (crimpdeq-tscircuit#23), on the top
         side between J3 and J2's shell-leg slot */}
     <chip
       name="FB1"

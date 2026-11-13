@@ -1,7 +1,32 @@
-# Crimpdeq PCB — ADS1220 variant (tscircuit)
+# Crimpdeq PCB
 
-tscircuit port of [crimpdeq-pcb v2.0.0](https://github.com/crimpdeq/crimpdeq-pcb/tree/v2.0.0)
-with the HX711 replaced by a TI ADS1220 24-bit ADC.
+PCB design for Crimpdeq in [tscircuit](https://tscircuit.com), source in
+[`index.circuit.tsx`](index.circuit.tsx). See the [Crimpdeq book](https://book.crimpdeq.com/)
+for assembly, flashing, and calibration.
+
+V4 started as a tscircuit port of [v2.0.0](https://github.com/crimpdeq/crimpdeq-pcb/tree/v2.0.0)
+with the HX711 replaced by a TI ADS1220 24-bit ADC, developed in
+[crimpdeq-tscircuit](https://github.com/crimpdeq/crimpdeq-tscircuit) (history merged here).
+The KiCad revisions V1 to V3 remain available at their release tags.
+
+## Revisions
+
+Use the [firmware](https://github.com/crimpdeq/crimpdeq-firmware) and
+[case](https://github.com/crimpdeq/crimpdeq-case) releases in the row for your PCB revision.
+From V2 on, the PCB, firmware, and case share the major version; V1 uses firmware and case
+`v0.4.0`.
+
+| PCB revision | PCB release | Source | ADC | Firmware | Case |
+| --- | --- | --- | --- | --- | --- |
+| V4 (in development) | not released | tscircuit | ADS1220 | not released | not released |
+| V3 | [`v3.0.0`](https://github.com/crimpdeq/crimpdeq-pcb/releases/tag/v3.0.0) | KiCad | ADS1220 | [`v3.0.0`](https://github.com/crimpdeq/crimpdeq-firmware/releases/tag/v3.0.0) | [`v3.1.0`](https://github.com/crimpdeq/crimpdeq-case/releases/tag/v3.1.0) |
+| V2 | [`v2.0.0`](https://github.com/crimpdeq/crimpdeq-pcb/releases/tag/v2.0.0) | KiCad | HX711 | [`v2.1.0`](https://github.com/crimpdeq/crimpdeq-firmware/releases/tag/v2.1.0) | [`v2.0.0`](https://github.com/crimpdeq/crimpdeq-case/releases/tag/v2.0.0) |
+| V1 | [`v1.0.1`](https://github.com/crimpdeq/crimpdeq-pcb/releases/tag/v1.0.1) | KiCad | HX711 | [`v0.4.0`](https://github.com/crimpdeq/crimpdeq-firmware/releases/tag/v0.4.0) | [`v0.4.0`](https://github.com/crimpdeq/crimpdeq-case/releases/tag/v0.4.0) |
+
+V3 firmware and case do not work with V4: V4 is 17 × 31.5 mm, its wire pads differ, and
+its load cell is powered only while firmware sets the ADS1220 `PSW` bit (see below).
+
+## Board
 
 - Board: 17 × 31.5 mm, 4 layers, components on both sides (v2.0.0: 23 × 63.8 mm, 2 layers)
 - Top: ESP32-C3-MINI-1 (antenna at the board edge, copper keepout on all layers),
@@ -71,7 +96,8 @@ J3's labels are on the bottom side only: FB1/FB2 sit next to its pads on the top
   neighbouring pads). With the battery switch off, plugging USB in is a power-on
   reset, so holding BOOT while plugging in does the same. A 10 kΩ pull-up (R25)
   holds IO8 high, which download mode needs.
-- RF filtering of the load cell inputs against BLE TX pickup (#23): on the KiCad
+- RF filtering of the load cell inputs against BLE TX pickup
+  ([crimpdeq-tscircuit#23](https://github.com/crimpdeq/crimpdeq-tscircuit/issues/23)): on the KiCad
   revision-3 board, BLE transmissions add spikes of up to 0.98 kg that enter at AIN0/AIN1.
   Each input has, between its 1 kΩ resistor and the pin, 22 pF C0G to GND (self-resonant
   near 2.4 GHz; C20, C21) and 1 nF C0G common-mode to GND (C22, C23, a tenth of C12),
@@ -152,7 +178,7 @@ from below; the corner triangle marks pin 1, or the cathode of diodes and LEDs).
 
 `.github/workflows/release.yml` builds the same package on every published GitHub
 release, after `npm run verify` passes, and attaches it to the release as
-`crimpdeq-tscircuit-<tag>-*` with a `SHA256SUMS` file. Pull requests that change
+`crimpdeq-pcb-<tag>-*` with a `SHA256SUMS` file. Pull requests that change
 the fab scripts and manual runs only build it, as a workflow artifact.
 
 Quote settings: 4 layers, 17 × 31.5 mm, 1.6 mm FR-4, min track/spacing 5/5 mil,
@@ -243,6 +269,10 @@ Keep fixed: <parts or traces that must not move or reroute>.
 Done when npm run verify passes; show the netlist and routing diffs before
 updating their baselines.
 ```
+
+The PCB was sponsored by [PCBWay](https://www.pcbway.com/), thank you! Working with them was incredibly easy and fast, and the resulting boards are high quality.
+
+[![PCBWay](assets/PCBWay.png)](https://www.pcbway.com/)
 
 ## License
 
