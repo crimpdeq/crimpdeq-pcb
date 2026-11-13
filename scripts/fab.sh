@@ -46,6 +46,20 @@ if grep -n '^G85' "$tmp/gerbers"/drill-*.drl; then
   echo "fab: slots above have no start point on their line" >&2
   exit 1
 fi
+# PCBWay prints silkscreen lines from 0.15 mm; the exporter strokes text at 9 % of
+# the font size (0.1 mm at 1.05 mm) and footprints draw 0.05-0.12 mm outlines.
+# Widen every silkscreen aperture below 0.15 mm to 0.15 mm.
+for f in "$tmp/gerbers"/*_SilkScreen.gbr; do
+  awk 'match($0, /^%ADD[0-9]+C,[0-9.]+\*%$/) {
+         split($0, a, ","); d = substr(a[2], 1, length(a[2]) - 2) + 0
+         if (d < 0.15) { print a[1] ",0.150000*%"; next } }
+       { print }' "$f" > "$f.tmp"
+  mv "$f.tmp" "$f"
+done
+if awk -F, '/^%ADD[0-9]+C,/ && $2 + 0 < 0.15 { found = 1; print FILENAME ": " $0 } END { exit !found }' "$tmp/gerbers"/*_SilkScreen.gbr; then
+  echo "fab: silkscreen apertures above are thinner than 0.15 mm" >&2
+  exit 1
+fi
 (cd "$tmp/gerbers" && zip -q "$tmp/pcbway_gerbers.zip" ./*)
 mv "$tmp/pcbway_gerbers.zip" "$out/pcbway_gerbers.zip"
 

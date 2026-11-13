@@ -23,13 +23,14 @@ From V2 on, the PCB, firmware, and case share the major version; V1 uses firmwar
 | V2 | [`v2.0.0`](https://github.com/crimpdeq/crimpdeq-pcb/releases/tag/v2.0.0) | KiCad | HX711 | [`v2.1.0`](https://github.com/crimpdeq/crimpdeq-firmware/releases/tag/v2.1.0) | [`v2.0.0`](https://github.com/crimpdeq/crimpdeq-case/releases/tag/v2.0.0) |
 | V1 | [`v1.0.1`](https://github.com/crimpdeq/crimpdeq-pcb/releases/tag/v1.0.1) | KiCad | HX711 | [`v0.4.0`](https://github.com/crimpdeq/crimpdeq-firmware/releases/tag/v0.4.0) | [`v0.4.0`](https://github.com/crimpdeq/crimpdeq-case/releases/tag/v0.4.0) |
 
-V3 firmware and case do not work with V4: V4 is 17 × 31.5 mm, its wire pads differ, and
-its load cell is powered only while firmware sets the ADS1220 `PSW` bit (see below).
+V3 firmware and case do not work with V4: V4 is 17 × 25.75 mm with the ESP32-C3 antenna
+overhanging its edge, its wire pads differ, and its load cell is powered only while
+firmware sets the ADS1220 `PSW` bit (see below).
 
 ## Board
 
-- Board: 17 × 31.5 mm, 4 layers, components on both sides (v2.0.0: 23 × 63.8 mm, 2 layers)
-- Top: ESP32-C3-MINI-1 (antenna at the board edge, copper keepout on all layers),
+- Board: 17 × 25.75 mm, 4 layers, components on both sides (v2.0.0: 23 × 63.8 mm, 2 layers)
+- Top: ESP32-C3-MINI-1 (its antenna overhangs the board edge: no board under it),
   USB-C (TYPE-C-31-M-12, flush with the opposite edge), USB ESD, both LEDs, load cell
   ferrites (FB1, FB2)
 - Bottom: charger, power path, 3V3 buck, MAX17048, ADS1220 and passives
@@ -62,6 +63,13 @@ ratiometric across R22 and the switch.
 Wire pads: J3 `E+ S+ S- E-` (E+ = filtered 3V3, E− = low-side switch), J4 `SW- SW+ B+ B-` (SW+ = B+, SW− = power-path input).
 v2.0.0 names these the other way round: its `SW+` pad is the power-path input and `VBAT` is the battery.
 J3's labels are on the bottom side only: FB1/FB2 sit next to its pads on the top side.
+
+The board ends where U1's antenna starts, so the antenna overhangs the board by 5.4 mm.
+Espressif recommends placing the PCB antenna outside the base board and cutting off any
+board under it. U1's top pads end 0.3 mm from the edge (PCBWay's minimum). Coordinates
+keep the origin of the earlier 31.5 mm board, whose top edge was at the antenna tip, so
+the board center is at y = −2.875 mm. The case must hold the overhanging antenna
+without touching it.
 
 ## Changes vs v2.0.0 beyond the ADC
 
@@ -172,16 +180,24 @@ npm run site:deploy   # build and upload it (needs `npx wrangler login`)
 
 `dist/fab/` contains `pcbway_gerbers.zip` (Gerbers + drills), `pcbway_bom.csv`
 (grouped by manufacturer part number, with LCSC codes as sourcing hints and
-substitution notes), `pcbway_centroid.csv` (mm, origin at the board center) and
+substitution notes), `pcbway_centroid.csv` (mm, in the Gerbers' coordinates, whose origin is
+2.875 mm above the board center) and
 top/bottom assembly drawings from `scripts/assembly.ts` (bottom mirrored, as seen
 from below; the corner triangle marks pin 1, or the cathode of diodes and LEDs).
+
+The silkscreen has no reference designators, which are illegible at this size and
+are on the assembly drawings: its only text is the J3/J4 wire pad labels and the
+EN/GND/BOOT recovery pad labels, as large as the pads and parts around them allow
+and running along their pad columns. `npm run fab` widens every silkscreen line
+below 0.15 mm (text is stroked at 9 % of its font size) to 0.15 mm, PCBWay's minimum. The polarized diodes (D1, D2, D8) have their
+silkscreen outline closed at the cathode; D3, D7, D9 and D10 are bidirectional.
 
 `.github/workflows/release.yml` builds the same package on every published GitHub
 release, after `npm run verify` passes, and attaches it to the release as
 `crimpdeq-pcb-<tag>-*` with a `SHA256SUMS` file. Pull requests that change
 the fab scripts and manual runs only build it, as a workflow artifact.
 
-Quote settings: 4 layers, 17 × 31.5 mm, 1.6 mm FR-4, min track/spacing 5/5 mil,
+Quote settings: 4 layers, 17 × 25.75 mm, 1.6 mm FR-4, min track/spacing 5/5 mil,
 min hole 0.3 mm, assembly on both sides. The centroid rotations come from
 tscircuit; ask PCBWay to confirm orientation against the assembly drawings.
 

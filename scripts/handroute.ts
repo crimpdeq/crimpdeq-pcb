@@ -16,8 +16,10 @@ const tasks: any[] = JSON.parse(readFileSync(tasksFile, "utf8"))
 
 const LAYERS = ["top", "inner1", "inner2", "bottom"]
 const G = 0.05
-const X0 = -8.5, Y0 = -15.75
-const NX = Math.round(17 / G) + 1, NY = Math.round(31.5 / G) + 1, N = NX * NY
+const board = cj.find((e) => e.type === "pcb_board")
+const X0 = board.center.x - board.width / 2, Y0 = board.center.y - board.height / 2
+const X1 = X0 + board.width, Y1 = Y0 + board.height
+const NX = Math.round(board.width / G) + 1, NY = Math.round(board.height / G) + 1, N = NX * NY
 const CLR = 0.127, MARGIN = 0.04, VIA_R = 0.25, VIA_PAD_CLR = 0.15, HOLE_CLR = 0.2, EDGE = 0.35
 const cx = (i: number) => X0 + i * G, cy = (j: number) => Y0 + j * G
 const ix = (x: number) => Math.round((x - X0) / G), iy = (y: number) => Math.round((y - Y0) / G)
@@ -151,9 +153,9 @@ const masks = (net: string, w: number) => {
   }
   for (let j = 0; j < NY; j++)
     for (let i = 0; i < NX; i++) {
-      const [x, y] = [Math.abs(cx(i)), Math.abs(cy(j))]
-      if (x > 8.5 - EDGE - w / 2 - MARGIN || y > 15.75 - EDGE - w / 2 - MARGIN) for (let l = 0; l < 4; l++) block[idx(l, i, j)] = 1
-      if (x > 8.5 - EDGE - VIA_R - MARGIN || y > 15.75 - EDGE - VIA_R - MARGIN) viaBlock[j * NX + i] = 1
+      const edge = Math.min(cx(i) - X0, X1 - cx(i), cy(j) - Y0, Y1 - cy(j))
+      if (edge < EDGE + w / 2 + MARGIN) for (let l = 0; l < 4; l++) block[idx(l, i, j)] = 1
+      if (edge < EDGE + VIA_R + MARGIN) viaBlock[j * NX + i] = 1
     }
   return { block, viaBlock }
 }

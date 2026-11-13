@@ -15,16 +15,20 @@ import { GND_PLANE_REGIONS } from "./lib/gndPlane"
 import { gndPlaneAutorouter } from "./lib/gndPlaneRouter"
 import { HAND_ROUTES } from "./lib/handRoutes"
 
-// Board outline: 17 x 31.5 mm, origin at the board center, antenna at +Y.
-const W = 17
-const L = 31.5
-const TOP = L / 2
-const BOTTOM = -L / 2
-
 // ESP32-C3-MINI-1 footprint origin is the pad-array center; the antenna
-// region spans y = +5.6..+11.0 from it. Keep the body flush with the top edge.
-const U1_Y = TOP - 11.35
-const ANTENNA_Y = U1_Y + 5.6
+// region spans y = +5.6..+11.0 from it.
+const U1_Y = 4.4
+
+// Board outline: 17 x 25.75 mm, antenna at +Y. The board ends where the antenna
+// starts, so the antenna overhangs it (Espressif: place the PCB antenna outside
+// the base board, cut off any board under it); U1's top pads end 0.3 mm from
+// the edge. Coordinates keep the origin of the earlier 31.5 mm board, whose
+// top edge was at the antenna tip.
+const W = 17
+const BOTTOM = -15.75
+const TOP = U1_Y + 5.6
+const L = TOP - BOTTOM
+const CENTER_Y = (TOP + BOTTOM) / 2
 
 // Routing keepout band along the board edges
 const EDGE_BAND = 0.35
@@ -103,6 +107,9 @@ const TEST_PADS = [
   { name: "TP3", label: "BOOT", net: "net.BOOT", x: -3.0 },
 ]
 
+// Overrides the board's hidden silkscreen text
+const VISIBLE_SILK = { "& silkscreentext": { visibility: "visible" } } as const
+
 const esp32GndPins = [
   "GND1", "GND2", "GND3", "GND4", "GND5", "GND6", "GND7", "GND8", "GND9",
   "GND10", "GND11", "GND12", "GND13", "GND14", "GND15", "GND16", "GND17",
@@ -114,6 +121,7 @@ export default ({ pours = true }: { pours?: boolean }) => (
   <board
     width={W}
     height={L}
+    outlineOffsetY={CENTER_Y}
     layers={4}
     autorouter={{ algorithmFn: gndPlaneAutorouter }}
     thickness="1.6mm"
@@ -129,7 +137,9 @@ export default ({ pours = true }: { pours?: boolean }) => (
     minViaPadDiameter="0.5mm"
     // Only C13's 3V3 via overlaps a pad; scripts/drc.ts fails any other
     isViaInPadAllowed
-    pcbStyle={{ viaPadDiameter: "0.5mm", viaHoleDiameter: "0.3mm" }}
+    // No reference designators: at this size they are illegible. Only the
+    // J3/J4 wire pad labels (lib/WirePads.tsx) and the EN/GND/BOOT labels.
+    pcbStyle={{ viaPadDiameter: "0.5mm", viaHoleDiameter: "0.3mm", silkscreenTextVisibility: "hidden" }}
   >
     <net name="GND" isGroundNet />
     <net name="V3_3" isPowerNet nominalTraceWidth="0.25mm" />
@@ -473,12 +483,14 @@ export default ({ pours = true }: { pours?: boolean }) => (
       schY={6}
       // Switch wires on their own pads; SW+ next to B+ keeps the VBAT link short
       pads={[
-        { label: "SW_N", silk: "SW-" },
+        // Q2's pad and outline reach down beside SW- on the bottom: label left of them
+        { label: "SW_N", silk: "SW-", silkOffsets: { bottom: [-2.4, -0.1] } },
         { label: "SW_P", silk: "SW+" },
         { label: "BAT_P", silk: "B+" },
         { label: "BAT_N", silk: "B-" },
       ]}
-      silkOffsetX={-1.6}
+      // Largest labels that leave SW- and SW+ apart at the 2.2 mm pitch
+      silk={{ fontSize: 1.05, offsets: { top: [-1.35, 0], bottom: [-1.35, 0] } }}
       pcbX={7.0}
       pcbY={-11.1}
       connections={{
@@ -554,8 +566,6 @@ export default ({ pours = true }: { pours?: boolean }) => (
       layer="bottom"
       pcbX={5.9}
       pcbY={-5.406}
-      // Reference designator above the part, clear of the J4 labels below it
-      pcbSx={{ "& silkscreentext": { pcbY: 1.7 } }}
       schSectionName="pwrpath"
       schX={5}
       schY={9}
@@ -918,8 +928,6 @@ export default ({ pours = true }: { pours?: boolean }) => (
         layer="bottom"
         pcbX={x}
         pcbY={TEST_PAD_Y}
-        // Reference designator under the function label (the BOOT via is above)
-        pcbSx={{ "& silkscreentext": { pcbY: -1.55 } }}
         schSectionName="mcu"
         schX={-15}
         schY={-7 - 1.5 * i}
@@ -931,9 +939,13 @@ export default ({ pours = true }: { pours?: boolean }) => (
         text={label}
         layer="bottom"
         pcbX={x}
-        pcbY={TEST_PAD_Y - 0.9}
+        // Above each pad, along the column like the wire pad labels: the 1.5 mm
+        // pitch is too narrow for larger labels side by side
+        pcbY={TEST_PAD_Y + 1.65}
+        pcbRotation={90}
         anchorAlignment="center"
-        fontSize="0.5mm"
+        fontSize={0.82}
+        pcbSx={VISIBLE_SILK}
       />
     ))}
     <trace from=".TP1 > .pin1" to=".R1 > .pin2" thickness="0.15mm" pcbPath={[".R1 > .pin2"]} />
@@ -1368,9 +1380,9 @@ export default ({ pours = true }: { pours?: boolean }) => (
         { label: "S_N", silk: "S-" },
         { label: "E_N", silk: "E-" },
       ]}
-      silkOffsetX={1.6}
-      // FB1/FB2 sit beside the pads on the top side
-      silkLayers={["bottom"]}
+      // Bottom only: FB1/FB2 sit beside the pads on the top side. Largest labels
+      // that clear the pads and R13.
+      silk={{ fontSize: 1.35, offsets: { bottom: [1.25, 0] } }}
       pcbX={-7.0}
       pcbY={-10.55}
       connections={{
@@ -1609,21 +1621,12 @@ export default ({ pours = true }: { pours?: boolean }) => (
     ))}
 
     {/* ---------------- Layout constraints ---------------- */}
-    {/* No copper under the ESP32-C3-MINI-1 PCB antenna on any layer */}
-    <keepout
-      shape="rect"
-      pcbX={0.0}
-      pcbY={(ANTENNA_Y + TOP) / 2}
-      width={W}
-      height={TOP - ANTENNA_Y}
-      layers={["top", "inner1", "inner2", "bottom"]}
-      excludeRefs={[".U1"]}
-    />
-    {/* Keep routed copper off the board edges (router under-applies edge clearance) */}
+    {/* Keep routed copper off the board edges (router under-applies edge clearance).
+        None along the top edge: U1's pads reach into the band there. */}
     <keepout
       shape="rect"
       pcbX={-W / 2 + EDGE_BAND / 2}
-      pcbY={0}
+      pcbY={CENTER_Y}
       width={EDGE_BAND}
       height={L}
       layers={["top", "inner1", "inner2", "bottom"]}
@@ -1632,7 +1635,7 @@ export default ({ pours = true }: { pours?: boolean }) => (
     <keepout
       shape="rect"
       pcbX={W / 2 - EDGE_BAND / 2}
-      pcbY={0}
+      pcbY={CENTER_Y}
       width={EDGE_BAND}
       height={L}
       layers={["top", "inner1", "inner2", "bottom"]}
