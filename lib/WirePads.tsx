@@ -1,24 +1,25 @@
 import { Fragment } from "react"
 import type { ConnectorProps } from "@tscircuit/props"
 
-type WirePad = { label: string; silk: string }
+type SilkLayer = "top" | "bottom"
+type SilkOffsets = Partial<Record<SilkLayer, [number, number]>>
+type WirePad = { label: string; silk: string; silkOffsets?: SilkOffsets }
 
 /**
  * Vertical column of plated wire-solder pads, pin1 at the top. Each pad gets a
- * silkscreen label on `silkLayers` (both sides by default), offset horizontally
- * by `silkOffsetX`. Bare pads, so they are excluded from assembly.
+ * silkscreen label on every layer in `silk.offsets`, at that offset [x, y] from
+ * the pad (a pad's `silkOffsets` override it). Labels run along the column, where the pad pitch leaves more room
+ * than the gap beside the pads. Bare pads, so they are excluded from assembly.
  */
 export const WirePads = ({
   pads,
   pitch = 2.2,
-  silkOffsetX = 1.6,
-  silkLayers = ["top", "bottom"],
+  silk,
   ...props
 }: Omit<ConnectorProps, "pinLabels" | "footprint"> & {
   pads: WirePad[]
   pitch?: number
-  silkOffsetX?: number
-  silkLayers?: ("top" | "bottom")[]
+  silk: { fontSize: number; offsets: SilkOffsets }
 }) => {
   const top = ((pads.length - 1) * pitch) / 2
   const pinLabels = Object.fromEntries(
@@ -51,20 +52,23 @@ export const WirePads = ({
             width={1.7}
             height={(pads.length - 1) * pitch + 1.7}
           />
-          {pads.map((pad, i) => (
-            <Fragment key={`${pad.label}-silk`}>
-              <silkscreentext
-                text={pad.silk}
-                layers={silkLayers}
-                pcbX={silkOffsetX}
-                pcbY={top - i * pitch}
-                anchorAlignment="center"
-                fontSize="0.7mm"
-                // Printed even where the board hides silkscreen text
-                pcbSx={{ "& silkscreentext": { visibility: "visible" } }}
-              />
-            </Fragment>
-          ))}
+          {pads.flatMap((pad, i) =>
+            Object.entries({ ...silk.offsets, ...pad.silkOffsets }).map(([layer, [dx, dy]]) => (
+              <Fragment key={`${pad.label}-${layer}`}>
+                <silkscreentext
+                  text={pad.silk}
+                  layer={layer as SilkLayer}
+                  pcbX={dx}
+                  pcbY={top - i * pitch + dy}
+                  pcbRotation={90}
+                  anchorAlignment="center"
+                  fontSize={silk.fontSize}
+                  // Printed even where the board hides silkscreen text
+                  pcbSx={{ "& silkscreentext": { visibility: "visible" } }}
+                />
+              </Fragment>
+            )),
+          )}
         </footprint>
       }
     />

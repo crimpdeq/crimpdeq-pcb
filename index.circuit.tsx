@@ -483,12 +483,14 @@ export default ({ pours = true }: { pours?: boolean }) => (
       schY={6}
       // Switch wires on their own pads; SW+ next to B+ keeps the VBAT link short
       pads={[
-        { label: "SW_N", silk: "SW-" },
+        // Q2's pad and outline reach down beside SW- on the bottom: label left of them
+        { label: "SW_N", silk: "SW-", silkOffsets: { bottom: [-2.4, -0.1] } },
         { label: "SW_P", silk: "SW+" },
         { label: "BAT_P", silk: "B+" },
         { label: "BAT_N", silk: "B-" },
       ]}
-      silkOffsetX={-1.6}
+      // Largest labels that leave SW- and SW+ apart at the 2.2 mm pitch
+      silk={{ fontSize: 1.05, offsets: { top: [-1.35, 0], bottom: [-1.35, 0] } }}
       pcbX={7.0}
       pcbY={-11.1}
       connections={{
@@ -937,9 +939,12 @@ export default ({ pours = true }: { pours?: boolean }) => (
         text={label}
         layer="bottom"
         pcbX={x}
-        pcbY={TEST_PAD_Y - 0.9}
+        // Above each pad, along the column like the wire pad labels: the 1.5 mm
+        // pitch is too narrow for larger labels side by side
+        pcbY={TEST_PAD_Y + 1.65}
+        pcbRotation={90}
         anchorAlignment="center"
-        fontSize="0.5mm"
+        fontSize={0.82}
         pcbSx={VISIBLE_SILK}
       />
     ))}
@@ -1375,9 +1380,9 @@ export default ({ pours = true }: { pours?: boolean }) => (
         { label: "S_N", silk: "S-" },
         { label: "E_N", silk: "E-" },
       ]}
-      silkOffsetX={1.6}
-      // FB1/FB2 sit beside the pads on the top side
-      silkLayers={["bottom"]}
+      // Bottom only: FB1/FB2 sit beside the pads on the top side. Largest labels
+      // that clear the pads and R13.
+      silk={{ fontSize: 1.35, offsets: { bottom: [1.25, 0] } }}
       pcbX={-7.0}
       pcbY={-10.55}
       connections={{
