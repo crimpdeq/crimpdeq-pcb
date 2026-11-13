@@ -5,6 +5,10 @@ Copyright © Sergio Gasquez Arcos.
 The files in this repository are provided for personal, educational,
 research, repair, and non-commercial use only.
 
+This license does not apply to files distributed under their own license,
+such as `.agents/skills/tscircuit/` (MIT, see its `LICENSE`). Those files
+remain under their respective licenses.
+
 You may:
 - view, study, and modify the files;
 - manufacture PCBs, cases, or parts for your own personal use;

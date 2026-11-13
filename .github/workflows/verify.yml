@@ -1,0 +1,37 @@
+# Run `npm run verify` (netlist and routing baselines, placement, build, DRC,
+# shorts and fab copper) on pull requests and pushes to main.
+# macOS arm64: the autorouter output differs on Linux x64, and `npm run verify`
+# fails on a routing that differs from scripts/routing.expected.json.
+name: Verify
+
+on:
+  pull_request:
+    paths-ignore: ["**.md", ".agents/**"]
+  push:
+    branches: [main]
+    paths-ignore: ["**.md", ".agents/**"]
+  workflow_dispatch:
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify design
+    runs-on: macos-26
+    # Bun ignores SIGALRM and some layouts hang after routing
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - run: npm run verify
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: circuit-${{ github.sha }}
+          path: dist/index/circuit.json
+          if-no-files-found: ignore
