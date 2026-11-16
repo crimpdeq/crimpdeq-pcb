@@ -218,7 +218,7 @@ const traceEnds = (t: any): string[] =>
 
 // 3V3 supply topology. The router joins each pad to its nearest same-net pad, so
 // placement decides where currents flow; every re-route can change it. The RGB
-// LED link (R24) must reach the buck without passing the ADS1220 supply pins or
+// LED switch (Q3) must reach the buck without passing the ADS1220 supply pins or
 // their bypass capacitors (LED PWM current off AVDD/DVDD). The buck -> ESP32
 // 3V3 path is hand-routed at 0.4 mm up to C1; the router narrows V3_3 below its
 // 0.25 mm width, so at most MAX_NARROW_3V3 mm of the path may be narrower.
@@ -258,7 +258,7 @@ const traceEnds = (t: any): string[] =>
     return prev.has(to) ? { nodes, edges } : undefined
   }
   const issues: Issue[] = []
-  const led = path("L1.pin2", "R24.pin1")
+  const led = path("L1.pin2", "Q3.pin2") // Q3 source
   const adcSupply = ["U3.AVDD", "U3.DVDD", "C11.pin1", "C13.pin1"]
   if (!led || led.nodes.some((n) => adcSupply.includes(n)))
     issues.push({ type: "led_supply_via_adc", message: `LED supply path: ${led?.nodes.join(" -> ") ?? "none"}` })

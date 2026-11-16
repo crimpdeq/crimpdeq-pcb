@@ -6,6 +6,7 @@
   {"net": "ADC_DIN", "width": 0.15},
   {"net": "ADC_SCLK", "width": 0.15},
   {"net": "V3_3_LED", "width": 0.25},
+  {"net": "LED_PWR_N", "width": 0.15},
   {"net": "V3_3", "width": 0.25},
   {"net": "ADC_CS", "width": 0.15},
   {"net": "LED_DATA", "width": 0.15},

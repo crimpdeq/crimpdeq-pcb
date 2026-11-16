@@ -204,11 +204,16 @@
  ],
  "LED_DATA": [
   "R13 pin1",
-  "U1 IO2"
+  "U1 RXD0"
  ],
  "LED_DIN": [
   "D4 DIN",
   "R13 pin2"
+ ],
+ "LED_PWR_N": [
+  "Q3 pin1",
+  "R26 pin2",
+  "U1 IO2"
  ],
  "SW_BATT": [
   "J4 SW_N",
@@ -238,14 +243,15 @@
   "C9 pin1",
   "D3 pin1",
   "L1 pin2",
+  "Q3 pin2",
   "R1 pin1",
   "R15 pin1",
   "R20 pin1",
   "R21 pin1",
   "R22 pin1",
   "R23 pin2",
-  "R24 pin1",
   "R25 pin1",
+  "R26 pin1",
   "U1 3V3",
   "U3 AVDD",
   "U3 DVDD"
@@ -253,7 +259,7 @@
  "V3_3_LED": [
   "C19 pin1",
   "D4 VDD",
-  "R24 pin2"
+  "Q3 pin3"
  ],
  "VBAT": [
   "C18 pin1",

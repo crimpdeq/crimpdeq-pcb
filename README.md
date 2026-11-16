@@ -24,8 +24,9 @@ From V2 on, the PCB, firmware, and case share the major version; V1 uses firmwar
 | V1 | [`v1.0.1`](https://github.com/crimpdeq/crimpdeq-pcb/releases/tag/v1.0.1) | KiCad | HX711 | [`v0.4.0`](https://github.com/crimpdeq/crimpdeq-firmware/releases/tag/v0.4.0) | [`v0.4.0`](https://github.com/crimpdeq/crimpdeq-case/releases/tag/v0.4.0) |
 
 V3 firmware and case do not work with V4: V4 is 17 × 25.75 mm with the ESP32-C3 antenna
-overhanging its edge, its wire pads differ, and its load cell is powered only while
-firmware sets the ADS1220 `PSW` bit (see below).
+overhanging its edge, its wire pads differ, its load cell is powered only while
+firmware sets the ADS1220 `PSW` bit (see below), and its status LED takes data on IO20
+and is powered only while IO2 is low.
 
 ## Board
 
@@ -83,8 +84,14 @@ without touching it.
 - Added: 4.7 kΩ I2C pull-ups (MAX17048), 100 nF at the RGB LED, a battery GND pad (B−).
 - ADS1220 100 nF bypass capacitors (C11, C13) 0.5 mm from AVDD/DVDD, with GND vias at
   their GND pads; 3V3 reaches their pads before the pins (from the 3V3 trunk through C13).
-- RGB LED fed through a 0 Ω link (R24) whose 3V3 side doesn't run along the ADS1220
-  supply path (`scripts/drc.ts` checks this).
+- RGB LED supply switched by a P-MOSFET (Q3, NTK3139P), so deep sleep doesn't pay
+  its idle current (V3 fed it from 3V3 whenever the battery switch was on,
+  [crimpdeq-pcb#30](https://github.com/crimpdeq/crimpdeq-pcb/issues/30)): IO2 low
+  powers D4, and the 100 kΩ gate pull-up (R26) keeps it off in deep sleep and reset
+  and gives the IO2 strapping pin the pull-up Espressif recommends. The LED data moved
+  to IO20 (RXD0, through R13). Firmware must keep the data line low while D4 is off:
+  driven high, it can power D4 through the LED's input. Q3's 3V3 side doesn't run
+  along the ADS1220 supply path (`scripts/drc.ts` checks this).
 - USB-C shield tied directly to GND (R17 0 Ω removed).
 - 3V3 buck laid out after the SY8088 layout notes, with its power copper routed by hand:
   C15's GND pad lines up with the gap between FB and IN, so a 0.8 mm strap reaches
@@ -223,10 +230,11 @@ All copper is fixed; the autorouter has nothing left to route.
 - Traces with a layout intent are written by hand in `index.circuit.tsx` (see the
   design changes above).
 - The other nets (VSYS, VBUS, VBAT, the rest of 3V3, the SPI clock and data, CS,
-  LED data, CHIP_PU, BOOT) are generated into `lib/handRoutes.ts` by
-  `scripts/handroute.sh`. It builds the board without them and without the
-  autorouter (`GND_ROUTER_SKIP=1`), then `scripts/handroute.ts` routes the nets in
-  `scripts/handroute.json`, in that order, on a 0.05 mm grid over the four layers:
+  the LED supply, switch gate and data, CHIP_PU, BOOT) are generated into
+  `lib/handRoutes.ts` by `scripts/handroute.sh`. It builds the board without them
+  and without the autorouter (`GND_ROUTER_SKIP=1`), then `scripts/handroute.ts`
+  routes the nets in `scripts/handroute.json`, in that order, on a 0.05 mm grid over
+  the four layers:
   0.127 mm to other nets, vias 0.15 mm from pads, through vias that block every
   layer, and the GND plane regions kept clear.
 
