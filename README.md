@@ -19,7 +19,7 @@ From V2 on, the PCB, firmware, and case share the major version; V1 uses firmwar
 | PCB revision | PCB release | Source | ADC | Firmware | Case |
 | --- | --- | --- | --- | --- | --- |
 | `main` (in development) | not released | tscircuit | ADS1220 | not released | not released |
-| V4 | [`v4.0.0`](https://github.com/crimpdeq/crimpdeq-pcb/releases/tag/v4.0.0) | tscircuit | ADS1220 | [`v4.0.0`](https://github.com/crimpdeq/crimpdeq-firmware/releases/tag/v4.0.0) | not released |
+| V4 | [`v4.0.0`](https://github.com/crimpdeq/crimpdeq-pcb/releases/tag/v4.0.0) | tscircuit | ADS1220 | [`v4.0.0`](https://github.com/crimpdeq/crimpdeq-firmware/releases/tag/v4.0.0) | [`v4.0.0`](https://github.com/crimpdeq/crimpdeq-case/releases/tag/v4.0.0) |
 | V3 | [`v3.0.0`](https://github.com/crimpdeq/crimpdeq-pcb/releases/tag/v3.0.0) | KiCad | ADS1220 | [`v3.0.0`](https://github.com/crimpdeq/crimpdeq-firmware/releases/tag/v3.0.0) | [`v3.1.0`](https://github.com/crimpdeq/crimpdeq-case/releases/tag/v3.1.0) |
 | V2 | [`v2.0.0`](https://github.com/crimpdeq/crimpdeq-pcb/releases/tag/v2.0.0) | KiCad | HX711 | [`v2.1.0`](https://github.com/crimpdeq/crimpdeq-firmware/releases/tag/v2.1.0) | [`v2.0.0`](https://github.com/crimpdeq/crimpdeq-case/releases/tag/v2.0.0) |
 | V1 | [`v1.0.1`](https://github.com/crimpdeq/crimpdeq-pcb/releases/tag/v1.0.1) | KiCad | HX711 | [`v0.4.0`](https://github.com/crimpdeq/crimpdeq-firmware/releases/tag/v0.4.0) | [`v0.4.0`](https://github.com/crimpdeq/crimpdeq-case/releases/tag/v0.4.0) |
@@ -27,9 +27,9 @@ From V2 on, the PCB, firmware, and case share the major version; V1 uses firmwar
 V3 firmware and case do not work with V4: its wire pads differ and its load cell is
 powered only while firmware sets the ADS1220 `PSW` bit (see below). This README describes
 `main`, which changes two things since V4. It cuts the board under the ESP32-C3 antenna
-(17 × 31.5 mm to 17 × 25.75 mm, the antenna overhanging its edge). It also moves the
-status LED data to IO20 and switches the LED supply with IO2, so V4 firmware doesn't
-drive the LED on a `main` board
+(17 × 31.5 mm to 17 × 25.75 mm, the antenna overhanging its edge), so case v4.0.0, sized
+for the 31.5 mm board, doesn't fit it. It also moves the status LED data to IO20 and
+switches the LED supply with IO2, so V4 firmware doesn't drive the LED on a `main` board
 ([crimpdeq-firmware#106](https://github.com/crimpdeq/crimpdeq-firmware/issues/106)).
 
 ## Board
